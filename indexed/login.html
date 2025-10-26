@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../indexed/login-style.css">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="login-container">
+        <h1 class="login-title">LOGIN</h1>
+        <div class="divider"></div>
+        
+        <form class="login-form" id="loginForm">
+            <div class="input-group">
+                <input type="email" id="email" placeholder="Email" required>
+            </div>
+            
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Password" required>
+            </div>
+            
+            <div class="button-container">
+                <button type="submit" class="form-btn">SUBMIT</button>
+                <button type="button" class="form-btn" onclick="window.location.href='signup.html'">SIGN UP</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="login-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  background-color: #000;
+  background-image: url('../images/photo_2025-10-15_19-31-06.jpg'); /* عدّل المسار حسب الحاجة */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+ }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* غمّق الخلفية */
+    z-index: -1;
+  }
+  
+
+.container {
+    max-width: 100%;
+    min-height: 100vh;
+    /*background-color: #000;*/
+}
+
+/* Header Styles */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+    z-index: 10;
+}
+
+.back-btn,
+.icon-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.icon-btn:hover,
+.back-btn:hover {
+    opacity: 0.7;
+}
+
+/* Logo Styles */
+.logo {
+  position: fixed;  /* ثابت فوق الصفحة */
+  top: -40px;        /* 10 بكسل من الأعلى */
+  left:-40px;       /* 10 بكسل من الشمال */
+  z-index: 1000;    /* فوق كل العناصر */
+}
+
+
+.logo img {
+  width: 350px;
+  height: 200px;
+  animation: golden-glow 2s ease-in-out infinite alternate;
+}
+
+/* تأثير التوهج */
+@keyframes golden-glow {
+  0% {
+    filter: drop-shadow(0 0 5px #d4af37) drop-shadow(0 0 10px #d4af37);
+  }
+  100% {
+    filter: drop-shadow(0 0 10px #f5e26b) drop-shadow(0 0 20px #f5e26b);
+  }
+}
+
+/* Main Content */
+.main-content {
+    position: relative;
+    width: 100%;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Perfume Section */
+.perfume-section {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+.perfume-section {
+    position: relative;
+    z-index: 1;
+  }
+  
+
+.perfume-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    border-radius: 0;
+}
+
+/* Selection Buttons */
+.selection-buttons {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    z-index: 10;
+    width: 90%;
+    max-width: 600px;
+}
+
+.selection-btn {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    border: 2px solid;
+    border-radius: 15px;
+    padding: 20px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.gold-btn {
+    border-color: #d4af37;
+}
+
+.silver-btn {
+    border-color: #c0c0c0;
+}
+
+.selection-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.gold-btn:hover {
+    background: rgba(212, 175, 55, 0.2);
+}
+
+.silver-btn:hover {
+    background: rgba(192, 192, 192, 0.2);
+}
+
+.btn-text {
+    font-size: 18px;
+    font-weight: 600;
+    color:#d4af37;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+}
+
+.btn-icon {
+    width: 40px;
+    height: 40px;
+}
+
+/* Status Bar */
+.header::before {
+    content: '1:01';
+    position: absolute;
+    top: -25px;
+    left: 20px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .selection-buttons {
+        flex-direction: column;
+        gap: 15px;
+        bottom: 30px;
+        width: 85%;
+    }
+    
+    
+}
+
+@media (max-width: 480px) {
+    .selection-btn {
+        padding: 15px;
+    }
+    
+    .btn-text {
+        font-size: 16px;
+    }
+    
+    .btn-icon {
+        width: 35px;
+        height: 35px;
+    }
+}
+@keyframes glow {
+    0% {
+        text-shadow:
+            0 0 3px #d4af37,
+            0 0 6px #d4af37,
+            0 0 10px #f5e26b;
+        color: #d4af37;
+    }
+    100% {
+        text-shadow:
+            0 0 5px #f5e26b,
+            0 0 8px #f5e26b,
+            0 0 12px #d4af37;
+        color: #fff8c0;
+    }
+}
+a {
+    text-decoration: none;
+  }
+  body {
+    background-color: #000;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  .welcome-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    color:#d4af37; /* Soft, elegant beige */
+    text-align: center;
+    margin-top: 30px;
+    text-shadow:
+      0 0 3px rgba(255, 255, 255, 0.2),
+      0 0 10px rgba(212, 175, 55, 0.3); /* Subtle golden glow */
+    animation: fadeInUp 1.5s ease-in-out,glow 2.5s ease-in-out infinite alternate;
+  }
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+ /* تنسيق روابط أعلى الصفحة في المنتصف */
+.top-nav {
+  position: fixed;        /* خليها ثابتة بالأعلى */
+  top: 20px;              /* نزّلها شوي من الأعلى */
+  right: 30px;            /* خليه يلزق عاليمين */
+  left: auto;             /* ألغي التوسيط */
+  transform: none;        /* احذف التحويل للمنتصف */
+  display: flex;
+  gap: 40px;              /* المسافة بين الروابط */
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  z-index: 1000;
+}
+
+
+.top-nav a {
+  color: #d4af37; /* لون ذهبي */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.top-nav a:hover {
+  color: #fff8c0; /* لون ذهبي فاتح عند المرور */
+}
+
+
+
+  
+    

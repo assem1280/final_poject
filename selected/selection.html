@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Your Perfume</title>
+    <link rel="stylesheet" href="..//selected/selection_styles.css">
+</head>
+<body>
+    <div class="container">
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+          <!-- Logo -->
+      <div class="logo">
+        <img src="..//images/Untitled_design-removebg-preview.png" alt="Logo" style="width: 350px; height: 200px;filter: brightness(2.0);">
+      </div>
+
+        <div class="category-tabs">
+            <button class="tab-btn" data-category="man">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="8" r="4"/>
+                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                </svg>
+                MAN
+            </button>
+            <button class="tab-btn active" data-category="woman">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="8" r="4"/>
+                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                </svg>
+                WOMAN
+            </button>
+            <button class="tab-btn" data-category="unisex">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M12 1v6m0 6v6m-6-6h6m6 0h-6"/>
+                </svg>
+                UNISEX
+            </button>
+        </div>
+
+        <div class="perfumes-grid">
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume1.jpg" alt="Eternal Bloom">
+                </div>
+                <h3 class="perfume-name">Eternal Bloom</h3>
+            </div>
+
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume2.jpg" alt="Sense">
+                </div>
+                <h3 class="perfume-name">Sense</h3>
+            </div>
+
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume3.jpg" alt="Ocean Whisper">
+                </div>
+                <h3 class="perfume-name">Ocean Whisper</h3>
+            </div>
+
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume4.jpg" alt="Rustic gold">
+                </div>
+                <h3 class="perfume-name">Rustic gold</h3>
+            </div>
+
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume5.jpg" alt="Eternal Bloom">
+                </div>
+                <h3 class="perfume-name">Eternal Bloom</h3>
+            </div>
+
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume6.jpg" alt="Ocean Whisper">
+                </div>
+                <h3 class="perfume-name">Ocean Whisper</h3>
+            </div>
+
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume7.jpg" alt="Velvet Night">
+                </div>
+                <h3 class="perfume-name">Velvet Night</h3>
+            </div>
+
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume8.jpg" alt="Beriaslan">
+                </div>
+                <h3 class="perfume-name">Beriaslan</h3>
+            </div>
+
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume9.jpg" alt="Haslit">
+                </div>
+                <h3 class="perfume-name">Haslit</h3>
+            </div>
+
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume10.jpg" alt="Velvet Night">
+                </div>
+                <h3 class="perfume-name">Velvet Night</h3>
+            </div>
+
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume11.jpg" alt="Muath Interpret">
+                </div>
+                <h3 class="perfume-name">Muath Interpret</h3>
+            </div>
+
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume12.jpg" alt="Donjons Sexilight">
+                </div>
+                <h3 class="perfume-name">Donjons Sexilight</h3>
+            </div>
+        </div>
+<div class="golden-stars"></div>
+<script>
+  const starsContainer = document.querySelector('.golden-stars');
+
+  for (let i = 0; i < 100; i++) {
+    const star = document.createElement('span');
+
+    const top = Math.random() * 100; // 0% to 100%
+    const left = Math.random() * 100;
+    const delay = Math.random() * 5; // 0s to 5s
+
+    star.style.top = `${top}%`;
+    star.style.left = `${left}%`;
+    star.style.animationDelay = `${delay}s`;
+
+    starsContainer.appendChild(star);
+  }
+</script>
+
+</body>
+</html>
