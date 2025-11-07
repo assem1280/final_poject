@@ -27,7 +27,9 @@ if (signupForm) {
     signupForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        const fullname = document.getElementById('fullname').value;
+        const firstName = document.getElementById('firstName').value;
+        const lastName = document.getElementById('lastName').value;
+        const fullname = `${firstName} ${lastName}`.trim();
         const email = document.getElementById('signupEmail').value;
         const password = document.getElementById('signupPassword').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
@@ -52,14 +54,14 @@ if (signupForm) {
         }
         
         // التحقق من جميع الحقول
-        if (fullname && email && password && confirmPassword) {
+        if (firstName && lastName && email && password && confirmPassword) {
             // هنا يمكنك إضافة كود لإرسال البيانات للسيرفر
             console.log('إنشاء حساب:', { fullname, email, password });
             alert('تم إنشاء الحساب بنجاح!\nمرحباً ' + fullname);
             
-            // توجيه المستخدم لصفحة تسجيل الدخول
+            // توجيه المستخدم لصفحة تسجيل الدخول — استخدم replace لتجنب إنشاء إدخال تاريخي إضافي
             setTimeout(() => {
-                window.location.href = 'login.html';
+                location.replace('login.html');
             }, 1500);
         } else {
             alert('الرجاء إدخال جميع البيانات');

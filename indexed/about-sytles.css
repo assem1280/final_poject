@@ -14,6 +14,48 @@ body.about-page {
     padding: 20px;
 }
 
+.home-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #d4af37;
+    border-radius: 50%;
+    color: #d4af37;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    text-decoration: none;
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Back / history button */
+/* nav-back-btn removed per user request */
+
+.home-btn:hover {
+    background: linear-gradient(135deg, #d4af37 0%, #c49f27 100%);
+    color: #000;
+    transform: scale(1.1);
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.6);
+}
+
+.home-btn svg {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+}
+
+.home-btn:hover svg {
+    transform: scale(1.1);
+}
+
 .about-container {
     width: 100%;
     max-width: 900px;

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Your Perfume - Woman</title>
+    <link rel="stylesheet" href="..//selected/selection_styles.css">
+</head>
+<body>
+    <div class="container">
+        <a href="../indexed/index.html" class="home-btn" title="Home">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+        </a>
+        
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+          
+        <div class="category-tabs">
+            <button class="tab-btn" data-category="man" onclick="window.location.href='man.html'">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="8" r="4"/>
+                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                </svg>
+                MAN
+            </button>
+            <button class="tab-btn active" data-category="woman" data-selected="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="8" r="4"/>
+                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                </svg>
+                WOMAN
+            </button>
+            <button class="tab-btn" data-category="unisex" onclick="window.location.href='unisex.html'">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M12 1v6m0 6v6m-6-6h6m6 0h-6"/>
+                </svg>
+                UNISEX
+            </button>
+        </div>
+        
+        <div class="companies-grid">
+            <button class="company-btn" data-brand="chanel">
+                <span class="company-name">CHANEL</span>
+            </button>
+            <button class="company-btn" data-brand="dior">
+                <span class="company-name">DIOR</span>
+            </button>
+            <button class="company-btn" data-brand="tomford">
+                <span class="company-name">TOM FORD</span>
+            </button>
+            <button class="company-btn" data-brand="versace">
+                <span class="company-name">VERSACE</span>
+            </button>
+            <button class="company-btn" data-brand="hermes">
+                <span class="company-name">HERMÈS</span>
+            </button>
+            <button class="company-btn" data-brand="gucci">
+                <span class="company-name">GUCCI</span>
+            </button>
+        </div>
+        <div class="brand-buttons" style="display: none;">
+            <button class="brand-btn" data-brand="chanel">CHANEL</button>
+            <button class="brand-btn" data-brand="dior">DIOR</button>
+            <button class="brand-btn" data-brand="tomford">TOM FORD</button>
+            <button class="brand-btn" data-brand="versace">VERSACE</button>
+            <button class="brand-btn" data-brand="hermes">HERMÈS</button>
+            <button class="brand-btn" data-brand="gucci">GUCCI</button>
+            <button class="brand-btn" data-brand="pacorabanne">PACO RABANNE</button>
+        </div>
+
+        <div class="perfumes-grid">
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume1.jpg" alt="Blue de Chanel">
+                </div>
+                <h3 class="perfume-name">Blue de Chanel</h3>
+                <button class="add-to-cart-btn">
+                    <svg class="cart-icon" viewBox="0 0 24 24" width="16" height="16">
+                        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume2.jpg" alt="Dior Sauvage">
+                </div>
+                <h3 class="perfume-name">Dior Sauvage</h3>
+                <button class="add-to-cart-btn">
+                    <svg class="cart-icon" viewBox="0 0 24 24" width="16" height="16">
+                        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume3.jpg" alt="Dior Poison">
+                </div>
+                <h3 class="perfume-name">Dior Poison</h3>
+                <button class="add-to-cart-btn">
+                    <svg class="cart-icon" viewBox="0 0 24 24" width="16" height="16">
+                        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume4.jpg" alt="Ocean Whisper">
+                </div>
+                <h3 class="perfume-name">Ocean Whisper</h3>
+                <button class="add-to-cart-btn">
+                    <svg class="cart-icon" viewBox="0 0 24 24" width="16" height="16">
+                        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume5.jpg" alt="Rustic gold">
+                </div>
+                <h3 class="perfume-name">Rustic gold</h3>
+                <button class="add-to-cart-btn">
+                    <svg class="cart-icon" viewBox="0 0 24 24" width="16" height="16">
+                        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume6.jpg" alt="Eau de Dior">
+                </div>
+                <h3 class="perfume-name">Eau de Dior</h3>
+                <button class="add-to-cart-btn">
+                    <svg class="cart-icon" viewBox="0 0 24 24" width="16" height="16">
+                        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume7.jpg" alt="Velvet Night">
+                </div>
+                <h3 class="perfume-name">Velvet Night</h3>
+                <button class="add-to-cart-btn">
+                    <svg class="cart-icon" viewBox="0 0 24 24" width="16" height="16">
+                        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume8.jpg" alt="Beriaslan">
+                </div>
+                <h3 class="perfume-name">Beriaslan</h3>
+                <button class="add-to-cart-btn">
+                    <svg class="cart-icon" viewBox="0 0 24 24" width="16" height="16">
+                        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume9.jpg" alt="Haslit">
+                </div>
+                <h3 class="perfume-name">Haslit</h3>
+                <button class="add-to-cart-btn">
+                    <svg class="cart-icon" viewBox="0 0 24 24" width="16" height="16">
+                        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03.-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08.-.14.12.-.31.12.-.48 0.-.55.-.45-1-1-1H5.21l.-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume10.jpg" alt="Velvet Night">
+                </div>
+                <h3 class="perfume-name">Velvet Night</h3>
+                <button class="add-to-cart-btn">
+                    <svg class="cart-icon" viewBox="0 0 24 24" width="16" height="16">
+                        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28.-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25.-.11-.25.-.25l.03.-.12.9-1.63h7.45c.75 0 1.41.-.41 1.75-1.03l3.58-6.49c.08.-.14.12.-.31.12.-.48 0.-.55.-.45-1-1-1H5.21l.-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume11.jpg" alt="Muath Interpret">
+                </div>
+                <h3 class="perfume-name">Muath Interpret</h3>
+                <button class="add-to-cart-btn">
+                    <svg class="cart-icon" viewBox="0 0 24 24" width="16" height="16">
+                        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25.-.11-.25.-.25l.03.-.12.9-1.63h7.45c.75 0 1.41.-.41 1.75-1.03l3.58-6.49c.08.-.14.12.-.31.12.-.48 0.-.55.-.45-1-1-1H5.21l.-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="perfume-card">
+                <div class="perfume-image-container">
+                    <img src="perfume12.jpg" alt="Donjons Sexilight">
+                </div>
+                <h3 class="perfume-name">Donjons Sexilight</h3>
+                <button class="add-to-cart-btn">
+                    <svg class="cart-icon" viewBox="0 0 24 24" width="16" height="16">
+                        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25.-.11-.25.-.25l.03.-.12.9-1.63h7.45c.75 0 1.41.-.41 1.75-1.03l3.58-6.49c.08.-.14.12.-.31.12.-.48 0.-.55.-.45-1-1-1H5.21l.-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+<div class="golden-stars"></div>
+<script>
+  const starsContainer = document.querySelector('.golden-stars');
+
+  for (let i = 0; i < 100; i++) {
+    const star = document.createElement('span');
+
+    const top = Math.random() * 100; // 0% to 100%
+    const left = Math.random() * 100;
+    const delay = Math.random() * 5; // 0s to 5s
+
+    star.style.top = `${top}%`;
+    star.style.left = `${left}%`;
+    star.style.animationDelay = `${delay}s`;
+
+    starsContainer.appendChild(star);
+  }
+</script>
+    <script src="selection-script.js"></script>
+</body>
+</html>
