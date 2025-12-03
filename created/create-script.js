@@ -3,6 +3,13 @@ let allProducts = [];
 let selectedProducts = [];
 let selectedBottle = null;
 
+// Maximum fragrance volume per bottle size
+const MAX_FRAGRANCE_PER_BOTTLE = {
+    100: 50,  // 100ml bottle -> max 50ml fragrance
+    50: 25,   // 50ml bottle -> max 25ml fragrance
+    30: 15    // 30ml bottle -> max 15ml fragrance
+};
+
 // Brand & Gender Mappings
 const brandMapping = {
     'Dior': 1,
@@ -19,6 +26,9 @@ const genderMapping = {
     'WOMAN': 2,
     'UNISEX': 3
 };
+
+// Price constant used on the create page (displayed as per-10ml price)
+const PRICE_PER_10ML = 2.5;
 
 // DOM Elements
 const productsGrid = document.getElementById('productsGrid');
@@ -49,56 +59,83 @@ async function loadAllProducts() {
         
         // Fetch all products (no gender/brand filter)
         const response = await fetch('../perfdb/get_products.php');
-        const data = await response.json();
         
-        if (data.success) {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const text = await response.text();
+        console.log('API Response:', text);
+        
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            throw new Error('Invalid JSON response: ' + text);
+        }
+        
+        if (data.success && data.products && data.products.length > 0) {
             allProducts = data.products;
+            console.log(`Loaded ${allProducts.length} products`);
             displayProducts(allProducts);
         } else {
-            productsGrid.innerHTML = `<div class="error-message">Error: ${data.message}</div>`;
+            console.error('API Response:', data);
+            const errorMsg = data.error || data.message || 'No products found';
+            productsGrid.innerHTML = `<div class="error-message">Error: ${errorMsg}</div>`;
         }
     } catch (error) {
         console.error('Error loading products:', error);
-        productsGrid.innerHTML = '<div class="error-message">Failed to load products. Please check your connection.</div>';
+        productsGrid.innerHTML = '<div class="error-message">Failed to load products. Check console for details.</div>';
     }
 }
 
-// Display Products (shows first 15 initially, rest with search)
+// Display Products (shows first 15 initially, rest with search/filters)
 function displayProducts(products) {
-    if (products.length === 0) {
-        productsGrid.innerHTML = '<div class="no-products-message">No products found</div>';
+    if (!products || products.length === 0) {
+        productsGrid.innerHTML = '<div class="no-products-message">لا توجد منتجات</div>';
         return;
     }
-    
-    // If no search/filter active, show only first 15
-    const hasActiveFilter = searchInput.value || genderFilter.value || brandFilter.value;
+
+    // تنظيف البحث من الفراغات
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    const genderValue = genderFilter.value;
+    const brandValue = brandFilter.value;
+
+    // تحقق إذا في فلتر فعال
+    const hasActiveFilter = searchTerm || genderValue || brandValue;
+
+    // اختر المنتجات للعرض
     const productsToShow = hasActiveFilter ? products : products.slice(0, 15);
-    
+
     productsGrid.innerHTML = productsToShow.map(product => {
         const isSelected = selectedProducts.find(p => p.p_id === product.p_id);
         const isDisabled = selectedProducts.length >= 3 && !isSelected;
-        
+        const isOutOfStock = product.stock <= 0;
+
         return `
-            <div class="product-card ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}" 
+            <div class="product-card ${isSelected ? 'selected' : ''} ${isDisabled ? 'disabled' : ''} ${isOutOfStock ? 'out-of-stock' : ''}" 
                  data-product-id="${product.p_id}"
-                 onclick="toggleProduct(${product.p_id})">
+                 onclick="toggleProduct(${product.p_id})"
+                 ${isOutOfStock ? 'style="opacity: 0.6; pointer-events: none;"' : ''}>
                 <div class="product-name">${product.p_name}</div>
                 <div class="product-brand">${product.brand_name}</div>
                 <div class="product-gender">${product.gender_name}</div>
-                <div class="product-price">$${product.price}/10ml</div>
+                <div class="product-price">$${PRICE_PER_10ML.toFixed(2)}/10ml</div>
+                ${isOutOfStock ? '<div class="out-of-stock-text">Out of Stock</div>' : ''}
             </div>
         `;
     }).join('');
-    
-    // Show info message if showing limited results
+
+    // رسالة معلومات عند عرض أول 15 منتج بدون فلترة
     if (!hasActiveFilter && products.length > 15) {
         productsGrid.innerHTML += `
-            <div class="info-message" style="grid-column: 1/-1; text-align: center; color: rgba(212, 175, 55, 0.7); padding: 15px; font-style: italic;">
+            <div class="info-message" style="grid-column: 1/-1; text-align: center; color: rgba(0, 0, 0, 0.7); padding: 15px; font-style: italic;">
                 Showing 15 of ${products.length} products. Use search or filters to find more.
             </div>
         `;
     }
 }
+
 
 // Toggle Product Selection
 function toggleProduct(productId) {
@@ -106,6 +143,12 @@ function toggleProduct(productId) {
     
     const product = allProducts.find(p => p.p_id === productId);
     if (!product) return;
+    
+    // Check if product is out of stock
+    if (product.stock <= 0) {
+        alert('⚠️ This product is out of stock!');
+        return;
+    }
     
     const existingIndex = selectedProducts.findIndex(p => p.p_id === productId);
     
@@ -162,7 +205,7 @@ function displaySelectedProducts() {
                 <input type="number" 
                        class="ml-input" 
                        min="0" 
-                       max="${selectedBottle ? selectedBottle.size : 50}"
+                       max="${selectedBottle ? (MAX_FRAGRANCE_PER_BOTTLE[selectedBottle.size] || selectedBottle.size) : 50}"
                        value="${product.ml || 0}"
                        onchange="updateProductML(${product.p_id}, this.value)"
                        placeholder="0">
@@ -182,8 +225,10 @@ function updateProductML(productId, ml) {
     // Check bottle capacity
     if (selectedBottle) {
         const totalML = selectedProducts.reduce((sum, p) => sum + (p.p_id === productId ? ml : (p.ml || 0)), 0);
-        if (totalML > selectedBottle.size) {
-            alert(`Total ML (${totalML}ml) exceeds bottle capacity (${selectedBottle.size}ml)!`);
+        const maxFragrance = MAX_FRAGRANCE_PER_BOTTLE[selectedBottle.size] || selectedBottle.size;
+        
+        if (totalML > maxFragrance) {
+            alert(`The maximum limit for an excellent experience is ${maxFragrance}ml to avoid affecting the clothes and the fragrance quality.`);
             return;
         }
     }
@@ -194,7 +239,7 @@ function updateProductML(productId, ml) {
 
 // Calculate Price
 function calculatePrice() {
-    const PRICE_PER_10ML = 2.5;
+    // use shared PRICE_PER_10ML constant defined at top of the file
     
     // Calculate total ML
     const totalML = selectedProducts.reduce((sum, p) => sum + (p.ml || 0), 0);
@@ -253,13 +298,14 @@ function filterProducts() {
     let filtered = allProducts;
     
     // Search filter
-    const searchTerm = searchInput.value.toLowerCase();
+    const searchTerm = (searchInput && searchInput.value) ? searchInput.value.toLowerCase() : '';
     if (searchTerm) {
-        filtered = filtered.filter(product => 
-            product.p_name.toLowerCase().includes(searchTerm) ||
-            product.brand_name.toLowerCase().includes(searchTerm) ||
-            product.gender_name.toLowerCase().includes(searchTerm)
-        );
+        filtered = filtered.filter(product => {
+            const name = (product.p_name || '').toString().toLowerCase();
+            const brand = (product.brand_name || '').toString().toLowerCase();
+            const gender = (product.gender_name || '').toString().toLowerCase();
+            return name.includes(searchTerm) || brand.includes(searchTerm) || gender.includes(searchTerm);
+        });
     }
     
     // Gender filter
@@ -322,18 +368,27 @@ async function addToCart() {
         return;
     }
     
-    if (totalML > selectedBottle.size) {
-        alert(`Total ML (${totalML}ml) exceeds bottle capacity (${selectedBottle.size}ml)!`);
+    const maxFragrance = MAX_FRAGRANCE_PER_BOTTLE[selectedBottle.size] || selectedBottle.size;
+    if (totalML > maxFragrance) {
+        alert(`The maximum limit for an excellent experience is ${maxFragrance}ml to avoid affecting the clothes and the fragrance quality.`);
         return;
     }
     
     // Prepare data
+    const bottleImages = {
+        100: '../images/photo_٢٠٢٥-١١-٢٤_١٥-٠٨-٤١ (3).jpg',
+        50: '../images/photo_٢٠٢٥-١١-٢٤_١٥-٠٨-٤١.jpg',
+        30: '../images/photo_٢٠٢٥-١١-٢٤_١٥-٠٨-٤١ (2).jpg'
+    };
+    
     const cartData = {
         products: selectedProducts.map(p => ({
             product_id: p.p_id,
             ml: p.ml || 0
         })),
-        bottle_id: selectedBottle.id,
+        bottle_size: selectedBottle.size,
+        bottle_design_id: selectedBottle.id,
+        bottle_image: bottleImages[selectedBottle.size] || '/pefumeppp/images/Untitled_design-removebg-preview.png',
         total_ml: totalML
     };
     
@@ -357,12 +412,20 @@ async function addToCart() {
             // Reset form
             selectedProducts = [];
             updateDisplay();
+            // refresh global cart widget/badge if available
+            if (window.refreshCartBadgeAndModal) {
+                try { window.refreshCartBadgeAndModal(); } catch(e) { console.warn('refreshCart failed', e); }
+            }
+                // also attempt the lightweight badge-only refresh and dispatch a custom event
+                if (window.refreshCartBadges) { try { window.refreshCartBadges(); } catch(e) { console.warn('refreshCartBadges failed', e); } }
+                try { window.dispatchEvent(new Event('cart:updated')); } catch(e) { /* ignore */ }
         } else {
-            alert('Error: ' + result.message);
+            alert('Error: ' + (result.message || result.error || 'Unknown error'));
         }
     } catch (error) {
         console.error('Error adding to cart:', error);
-        alert('Failed to add to cart. Please try again.');
+        // Arabic translation: "Failed to add to cart. Please try again."
+        alert('فشل الإضافة إلى السلة. الرجاء المحاولة مرة أخرى.');
     } finally {
         addToCartBtn.disabled = false;
         addToCartBtn.innerHTML = `

@@ -6,8 +6,8 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: #0a0a0a;
-    color: white;
+    background: #ffffff;
+    color: #333333;
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
@@ -18,12 +18,12 @@ body {
     top: 20px;
     left: 20px;
     padding: 12px;
-    background: rgba(0, 0, 0, 0.7);
-    border: 2px solid #d4af37;
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid #000000;
     border-radius: 50%;
     font-size: 16px;
     font-weight: 700;
-    color: #d4af37;
+    color: #000000;
     cursor: pointer;
     transition: all 0.3s ease;
     z-index: 1000;
@@ -41,10 +41,10 @@ body {
 /* nav-back-btn removed per user request */
 
 .home-btn:hover {
-    background: linear-gradient(135deg, #d4af37 0%, #c49f27 100%);
-    color: #000;
+    background: #ffffff;
+    color: #000000;
     transform: scale(1.1);
-    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.6);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 body::after::before {
@@ -132,9 +132,9 @@ body::after {
     display: flex;
     align-items: center;
     gap: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    color: rgba(255, 255, 255, 0.6);
+    background: #000000;
+    border: 2px solid #000000;
+    color:#ffffff;
     padding: 12px 30px;
     border-radius: 30px;
     font-size: 14px;
@@ -163,7 +163,7 @@ body::after {
     padding: 35px 25px;
     min-height: 160px;
     background: rgba(255, 255, 255, 0.03);
-    border: 2px solid rgba(212, 175, 55, 0.3);
+    border: 2px solid #000000;
     border-radius: 15px;
     cursor: pointer;
     transition: all 0.4s ease;
@@ -172,13 +172,13 @@ body::after {
 
 .company-btn:hover {
     transform: translateY(-5px);
-    border-color: #d4af37;
+    border-color:#000000;
     background: rgba(212, 175, 55, 0.1);
-    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 10px 30px #000000;
 }
 
 .company-name {
-    color: #d4af37;
+    color: #000000;
     font-size: 24px;
     font-weight: 700;
     letter-spacing: 2px;
@@ -192,7 +192,7 @@ body::after {
 
 .company-btn:hover .company-name {
     transform: scale(1.1);
-    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 @media (min-width: 1200px) {
@@ -234,17 +234,17 @@ body::after {
 }
 
 .tab-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.4);
-    color: rgba(255, 255, 255, 0.9);
+    background: rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.1);
     transform: translateY(-2px);
 }
 
 .tab-btn.active {
-    background: linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%);
-    border-color: #D4AF37;
-    color: #000;
-    box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+    background: linear-gradient(135deg, #aba89f 0%,#aba89f 100%);
+    border-color: #000000;
+    color: #000000;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
 }
 
 .tab-btn svg {
@@ -324,7 +324,7 @@ body::after {
     text-align: center;
     font-size: 18px;
     font-weight: 600;
-    color: #D4AF37;
+    color: #fefefe;
     margin: 10px 0 15px;
     text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
     letter-spacing: 0.5px;
@@ -337,7 +337,7 @@ body::after {
     width: 40px;
     height: 40px;
     margin: 0 auto 15px;
-    background: linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
     border: none;
     border-radius: 50%;
     color: #000;
@@ -358,6 +358,25 @@ body::after {
 .cart-icon {
     width: 20px;
     height: 20px;
+}
+
+.perfume-card.out-of-stock {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.perfume-card.out-of-stock .add-to-cart-btn {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.out-of-stock-text {
+    color: #e74c3c;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 8px;
+    padding: 0 15px 15px;
 }
 
 .sparkle {
@@ -462,22 +481,23 @@ body::after {
   position: absolute;
   width: 3px;
   height: 3px;
-  background: #D4AF37; /* اللون الذهبي */
+  background: #000000; /* لون النجوم */
   border-radius: 50%;
-  box-shadow: 0 0 6px rgba(212, 175, 55, 0.6);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3); /* توهج أصغر */
   animation: twinkle 3s infinite ease-in-out;
-  opacity: 0.6;
+  opacity: 0.5; /* أخف */
 }
 
 @keyframes twinkle {
   0%, 100% {
-    opacity: 0.2;
-    transform: scale(1);
+    opacity: 0.3;        /* كان 0.2 → خفيف */
+    transform: scale(1); 
   }
   50% {
-    opacity: 1;
-    transform: scale(1.6);
+    opacity: 0.9;        /* كان 1 → أخف */
+    transform: scale(1.25); /* كان 1.6 → أصغر */
   }
 }
+
 
 

@@ -1,0 +1,98 @@
+/* Cart widget styles */
+/* Root placement and font */
+#site-cart-widget{position:fixed;top:18px;right:18px;z-index:99999;font-family:Arial,Helvetica,sans-serif}
+
+/* Basket button (fixed) */
+#site-cart-widget .cart-button{background:#ffffff;border-radius:10px;padding:8px 10px;box-shadow:0 8px 20px rgba(0,0,0,0.12);display:flex;align-items:center;gap:8px;cursor:pointer;border:1px solid rgba(0,0,0,0.06);position:relative;min-width:44px}
+
+/* Badge (small round) */
+#site-cart-widget .cart-button .badge{background:#ffffff;color:#ffffff;border-radius:12px;padding:3px 6px;font-weight:700;font-size:11px;position:absolute;top:-6px;right:-6px;box-shadow:0 2px 6px rgba(0,0,0,0.12)}
+
+/* Make the basket icon black */
+#site-cart-widget .cart-button svg,
+.nav-cart-btn svg { color: #000000; stroke: #000000; }
+
+/* Ensure badge contrasts on black background */
+#site-cart-widget .cart-button .badge{background:#000000;color:#ffffff}
+#site-cart-widget .cart-modal{position:fixed;top:60px;right:18px;width:360px;max-width:calc(100% - 40px);background:#000000;border-radius:10px;box-shadow:0 30px 60px rgba(0,0,0,0.18);overflow:hidden;display:none;flex-direction:column;transition:transform .12s ease,opacity .12s ease}
+#site-cart-widget .cart-modal.open{display:flex;opacity:1;transform:translateY(0)}
+#site-cart-widget .cart-modal header{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg, #ffffff 0%, #ffffff 100%)}
+#site-cart-widget .cart-modal .items{max-height:320px;overflow:auto;padding:10px 14px;background:#fff}
+#site-cart-widget .cart-item{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed #333333;align-items:center;position:relative}
+#site-cart-widget .cart-item:last-child{border-bottom:0}
+#site-cart-widget .cart-item img{width:48px;height:48px;object-fit:cover;border-radius:6px}
+#site-cart-widget .cart-item .meta{flex:1;padding-inline-end:8px}
+#site-cart-widget .cart-item .meta .name{font-weight:600;font-size:14px;color:#ffffff}
+#site-cart-widget .cart-item .meta .qty{color:#cccccc;font-size:13px}
+/* Ensure remove button is always visible and sized consistently */
+/* prominent red remove button */
+#site-cart-widget .cart-item .remove-item{
+	background:#d93025; /* vivid red */
+	border:1px solid rgba(217,48,37,0.9);
+	color:#fff;
+	font-size:16px;
+	cursor:pointer;
+	padding:0;
+	border-radius:6px;
+	/* position at the inline end of the cart-item (works with RTL/LTR) */
+	position:absolute;
+	inset-inline-end:8px; /* logical inline end instead of right for RTL support */
+	top:50%;
+	transform:translateY(-50%);
+	width:34px;
+	height:34px;
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	flex:0 0 auto;
+	box-shadow:0 2px 6px rgba(217,48,37,0.12);
+}
+#site-cart-widget .cart-item .remove-item:hover{background:#c1261d}
+#site-cart-widget .cart-footer{padding:12px 14px;border-top:1px solid rgba(255,255,255,0.1);background:#000000;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+#site-cart-widget .cart-footer .total{font-weight:700;color:#ffffff}
+#site-cart-widget .cart-footer .checkout-btn{background:linear-gradient(135deg, #ffffff 0%, #ffffff 100%);color:#000;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:700;flex:1;text-align:center;border:none;cursor:pointer}
+#site-cart-widget .cart-footer .dashboard-link{background:linear-gradient(135deg, #ffffff 0%, #764ba2 100%);color:#fff;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:700;flex:1;text-align:center;display:inline-block;border:none;cursor:pointer;transition:opacity 0.3s}
+#site-cart-widget .cart-footer .dashboard-link:hover{opacity:0.9}
+#site-cart-widget .empty{padding:18px;text-align:center;color:#cccccc}
+
+/* small responsive tweak */
+@media (max-width:420px){#site-cart-widget .cart-modal{right:10px;left:10px;width:auto}} 
+
+/* inline nav button style */
+.nav-cart-btn{background:transparent;border:0;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:6px;border-radius:6px;font-size:14px;position:relative}
+.nav-cart-btn svg{display:block;width:20px;height:20px}
+.nav-cart-btn .badge{background:#000000;color:#ffffff;border-radius:10px;padding:2px 6px;font-weight:700;font-size:11px;position:absolute;top:-6px;right:-6px;box-shadow:0 2px 6px rgba(0,0,0,0.12)}
+
+.nav-cart-container .cart-modal{position:fixed;top:58px;right:18px}
+
+/* make inline modal items slightly more compact */
+.nav-inline-modal{width:auto;max-width:320px;padding:8px;box-shadow:0 20px 40px rgba(0,0,0,0.12)}
+.nav-inline-modal .items{max-height:260px;padding:6px}
+.nav-inline-modal .cart-item{gap:8px;padding:6px 0;align-items:center;position:relative}
+.nav-inline-modal .cart-item img{width:44px;height:44px}
+.nav-inline-modal .cart-footer{padding:8px}
+/* small remove button adjustments for inline modal */
+.nav-inline-modal .cart-item .remove-item{font-size:15px;padding:0;margin-inline-start:6px;width:28px;height:28px;background:#d93025;border:1px solid rgba(217,48,37,0.9);color:#fff;position:absolute;inset-inline-end:6px;top:50%;transform:translateY(-50%)}
+
+/* toast notification */
+.cart-toast{position:fixed;bottom:22px;right:22px;background:rgba(0,0,0,0.85);color:#fff;padding:10px 14px;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.24);font-weight:600;z-index:100000;opacity:0;transform:translateY(10px);transition:opacity .18s ease,transform .18s ease}
+.cart-toast.show{opacity:1;transform:translateY(0)}
+.cart-toast .undo{background:transparent;border:0;color:#ffffff;margin-left:10px;cursor:pointer;font-weight:700}
+
+/* Popover arrow and tighter visual for small box */
+.nav-inline-modal{border-radius:8px;background:#000000;position:absolute;transform-origin:top right;direction:rtl}
+.nav-inline-modal::before{content:'';position:absolute;width:12px;height:12px;background:#000000;transform:rotate(45deg);top:-6px;right:22px;box-shadow:-2px -2px 6px rgba(0,0,0,0.06)}
+.nav-inline-modal.open{display:flex;opacity:1;transform:translateY(0);transition:opacity .12s ease, transform .12s ease}
+
+/* Header / close button styles for popover */
+.nav-inline-modal header{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg, #ffffff 0%, #ffffff 100%)}
+.nav-inline-modal header strong{font-size:14px;color:#000}
+.nav-inline-modal header .close{background:transparent;border:0;cursor:pointer;font-size:16px;color:#000}
+
+/* small adjustments inside popover */
+.nav-inline-modal .items{max-height:260px;padding:6px;overflow:auto;color:#ffffff;}
+.nav-inline-modal .cart-item .meta .name{font-size:13px;color:#ffffff;}
+.nav-inline-modal .cart-item .meta .qty{font-size:12px;color:#ffffff;}
+.nav-inline-modal .cart-footer{padding:8px;display:flex;flex-direction:column;gap:6px}
+.nav-inline-modal .cart-footer .checkout-btn,
+.nav-inline-modal .cart-footer .dashboard-link{flex:1;padding:8px;font-size:12px;border-radius:6px}

@@ -6,8 +6,8 @@
 
 body {
     font-family: 'Cinzel', serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: #000;
-    color: #d4af37;
+    background: #ffffff;
+    color: #333333;
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
@@ -18,10 +18,10 @@ body {
     top: 20px;
     left: 20px;
     padding: 12px;
-    background: rgba(0, 0, 0, 0.7);
-    border: 2px solid #d4af37;
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid #000000;
     border-radius: 50%;
-    color: #d4af37;
+    color: #000000;
     cursor: pointer;
     transition: all 0.3s ease;
     z-index: 1000;
@@ -36,10 +36,10 @@ body {
 }
 
 .home-btn:hover {
-    background: linear-gradient(135deg, #d4af37 0%, #c49f27 100%);
-    color: #000;
+    background: #ffffff;
+    color: #000000;
     transform: scale(1.1);
-    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.6);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .home-btn svg {
@@ -58,25 +58,25 @@ body {
     position: absolute;
     width: 2px;
     height: 2px;
-    background: #D4AF37;
+    background: #000000;
     border-radius: 50%;
     box-shadow: 
-        100px 200px #D4AF37, 300px 100px #D4AF37, 500px 300px #D4AF37,
-        700px 150px #D4AF37, 200px 400px #D4AF37, 600px 250px #D4AF37,
-        150px 50px #D4AF37, 450px 450px #D4AF37, 800px 400px #D4AF37,
-        250px 150px #D4AF37, 550px 50px #D4AF37, 350px 350px #D4AF37,
-        50px 300px #D4AF37, 650px 100px #D4AF37, 400px 200px #D4AF37,
-        750px 350px #D4AF37, 900px 200px #D4AF37, 180px 280px #D4AF37,
-        420px 380px #D4AF37, 580px 180px #D4AF37, 720px 480px #D4AF37,
-        140px 420px #D4AF37, 480px 120px #D4AF37, 820px 280px #D4AF37,
-        280px 80px #D4AF37, 520px 320px #D4AF37, 680px 420px #D4AF37,
-        80px 180px #D4AF37, 380px 280px #D4AF37, 680px 80px #D4AF37,
-        220px 320px #D4AF37, 560px 420px #D4AF37, 320px 220px #D4AF37,
-        760px 120px #D4AF37, 120px 360px #D4AF37, 460px 60px #D4AF37,
-        620px 360px #D4AF37, 860px 160px #D4AF37, 190px 490px #D4AF37,
-        530px 190px #D4AF37, 690px 290px #D4AF37, 850px 490px #D4AF37,
-        90px 90px #D4AF37, 430px 390px #D4AF37, 590px 90px #D4AF37,
-        730px 390px #D4AF37, 870px 290px #D4AF37, 210px 110px #D4AF37;
+        100px 200px #000000, 300px 100px #000000, 500px 300px #000000,
+        700px 150px #000000, 200px 400px #000000, 600px 250px #000000,
+        150px 50px #000000, 450px 450px #000000, 800px 400px #000000,
+        250px 150px #000000, 550px 50px #000000, 350px 350px #000000,
+        50px 300px #000000, 650px 100px #000000, 400px 200px #000000,
+        750px 350px #000000, 900px 200px #000000, 180px 280px #000000,
+        420px 380px #000000, 580px 180px #000000, 720px 480px #000000,
+        140px 420px #000000, 480px 120px #000000, 820px 280px #000000,
+        280px 80px #000000, 520px 320px #000000, 680px 420px #000000,
+        80px 180px #000000, 380px 280px #000000, 680px 80px #000000,
+        220px 320px #000000, 560px 420px #000000, 320px 220px #000000,
+        760px 120px #000000, 120px 360px #000000, 460px 60px #000000,
+        620px 360px #000000, 860px 160px #000000, 190px 490px #000000,
+        530px 190px #000000, 690px 290px #000000, 850px 490px #000000,
+        90px 90px #000000, 430px 390px #000000, 590px 90px #000000,
+        730px 390px #000000, 870px 290px #000000, 210px 110px #000000;
     animation: twinkle 3s infinite alternate;
 }
 
@@ -84,13 +84,13 @@ body {
 .stars::after {
     animation-delay: 1.5s;
     box-shadow: 
-        120px 220px #D4AF37, 320px 120px #D4AF37, 520px 320px #D4AF37,
-        720px 170px #D4AF37, 220px 420px #D4AF37, 620px 270px #D4AF37,
-        170px 70px #D4AF37, 470px 470px #D4AF37, 820px 420px #D4AF37,
-        270px 170px #D4AF37, 570px 70px #D4AF37, 370px 370px #D4AF37,
-        70px 320px #D4AF37, 670px 120px #D4AF37, 420px 220px #D4AF37,
-        770px 370px #D4AF37, 920px 220px #D4AF37, 200px 300px #D4AF37,
-        440px 400px #D4AF37, 600px 200px #D4AF37, 740px 500px #D4AF37;
+        120px 220px #000000, 320px 120px #000000, 520px 320px #000000,
+        720px 170px #000000, 220px 420px #000000, 620px 270px #000000,
+        170px 70px #000000, 470px 470px #000000, 820px 420px #000000,
+        270px 170px #000000, 570px 70px #000000, 370px 370px #000000,
+        70px 320px #000000, 670px 120px #000000, 420px 220px #000000,
+        770px 370px #000000, 920px 220px #000000, 200px 300px #000000,
+        440px 400px #000000, 600px 200px #000000, 740px 500px #000000;
 }
 
 
@@ -119,9 +119,9 @@ body {
     font-size: 48px;
     font-weight: 400;
     letter-spacing: 8px;
-    color: #d4af37;
+    color: #000000;
     margin-bottom: 40px;
-    text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .search-container {
@@ -133,22 +133,23 @@ body {
 .search-input {
     width: 100%;
     padding: 15px 50px 15px 20px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 2px solid rgba(212, 175, 55, 0.3);
+    background: #ffffff;
+    border: 2px solid #000000;
     border-radius: 30px;
-    color: #d4af37;
+    color: #000000;
     font-size: 16px;
     outline: none;
     transition: all 0.3s ease;
 }
 
 .search-input::placeholder {
-    color: rgba(212, 175, 55, 0.5);
+    color: #cccccc;
 }
 
 .search-input:focus {
-    border-color: #d4af37;
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+    border-color: #000000;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    background: #ffffff;
 }
 
 .search-btn {
@@ -156,7 +157,7 @@ body {
     right: 5px;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(212, 175, 55, 0.2);
+    background: rgba(0, 0, 0, 0.1);
     border: none;
     width: 45px;
     height: 45px;
@@ -169,16 +170,21 @@ body {
 }
 
 .search-btn:hover {
-    background: rgba(212, 175, 55, 0.4);
+    background: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.search-btn:active {
+    background: #ffffff;
 }
 
 .search-btn svg {
-    stroke: #d4af37;
+    stroke: #000000;
 }
 
 .craft-panel {
-    background: rgba(20, 20, 20, 0.8);
-    border: 2px solid rgba(212, 175, 55, 0.3);
+    background: #ffffff;
+    border: 2px solid #000000;
     border-radius: 20px;
     padding: 40px;
     display: grid;
@@ -192,7 +198,7 @@ body {
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 2px;
-    color: #d4af37;
+    color: #000000;
     margin-bottom: 25px;
     text-align: center;
 }
@@ -201,7 +207,6 @@ body {
     font-size: 12px;
     opacity: 0.8;
 }
-/*mido
 /* Scents Section */
 .scents-grid {
     display: grid;
@@ -225,7 +230,7 @@ body {
 }
 
 .scent-card:hover {
-    border-color: #d4af37;
+    border-color: #010101;
     transform: translateY(-5px);
     box-shadow: 0 5px 20px rgba(212, 175, 55, 0.3);
 }
@@ -247,7 +252,7 @@ body {
     width: 18px;
     height: 18px;
     cursor: pointer;
-    accent-color: #d4af37;
+    accent-color: #000000;
 }
 
 /* Grams Section */
@@ -264,7 +269,7 @@ body {
 }
 
 .slider-item label {
-    color: rgba(212, 175, 55, 0.8);
+    color: rgba(0, 0, 0, 0.8);
     font-size: 14px;
     font-weight: 500;
 }
@@ -285,24 +290,24 @@ body {
     appearance: none;
     width: 18px;
     height: 18px;
-    background: #d4af37;
+    background: #ffffff;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    box-shadow: 0 0 10px #000000;
 }
 
 .scent-slider::-moz-range-thumb {
     width: 18px;
     height: 18px;
-    background: #d4af37;
+    background: #ffffff;
     border-radius: 50%;
     cursor: pointer;
     border: none;
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    box-shadow: 0 0 10px #000000;
 }
 
 .slider-value {
-    color: #d4af37;
+    color: #000000;
     font-size: 14px;
     text-align: right;
     font-weight: 600;
@@ -316,12 +321,12 @@ body {
     border-radius: 8px;
     text-align: center;
     font-size: 14px;
-    color: rgba(212, 175, 55, 0.8);
+    color: #000000;
     font-weight: 500;
 }
 
 .total-grams span {
-    color: #d4af37;
+    color: #000000;
     font-weight: 700;
     font-size: 16px;
 }
@@ -356,13 +361,13 @@ body {
 }
 
 .bottle-option:hover .bottle-circle {
-    border-color: #d4af37;
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+    border-color: #000000;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
 }
 
 .bottle-option.selected .bottle-circle {
-    border-color: #d4af37;
-    box-shadow: 0 0 24px rgba(212, 175, 55, 0.6);
+    border-color: #000000;
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.6);
     transform: scale(1.05);
 }
 
@@ -377,19 +382,19 @@ body {
 
 .price-tag {
     padding: 15px 40px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 2px solid #d4af37;
+    background: #ffffff;
+    border: 2px solid #000000;
     border-radius: 10px;
     font-size: 20px;
     font-weight: 700;
     letter-spacing: 2px;
-    color: #d4af37;
+    color: #000000;
 }
 
 .add-cart-btn {
     flex: 1;
     padding: 18px 40px;
-    background: linear-gradient(135deg, #d4af37 0%, #c49f27 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
     border: none;
     border-radius: 10px;
     color: #000;
@@ -402,12 +407,12 @@ body {
     justify-content: center;
     gap: 10px;
     transition: all 0.3s ease;
-    box-shadow: 0 5px 20px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
 }
 
 .add-cart-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba(212, 175, 55, 0.5);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
 }
 
 .sparkle {
@@ -483,9 +488,9 @@ body {
     width: 100%;
     padding: 12px 20px;
     background: rgba(0, 0, 0, 0.5);
-    border: 2px solid #d4af37;
+    border: 2px solid #000000;
     border-radius: 25px;
-    color: #d4af37;
+    color: #000000;
     font-size: 14px;
     font-family: 'Cinzel', serif;
     transition: all 0.3s ease;
@@ -498,7 +503,7 @@ body {
 }
 
 .search-input::placeholder {
-    color: rgba(212, 175, 55, 0.5);
+    color: #000000;
 }
 
 .filters-row {
@@ -509,10 +514,10 @@ body {
 .filter-select {
     flex: 1;
     padding: 10px 15px;
-    background: rgba(0, 0, 0, 0.5);
-    border: 2px solid #d4af37;
+    background: #ffffff;
+    border: 2px solid #000000;
     border-radius: 20px;
-    color: #d4af37;
+    color: #000000;
     font-size: 13px;
     font-family: 'Cinzel', serif;
     cursor: pointer;
@@ -520,17 +525,17 @@ body {
 }
 
 .filter-select:hover {
-    background: rgba(212, 175, 55, 0.1);
+    background: rgba(0, 0, 0, 0.05);
 }
 
 .filter-select:focus {
     outline: none;
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
 .filter-select option {
-    background: #000;
-    color: #d4af37;
+    background: #ffffff;
+    color: #000000;
 }
 
 .products-box {
@@ -540,9 +545,9 @@ body {
     max-height: 500px;
     overflow-y: auto;
     padding: 15px;
-    border: 2px solid #d4af37;
+    border: 2px solid #000000;
     border-radius: 15px;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(255, 255, 255, 0.4);
 }
 
 .products-box::-webkit-scrollbar {
@@ -550,12 +555,12 @@ body {
 }
 
 .products-box::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.3);
     border-radius: 10px;
 }
 
 .products-box::-webkit-scrollbar-thumb {
-    background: #d4af37;
+    background: #000000;
     border-radius: 10px;
 }
 
@@ -568,7 +573,7 @@ body {
 }
 
 .selected-title {
-    color: #d4af37;
+    color: #000000;
     font-size: 18px;
     margin-bottom: 15px;
     text-align: center;
@@ -581,22 +586,22 @@ body {
     flex-direction: column;
     gap: 15px;
     padding: 20px;
-    border: 2px solid #d4af37;
+    border: 2px solid #000000;
     border-radius: 15px;
-    background: rgba(0, 0, 0, 0.4);
+    background: #ffffff;
     min-height: 400px;
 }
 
 .empty-state {
     text-align: center;
-    color: rgba(212, 175, 55, 0.5);
+    color: #000000;
     font-style: italic;
     padding: 40px 20px;
 }
 
 .selected-product-item {
-    background: rgba(212, 175, 55, 0.1);
-    border: 2px solid #d4af37;
+    background: #f5f5f5;
+    border: 2px solid #000000;
     border-radius: 12px;
     padding: 15px;
     display: flex;
@@ -605,13 +610,13 @@ body {
 }
 
 .product-info h3 {
-    color: #d4af37;
+    color: #000000;
     font-size: 16px;
     margin: 0 0 5px 0;
 }
 
 .product-info p {
-    color: rgba(212, 175, 55, 0.7);
+    color: rgba(0, 0, 0, 0.7);
     font-size: 12px;
     margin: 0;
 }
@@ -623,7 +628,7 @@ body {
 }
 
 .ml-input-group label {
-    color: #d4af37;
+    color: #000000;
     font-size: 14px;
     font-weight: bold;
 }
@@ -631,10 +636,10 @@ body {
 .ml-input {
     flex: 1;
     padding: 8px 12px;
-    background: rgba(0, 0, 0, 0.7);
-    border: 2px solid #d4af37;
+    background: rgba(219, 219, 219, 0.7);
+    border: 2px solid #000000;
     border-radius: 8px;
-    color: #d4af37;
+    color: #000000;
     font-size: 16px;
     text-align: center;
     font-weight: bold;
@@ -642,7 +647,7 @@ body {
 
 .ml-input:focus {
     outline: none;
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .remove-product-btn {
@@ -659,7 +664,7 @@ body {
 
 .remove-product-btn:hover {
     background: #ff4444;
-    color: #000;
+    color: #000000;
 }
 
 /* Old styles - keep for compatibility */
@@ -692,30 +697,34 @@ body {
 }
 
 .products-grid::-webkit-scrollbar-thumb {
-    background: #d4af37;
+    background: #ffffff;
     border-radius: 10px;
 }
 
 .product-card {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(20, 20, 20, 0.7) 100%);
-    border: 2px solid rgba(212, 175, 55, 0.3);
+    background: linear-gradient(135deg, rgba(235, 235, 235, 0.7) 0%, rgba(237, 237, 237, 0.7) 100%);
+    border: 2px solid rgba(0, 0, 0, 0.1);
     border-radius: 15px;
     padding: 15px;
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .product-card:hover {
-    border-color: #d4af37;
+    border-color: #000000;
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 8px 20px #000000;
 }
 
 .product-card.selected {
-    border-color: #d4af37;
+    border-color: #000000;
     background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(196, 159, 39, 0.2) 100%);
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    box-shadow: 0 0 20px #000000;
 }
 
 .product-card.disabled {
@@ -723,31 +732,44 @@ body {
     cursor: not-allowed;
 }
 
+.product-card.out-of-stock {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.out-of-stock-text {
+    color: #e74c3c;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 8px;
+}
+
 .product-name {
     font-size: 16px;
     font-weight: bold;
-    color: #d4af37;
+    color: #000000;
     margin-bottom: 8px;
     text-align: center;
 }
 
 .product-brand {
     font-size: 12px;
-    color: rgba(212, 175, 55, 0.7);
+    color: #000000;
     text-align: center;
     margin-bottom: 5px;
 }
 
 .product-gender {
     font-size: 11px;
-    color: rgba(212, 175, 55, 0.6);
+    color:#000000;
     text-align: center;
     font-style: italic;
 }
 
 .product-price {
     font-size: 14px;
-    color: #d4af37;
+    color: #000000;
     text-align: center;
     margin-top: 8px;
     font-weight: bold;
@@ -760,8 +782,8 @@ body {
 }
 
 .selected-product-item {
-    background: rgba(0, 0, 0, 0.5);
-    border: 2px solid #d4af37;
+    background: rgba(255, 255, 255, 0.5);
+    border: 2px solid #000000;
     border-radius: 15px;
     padding: 20px;
     display: flex;
@@ -775,13 +797,13 @@ body {
 }
 
 .product-info h3 {
-    color: #d4af37;
+    color: #000000;
     font-size: 18px;
     margin-bottom: 5px;
 }
 
 .product-info p {
-    color: rgba(212, 175, 55, 0.7);
+    color: #000000;
     font-size: 14px;
 }
 
@@ -792,17 +814,17 @@ body {
 }
 
 .ml-input-group label {
-    color: #d4af37;
+    color: #000000;
     font-size: 14px;
 }
 
 .ml-input {
     width: 80px;
     padding: 10px;
-    background: rgba(0, 0, 0, 0.7);
-    border: 2px solid #d4af37;
+    background: rgba(255, 255, 255, 0.7);
+    border: 2px solid #000000;
     border-radius: 8px;
-    color: #d4af37;
+    color: #000000;
     font-size: 16px;
     text-align: center;
 }
@@ -829,7 +851,7 @@ body {
 
 .price-section {
     background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(0, 0, 0, 0.5) 100%);
-    border: 3px solid #d4af37;
+    border: 3px solid #000000;
     border-radius: 20px;
     padding: 25px;
 }
@@ -845,23 +867,23 @@ body {
     justify-content: space-between;
     align-items: center;
     font-size: 16px;
-    color: #d4af37;
+    color: #000000;
     padding: 10px 0;
-    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .price-row.total-row {
     font-size: 24px;
     font-weight: bold;
     border-bottom: none;
-    border-top: 2px solid #d4af37;
+    border-top: 2px solid #000000;
     padding-top: 15px;
     margin-top: 10px;
 }
 
 .bottle-label {
     text-align: center;
-    color: #d4af37;
+    color: #000000;
     font-size: 14px;
     margin-top: 10px;
     font-weight: bold;
@@ -881,7 +903,7 @@ body {
 
 .loading-message {
     text-align: center;
-    color: #d4af37;
+    color: #000000;
     font-size: 18px;
     padding: 40px;
 }
@@ -899,7 +921,7 @@ body {
 
 .no-products-message {
     text-align: center;
-    color: rgba(212, 175, 55, 0.6);
+    color: #000000;
     font-size: 16px;
     padding: 40px;
     font-style: italic;

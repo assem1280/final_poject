@@ -4,21 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rose Perfume</title>
-  <link rel="icon" type="image/png" href="../images/logobrowser.png">
+  <link rel="icon" type="image/png" href="../images/Untitled_design-removebg-preview.png">
   <link rel="stylesheet" href="../indexed/styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
 
 </head>
 <body>
+  <!-- Animated Stars Background -->
+  <div class="stars"></div>
+
   <nav class="top-nav">
-    <a href="login.html" class="login-btn" title="Login">
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D4AF37" viewBox="0 0 24 24">
-    <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
-  </svg>
-</a>
+    <div id="user-status" style="display:inline-block;vertical-align:middle;position:relative;">
+      <a href="login.html" class="login-btn" id="login-link" title="Login">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#000000" viewBox="0 0 24 24">
+          <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+        </svg>
+      </a>
+      <div id="user-name" style="display:none;text-align:center;font-size:12px;margin-top:4px;color:#000;"></div>
+    </div>
       <a href="about.html">ABOUT</a>
-      <a href="contact.html">CONTACT US</a>
+  <a href="contact.html">CONTACT US</a>
+  <span id="nav-cart-placeholder" style="display:inline-block;vertical-align:middle;margin-inline-start:8px;"></span>
 
   </nav>
   <div class="container">
@@ -48,8 +55,8 @@
             <span class="btn-text">CHOOSE YOUR PERFUME</span>
             <div class="btn-icon">
               <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                <circle cx="20" cy="20" r="18" stroke="#d4af37" stroke-width="2"/>
-                <circle cx="20" cy="20" r="12" fill="#d4af37"/>
+                <circle cx="20" cy="20" r="18" stroke="#000000" stroke-width="2"/>
+                <circle cx="20" cy="20" r="12" fill="#000000"/>
               </svg>
             </div>
           </button>
@@ -59,8 +66,8 @@
             <span class="btn-text">CREATE YOUR PERFUMES</span>
             <div class="btn-icon">
               <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                <circle cx="20" cy="20" r="18" stroke="#d4af37" stroke-width="2"/>
-                <circle cx="20" cy="20" r="12" fill="#d4af37"/>
+                <circle cx="20" cy="20" r="18" stroke="#000000" stroke-width="2"/>
+                <circle cx="20" cy="20" r="12" fill="#000000"/>
               </svg>
             </div>
           </a>
@@ -70,5 +77,41 @@
 
     </main>
   </div>
+    <link rel="stylesheet" href="/pefumeppp/assets/cart-widget.css">
+    <script src="/pefumeppp/assets/cart-widget.js" defer></script>
+    
+    <script>
+      // Check if user is logged in and display their name
+      async function checkLoginStatus() {
+        try {
+          const res = await fetch('/pefumeppp/perfdb/get_cart.php', { credentials: 'same-origin' });
+          const data = await res.json();
+          
+          if (data.user_logged_in) {
+            const firstName = data.first_name || 'Account';
+            document.getElementById('login-link').style.display = 'none';
+            document.getElementById('user-name').style.display = 'block';
+            document.getElementById('user-name').textContent = firstName;
+            document.getElementById('user-name').style.cursor = 'pointer';
+            
+            // Make the name clickable to go to dashboard
+            document.getElementById('user-name').onclick = function() {
+              window.location.href = '/pefumeppp/customer/dashboard.php';
+            };
+          } else {
+            document.getElementById('login-link').style.display = 'block';
+            document.getElementById('user-name').style.display = 'none';
+          }
+        } catch (err) {
+          console.error('Error checking login status:', err);
+        }
+      }
+      
+      // Check on page load
+      document.addEventListener('DOMContentLoaded', checkLoginStatus);
+      
+      // Also check periodically in case user logs in from another tab
+      setInterval(checkLoginStatus, 30000);
+    </script>
     </body>
 </html>

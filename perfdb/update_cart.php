@@ -27,16 +27,21 @@ if (!$profile_id) {
 }
 
 // Update quantity
-$update_query = "UPDATE cart_items 
-                 SET quantity = $quantity 
-                 WHERE cart_item_id = $cart_item_id 
-                 AND customer_profile_id = $profile_id";
-
-if (mysqli_query($conn, $update_query)) {
-    echo json_encode(['success' => true, 'message' => 'Quantity updated']);
-} else {
-    echo json_encode(['success' => false, 'error' => 'Failed to update quantity: ' . mysqli_error($conn)]);
+try {
+    $update_query = "UPDATE cart_items 
+                     SET quantity = :quantity 
+                     WHERE cart_item_id = :cart_item_id 
+                     AND customer_profile_id = :profile_id";
+    
+    $update_stmt = $conn->prepare($update_query);
+    $result = $update_stmt->execute([':quantity' => $quantity, ':cart_item_id' => $cart_item_id, ':profile_id' => $profile_id]);
+    
+    if ($result) {
+        echo json_encode(['success' => true, 'message' => 'Quantity updated']);
+    } else {
+        echo json_encode(['success' => false, 'error' => 'Failed to update quantity']);
+    }
+} catch (PDOException $e) {
+    echo json_encode(['success' => false, 'error' => 'Database error: ' . $e->getMessage()]);
 }
-
-mysqli_close($conn);
 ?>

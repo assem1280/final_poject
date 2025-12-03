@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Test Signup</title>
+    <style>
+        body { font-family: Arial; padding: 20px; max-width: 600px; margin: 0 auto; }
+        form { background: #f9f9f9; padding: 20px; border-radius: 5px; }
+        input { display: block; width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; }
+        button { background: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; }
+        .debug { background: #f0f0f0; padding: 10px; margin-top: 20px; font-family: monospace; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+<h1>Test Signup Form</h1>
+<form id="testForm">
+    <input type="text" id="firstName" placeholder="First Name" value="Test" required>
+    <input type="text" id="lastName" placeholder="Last Name" value="User" required>
+    <input type="email" id="email" placeholder="Email" value="test@example.com" required>
+    <input type="password" id="password" placeholder="Password" value="test123" required>
+    <input type="password" id="confirmPassword" placeholder="Confirm Password" value="test123" required>
+    <input type="tel" id="phone" placeholder="Phone" value="+966501234567" required>
+    <input type="text" id="address" placeholder="Address" value="Test Address, Riyadh" required>
+    <button type="submit">Send to Signup API</button>
+</form>
+
+<div class="debug" id="debug">Debug output will appear here...</div>
+
+<script>
+document.getElementById('testForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const payload = {
+        first_name: document.getElementById('firstName').value,
+        last_name: document.getElementById('lastName').value,
+        email: document.getElementById('email').value + Date.now(),  // Make unique
+        password: document.getElementById('password').value,
+        phone: document.getElementById('phone').value,
+        address: document.getElementById('address').value,
+        role: 'customer'
+    };
+    
+    document.getElementById('debug').innerHTML = '<strong>Sending:</strong><pre>' + JSON.stringify(payload, null, 2) + '</pre>';
+    
+    try {
+        const response = await fetch('../perfdb/signup_api.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        
+        const data = await response.json();
+        
+        document.getElementById('debug').innerHTML += '<strong>Response:</strong><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+        
+        if (data.success) {
+            alert('Success! Profile ID: ' + data.profile_id);
+        } else {
+            alert('Error: ' + data.error);
+        }
+    } catch (error) {
+        document.getElementById('debug').innerHTML += '<strong>Error:</strong><pre>' + error.message + '</pre>';
+        alert('Error: ' + error.message);
+    }
+});
+</script>
+</body>
+</html>

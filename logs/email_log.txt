@@ -1,0 +1,132 @@
+=====================================
+Timestamp: 2025-11-29 10:33:00
+Status: ATTEMPTING
+To: test@example.com
+Subject: Rose Perfume - Your Order is Being Prepared!
+Message:
+Hello Test User,
+
+Your order is being prepared. We'll notify you when it's ready.
+
+Account Details:
+- Email: test@example.com
+- Name: Test User Customer
+- Phone: 1234567890
+- Address: Test Address, City, Country
+
+Thank you for signing up!
+
+Best regards,
+Rose Perfume Shop Team
+=====================================
+
+=====================================
+Timestamp: 2025-11-29 10:33:02
+Status: SENT
+To: test@example.com
+Subject: Rose Perfume - Your Order is Being Prepared!
+Message:
+Hello Test User,
+
+Your order is being prepared. We'll notify you when it's ready.
+
+Account Details:
+- Email: test@example.com
+- Name: Test User Customer
+- Phone: 1234567890
+- Address: Test Address, City, Country
+
+Thank you for signing up!
+
+Best regards,
+Rose Perfume Shop Team
+=====================================
+
+=====================================
+Timestamp: 2025-11-29 10:33:18
+Status: ATTEMPTING
+To: test@example.com
+Subject: Rose Perfume - Your Order is Being Prepared!
+Message:
+Hello Test User,
+
+Your order is being prepared. We'll notify you when it's ready.
+
+Account Details:
+- Email: test@example.com
+- Name: Test User Customer
+- Phone: 1234567890
+- Address: Test Address, City, Country
+
+Thank you for signing up!
+
+Best regards,
+Rose Perfume Shop Team
+=====================================
+
+=====================================
+Timestamp: 2025-11-29 10:33:20
+Status: SENT
+To: test@example.com
+Subject: Rose Perfume - Your Order is Being Prepared!
+Message:
+Hello Test User,
+
+Your order is being prepared. We'll notify you when it's ready.
+
+Account Details:
+- Email: test@example.com
+- Name: Test User Customer
+- Phone: 1234567890
+- Address: Test Address, City, Country
+
+Thank you for signing up!
+
+Best regards,
+Rose Perfume Shop Team
+=====================================
+
+=====================================
+Timestamp: 2025-11-29 10:38:28
+Status: ATTEMPTING
+To: aasemalalimmmmm9@gmail.com
+Subject: Rose Perfume - Your Order is Being Prepared!
+Message:
+Hello asoum,
+
+Your order is being prepared. We'll notify you when it's ready.
+
+Account Details:
+- Email: aasemalalimmmmm9@gmail.com
+- Name: asoum aloush
+- Phone: 70987456
+- Address: azmii
+
+Thank you for signing up!
+
+Best regards,
+Rose Perfume Shop Team
+=====================================
+
+=====================================
+Timestamp: 2025-11-29 10:38:30
+Status: SENT
+To: aasemalalimmmmm9@gmail.com
+Subject: Rose Perfume - Your Order is Being Prepared!
+Message:
+Hello asoum,
+
+Your order is being prepared. We'll notify you when it's ready.
+
+Account Details:
+- Email: aasemalalimmmmm9@gmail.com
+- Name: asoum aloush
+- Phone: 70987456
+- Address: azmii
+
+Thank you for signing up!
+
+Best regards,
+Rose Perfume Shop Team
+=====================================
+

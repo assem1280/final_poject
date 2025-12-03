@@ -26,6 +26,10 @@ document.addEventListener('DOMContentLoaded', function() {
     function createPerfumeCard(perfume) {
         const card = document.createElement('div');
         card.className = 'perfume-card';
+        const isOutOfStock = perfume.stock <= 0;
+        if (isOutOfStock) {
+            card.classList.add('out-of-stock');
+        }
         card.style.cursor = 'pointer';
         // Use correct image path from database
         const imagePath = perfume.image_url ? `../images/${perfume.image_url}` : '../images/perfumes/default-perfume.jpg';
@@ -35,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             <h3 class="perfume-name">${perfume.name}</h3>
             <p class="perfume-price">$${perfume.price}</p>
+            ${isOutOfStock ? '<div class="out-of-stock-text">Out of Stock</div>' : ''}
             <button class="add-to-cart-btn" data-product-id="${perfume.id}">
                 <svg class="cart-icon" viewBox="0 0 24 24" width="16" height="16">
                     <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" fill="currentColor"/>
@@ -48,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!e.target.closest('.add-to-cart-btn')) {
                 const perfumeName = perfume.name;
                 console.log('Navigating to perfume:', perfumeName);
-                window.location.href = `../perfdb/perfume-details.php?id=${perfume.id}`;
+                window.location.href = `../perfdb/product-details.php?id=${perfume.id}`;
             }
         });
         
@@ -76,8 +81,12 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('click', async function(e) {
         const btn = e.target.closest('.add-to-cart-btn');
         if (btn) {
-            const productId = btn.getAttribute('data-product-id');
             const perfumeCard = btn.closest('.perfume-card');
+            if (perfumeCard.classList.contains('out-of-stock')) {
+                alert('⚠️ This product is out of stock!');
+                return;
+            }
+            const productId = btn.getAttribute('data-product-id');
             const perfumeName = perfumeCard.querySelector('.perfume-name').textContent;
             
             // Add animation effect
@@ -98,6 +107,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 if (data.success) {
                     alert(`Added ${perfumeName} to cart!`);
+                    // Refresh cart badge immediately
+                    if (window.refreshCartBadges) try { window.refreshCartBadges(); } catch(e) { console.warn('refreshCartBadges failed', e); }
+                    if (window.dispatchEvent) try { window.dispatchEvent(new Event('cart:updated')); } catch(e) { /* ignore */ }
                 } else {
                     alert('Error: ' + (data.error || 'Failed to add to cart'));
                 }

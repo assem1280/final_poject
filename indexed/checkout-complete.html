@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إتمام الطلب - السجل الذهبي</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000;
+            color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            background: #111;
+            border: 2px solid #D4AF37;
+            border-radius: 12px;
+            padding: 40px 30px;
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.2);
+            text-align: center;
+        }
+
+        .status-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #D4AF37;
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .status-text {
+            color: #aaa;
+            font-size: 16px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .order-info {
+            background: #0a0a0a;
+            border: 1px solid #D4AF37;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: right;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            color: #aaa;
+        }
+
+        .info-value {
+            color: #D4AF37;
+            font-weight: 600;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid #D4AF37;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #D4AF37;
+            background: #D4AF37;
+            color: #000;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #FFF;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #D4AF37;
+        }
+
+        .btn-secondary:hover {
+            background: #D4AF37;
+            color: #000;
+        }
+
+        .error-section {
+            display: none;
+            background: #2c0b0b;
+            border: 1px solid #ff4444;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            color: #ff8888;
+            text-align: right;
+        }
+
+        .success-section {
+            display: none;
+        }
+
+        .success-section.show {
+            display: block;
+        }
+
+        .processing-section {
+            display: block;
+        }
+
+        .processing-section.hidden {
+            display: none;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+
+    <div class="container">
+        <!-- Processing State -->
+        <div class="processing-section" id="processingSection">
+            <div class="loading-spinner"></div>
+            <h1>جاري معالجة طلبك...</h1>
+            <p class="status-text">يتم إتمام طلبك الآن. يرجى الانتظار قليلاً.</p>
+        </div>
+
+        <!-- Success State -->
+        <div class="success-section" id="successSection">
+            <div class="status-icon">✅</div>
+            <h1>تم إنشاء الطلب بنجاح!</h1>
+            <p class="status-text">شكراً لك على شرائك. سيتم التواصل معك قريباً بخصوص طلبك.</p>
+            
+            <div class="order-info" id="orderInfo">
+                <div class="info-row">
+                    <span class="info-label">رقم الطلب:</span>
+                    <span class="info-value" id="orderId">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">الإجمالي:</span>
+                    <span class="info-value" id="totalAmount">-</span>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn" onclick="goHome()">العودة للرئيسية</button>
+                <button class="btn btn-secondary" onclick="viewDashboard()">عرض الطلب</button>
+            </div>
+        </div>
+
+        <!-- Error State -->
+        <div class="error-section" id="errorSection">
+            <h3>حدث خطأ</h3>
+            <p id="errorMessage"></p>
+            <div class="button-group" style="margin-top: 15px;">
+                <button class="btn" onclick="retryCheckout()">إعادة محاولة</button>
+                <button class="btn btn-secondary" onclick="goHome()">الرجوع للرئيسية</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function performCheckout() {
+            try {
+                const response = await fetch('../perfdb/checkout.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ payment_method: 'cash' }),
+                    credentials: 'same-origin'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Show success
+                    document.getElementById('processingSection').classList.add('hidden');
+                    document.getElementById('successSection').classList.add('show');
+                    document.getElementById('orderId').textContent = '#' + data.order_id;
+                    document.getElementById('totalAmount').textContent = '$' + Number(data.total_amount).toFixed(2);
+                    
+                    // Clear signup flag
+                    sessionStorage.removeItem('justSignedUp');
+                } else {
+                    showError(data.error || 'فشل إنشاء الطلب');
+                }
+            } catch (error) {
+                console.error('Checkout error:', error);
+                showError('حدث خطأ في المعالجة: ' + error.message);
+            }
+        }
+
+        function showError(message) {
+            document.getElementById('processingSection').classList.add('hidden');
+            document.getElementById('errorSection').style.display = 'block';
+            document.getElementById('errorMessage').textContent = message;
+        }
+
+        function retryCheckout() {
+            document.getElementById('processingSection').classList.remove('hidden');
+            document.getElementById('errorSection').style.display = 'none';
+            performCheckout();
+        }
+
+        function goHome() {
+            window.location.href = '/pefumeppp/indexed/index.html';
+        }
+
+        function viewDashboard() {
+            window.location.href = '/pefumeppp/customer/dashboard.php';
+        }
+
+        // Start checkout on page load
+        window.addEventListener('load', function() {
+            performCheckout();
+        });
+
+        // Create floating stars
+        function createFloatingStars() {
+            const starsContainer = document.querySelector('.stars');
+            const starCount = 20;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                const size = Math.random() * 2 + 1;
+                const duration = Math.random() * 3 + 2;
+                const delay = Math.random() * 3;
+                
+                star.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: #D4AF37;
+                    border-radius: 50%;
+                    top: ${Math.random() * 100}%;
+                    left: ${Math.random() * 100}%;
+                    animation: twinkle ${duration}s infinite ${delay}s;
+                    box-shadow: 0 0 ${size * 2}px rgba(212, 175, 55, 0.8);
+                    opacity: 0.5;
+                `;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Add twinkle animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes twinkle {
+                0%, 100% { opacity: 0.3; }
+                50% { opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        createFloatingStars();
+    </script>
+</body>
+</html>
