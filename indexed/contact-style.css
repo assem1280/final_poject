@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Arial', sans-serif;
-    background: #fef9f3;
+    background:linear-gradient(135deg, #ffa73c 0%, #ffffff 100%);
     color: #333;
     min-height: 100vh;
     display: flex;
@@ -21,7 +21,7 @@ body {
     top: 20px;
     left: 20px;
     padding: 12px;
-    background:#fef9f3;
+    background:linear-gradient(135deg, #ffa73c 0%, #ffffff 100%);
     border: 2px solid #000000;
     border-radius: 50%;
     color: #000000;
@@ -39,7 +39,7 @@ body {
 }
 
 .home-btn:hover {
-    background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
+    background: linear-gradient(135deg, #ffa73c 0%, #ffffff 100%);
     color: #000;
     transform: scale(1.1);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
@@ -57,7 +57,7 @@ body {
 
 /* Contact Container */
 .contact-container {
-    background:#fef9f3;
+    background:linear-gradient(135deg, #ffa73c 0%, #ffffff 100%);
     border: 2px solid #000000;
     border-radius: 20px;
     padding: 40px;
@@ -121,11 +121,11 @@ h1 {
 
 /* Social Media Specific Colors */
 .facebook {
-    border-color: rgba(66, 103, 178, 0.5);
+    border-color: rgba(0, 83, 250, 0.5);
 }
 
 .facebook:hover {
-    background: rgba(66, 103, 178, 0.1);
+    background: rgba(4, 75, 216, 0.663);
     border-color: #4267B2;
 }
 
@@ -134,7 +134,7 @@ h1 {
 }
 
 .instagram:hover {
-    background: rgba(225, 48, 108, 0.1);
+    background: rgba(213, 9, 77, 0.7);
     border-color: #E1306C;
 }
 
@@ -143,7 +143,7 @@ h1 {
 }
 
 .whatsapp:hover {
-    background: rgba(37, 211, 102, 0.1);
+    background: rgba(9, 212, 84, 0.712);
     border-color: #25D366;
 }
 
@@ -169,37 +169,6 @@ h1 {
 
     .social-link span {
         font-size: 16px;
-    }
-}
-
-/* Background Stars Animation */
-body::before,
-body::after {
-    content: '';
-    position: fixed;
-    width: 3px;
-    height: 3px;
-    background: #D4AF37;
-    border-radius: 50%;
-    box-shadow: 
-        100px 200px #D4AF37, 300px 100px #D4AF37,
-        500px 300px #D4AF37, 700px 150px #D4AF37,
-        200px 400px #D4AF37, 600px 250px #D4AF37,
-        150px 50px #D4AF37, 450px 450px #D4AF37;
-    animation: twinkle 3s infinite alternate;
-    pointer-events: none;
-}
-
-body::after {
-    animation-delay: 1.5s;
-}
-
-@keyframes twinkle {
-    0%, 100% {
-        opacity: 0.2;
-    }
-    50% {
-        opacity: 0.8;
     }
 }
 

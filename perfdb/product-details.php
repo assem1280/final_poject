@@ -52,6 +52,7 @@ $displayPrice = $basePrice + ($size === 100 ? 50.00 : 0.00);
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?php echo htmlspecialchars($product['p_name']); ?> — Details</title>
 <link rel="stylesheet" href="/pefumeppp/assets/cart-widget.css">
+<link rel="icon" type="image/png" href="../images/Untitled_design-removebg-preview.png">
 <style>
     body {
     font-family: "Poppins", Arial, sans-serif;
@@ -59,53 +60,6 @@ $displayPrice = $basePrice + ($size === 100 ? 50.00 : 0.00);
     color: #333333;
     padding: 20px;
     position: relative;
-    overflow: hidden;
-}
-
-body::before,
-body::after {
-    content: '';
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background: #000000;
-    border-radius: 50%;
-    box-shadow: 
-        100px 200px #000000, 300px 100px #000000, 500px 300px #000000,
-        700px 150px #000000, 200px 400px #000000, 600px 250px #000000,
-        150px 50px #000000, 450px 450px #000000, 800px 400px #000000,
-        250px 150px #000000, 550px 50px #000000, 350px 350px #000000,
-        50px 300px #000000, 650px 100px #000000, 400px 200px #000000,
-        750px 350px #000000, 900px 200px #000000, 180px 280px #000000,
-        420px 380px #000000, 580px 180px #000000, 720px 480px #000000,
-        140px 420px #000000, 480px 120px #000000, 820px 280px #000000,
-        280px 80px #000000, 520px 320px #000000, 680px 420px #000000,
-        80px 180px #000000, 380px 280px #000000, 680px 80px #000000,
-        220px 320px #000000, 560px 420px #000000, 320px 220px #000000,
-        760px 120px #000000, 120px 360px #000000, 460px 60px #000000,
-        620px 360px #000000, 860px 160px #000000, 190px 490px #000000,
-        530px 190px #000000, 690px 290px #000000, 850px 490px #000000,
-        90px 90px #000000, 430px 390px #000000, 590px 90px #000000,
-        730px 390px #000000, 870px 290px #000000, 210px 110px #000000;
-    animation: twinkle 3s infinite alternate;
-}
-
-body::after {
-    animation-delay: 1.5s;
-    box-shadow: 
-        120px 220px #000000, 320px 120px #000000, 520px 320px #000000,
-        720px 170px #000000, 220px 420px #000000, 620px 270px #000000,
-        170px 70px #000000, 470px 470px #000000, 820px 420px #000000,
-        270px 170px #000000, 570px 70px #000000, 370px 370px #000000,
-        70px 320px #000000, 670px 120px #000000, 420px 220px #000000,
-        770px 370px #000000, 920px 220px #000000, 200px 300px #000000,
-        440px 400px #000000, 600px 200px #000000, 740px 500px #000000;
-}
-
-@keyframes twinkle {
-    0% { opacity: 0.3; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.2); }
-    100% { opacity: 0.3; transform: scale(1); }
 }
 
     .container{
@@ -133,7 +87,7 @@ body::after {
     .price{font-size:22px;color:#000000;margin:8px 0}
     .desc{
         margin:14px 0;
-        color:#555555;
+        color:##000000;
         line-height:1.7;
         font-family: 'Playfair Display', serif;
         font-size:17px;
@@ -201,8 +155,8 @@ button.add:hover {
     font-weight: 600;
     padding: 12px 22px;
     border-radius: 10px;
-    background: #ffffff;
-    color: #000000;
+    background: #000000ff;
+    color: #ffffffff;
     border: 1px solid #000000;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     transition: all 0.35s ease;
@@ -211,7 +165,7 @@ button.add:hover {
 }
 
 .back:hover {
-    color: #ffffff;
+    color: #fffafaff;
     border-color: #000000;
     background: #000000;
     box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
@@ -247,7 +201,7 @@ button.add:hover {
         <div class="brand">
             <img src="../images/Untitled_design-removebg-preview.png" alt="brand logo">
             <div>
-                <div style="font-size:13px;color:#aaa">Brand</div>
+                <div style="font-size:13px;color:#000000">Brand</div>
                 <div style="font-weight:700;color:#fff"><?php echo htmlspecialchars($brandName); ?></div>
             </div>
         </div>
@@ -318,16 +272,16 @@ async function addToCart() {
         });
         const data = await resp.json();
         if (data.success) {
-            alert('تم الإضافة للعربة: ' + <?php echo json_encode($product['p_name']); ?> + '\nالحجم: ' + selectedSize + ' ml');
+            alert('Added to cart: ' + <?php echo json_encode($product['p_name']); ?> + '\nSize: ' + selectedSize + ' ml');
             // Refresh cart badge immediately
             if (window.refreshCartBadges) try { window.refreshCartBadges(); } catch(e) { console.warn('refreshCartBadges failed', e); }
             if (window.dispatchEvent) try { window.dispatchEvent(new Event('cart:updated')); } catch(e) { /* ignore */ }
         } else {
-            alert('فشل الإضافة للعربة: ' + (data.error || 'غير معروف'));
+            alert('Failed to add to cart: ' + (data.error || 'Unknown error'));
         }
     } catch (err) {
         console.error(err);
-        alert('خطأ بالشبكة أثناء الإضافة للعربة');
+        alert('Network error while adding to cart');
     }
 }
 

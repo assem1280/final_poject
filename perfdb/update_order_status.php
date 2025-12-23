@@ -23,6 +23,7 @@ if (!isset($_SESSION['profile_id']) || $_SESSION['role'] !== 'employee') {
 
 try {
     require_once 'connect.php';
+    require_once __DIR__ . '/../email/OrderNotificationService.php';
     
     // Get JSON input
     $input = json_decode(file_get_contents('php://input'), true);
@@ -44,6 +45,13 @@ try {
         exit;
     }
     
+    // Get current status before update (for detecting status change)
+    $currentStatusQuery = "SELECT status FROM orders WHERE order_id = :order_id";
+    $currentStatusStmt = $conn->prepare($currentStatusQuery);
+    $currentStatusStmt->execute([':order_id' => $order_id]);
+    $currentStatusRow = $currentStatusStmt->fetch(PDO::FETCH_ASSOC);
+    $oldStatus = $currentStatusRow ? $currentStatusRow['status'] : '';
+    
     // Update order status
     $query = "UPDATE orders SET status = :status WHERE order_id = :order_id";
     $stmt = $conn->prepare($query);
@@ -53,11 +61,24 @@ try {
     ]);
     
     if ($stmt->rowCount() > 0) {
+        // Send email notification if status changed
+        $emailSent = false;
+        if ($oldStatus !== $status) {
+            try {
+                $notificationService = new OrderNotificationService($conn);
+                $emailSent = $notificationService->handleStatusChange($order_id, $oldStatus, $status);
+                error_log("[update_order_status] Email notification for status change: {$oldStatus} -> {$status}, sent: " . ($emailSent ? 'YES' : 'NO'));
+            } catch (Exception $emailError) {
+                error_log("[update_order_status] Email notification error: " . $emailError->getMessage());
+            }
+        }
+        
         echo json_encode([
             'success' => true,
             'message' => 'Order status updated successfully',
             'order_id' => $order_id,
-            'status' => $status
+            'status' => $status,
+            'email_sent' => $emailSent
         ]);
     } else {
         http_response_code(404);

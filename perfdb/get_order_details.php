@@ -29,8 +29,12 @@ try {
     
     // Get order items (regular products)
     // Use the price saved in order_items (oi.price) rather than product current price
-    $query_items = "SELECT oi.*, p.p_name, oi.price AS price, oi.volume_ml FROM order_items oi
+    $query_items = "SELECT oi.*, p.p_name, oi.price AS price, oi.volume_ml, 
+                           b.brand_name, g.gender_name 
+                    FROM order_items oi
                     LEFT JOIN products p ON oi.p_id = p.p_id
+                    LEFT JOIN brands b ON p.brand_id = b.brand_id
+                    LEFT JOIN genders g ON p.gender_id = g.gender_id
                     WHERE oi.order_id = :order_id";
     
     $stmt = $conn->prepare($query_items);
@@ -41,7 +45,7 @@ try {
     // Map bottle_design_id to bottle sizes (100ml=3, 50ml=1, 30ml=2, 20ml=? from create-script.js)
     $query_custom = "SELECT cp.custom_id, cp.order_id, cp.bottle_design_id, 
                             cp.oil_amount_grams, cp.custom_price,
-                            GROUP_CONCAT(CONCAT(pt.type_name, ' (', cpt.amount_percent, '%)') SEPARATOR ', ') as types_detail,
+                            GROUP_CONCAT(CONCAT(COALESCE(p.p_name, pt.type_name), ' - ', COALESCE(g.gender_name, 'N/A'), ' (', cpt.amount_percent, '%)') SEPARATOR ', ') as types_detail,
                             CASE 
                                 WHEN cp.bottle_design_id = 3 THEN 100
                                 WHEN cp.bottle_design_id = 1 THEN 50
@@ -51,6 +55,8 @@ try {
                      FROM custom_perfumes cp
                      LEFT JOIN custom_perfume_types cpt ON cp.custom_id = cpt.custom_id
                      LEFT JOIN perfume_types pt ON cpt.type_id = pt.type_id
+                     LEFT JOIN products p ON cpt.type_id = p.p_id
+                     LEFT JOIN genders g ON p.gender_id = g.gender_id
                      WHERE cp.order_id = :order_id
                      GROUP BY cp.custom_id";
     

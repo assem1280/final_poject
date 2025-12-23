@@ -40,6 +40,7 @@ $total_orders = count($orders);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Dashboard</title>
+    <link rel="icon" type="image/png" href="../images/Untitled_design-removebg-preview.png">
     <style>
         * {
             margin: 0;
@@ -49,7 +50,7 @@ $total_orders = count($orders);
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background:  #ffffff;
             min-height: 100vh;
             padding: 20px;
             direction: ltr;
@@ -65,14 +66,15 @@ $total_orders = count($orders);
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
-            background: white;
+            background: #ffffffff;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 1);
+            border: #e0c42aff  solid 2px;
         }
         
         .header h1 {
-            color: #333;
+            color: #000000ff;
             font-size: 28px;
         }
         
@@ -92,15 +94,16 @@ $total_orders = count($orders);
         }
         
         .user-info {
-            background: white;
+            background: #ffffffff;
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 1);
+            border:#e0c42aff  solid 2px;
         }
         
         .user-info h2 {
-            color: #333;
+            color: #000000ff;
             margin-bottom: 15px;
             font-size: 20px;
         }
@@ -112,10 +115,10 @@ $total_orders = count($orders);
         }
         
         .info-item {
-            background: #f8f9fa;
+            background: #ffffffff;
             padding: 15px;
             border-radius: 8px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid  #e0c42aff 
         }
         
         .info-item label {
@@ -145,7 +148,7 @@ $total_orders = count($orders);
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             text-align: center;
-        }
+            border: #e0c42aff  solid 2px;}
         
         .stat-card h3 {
             color: #666;
@@ -155,7 +158,7 @@ $total_orders = count($orders);
         }
         
         .stat-card .value {
-            color: #667eea;
+            color: #000000ff;
             font-size: 32px;
             font-weight: bold;
         }
@@ -165,21 +168,25 @@ $total_orders = count($orders);
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: #e0c42aff  solid 2px;
         }
         
         .orders-section h2 {
             color: #333;
             margin-bottom: 20px;
             font-size: 20px;
+            
         }
         
         .orders-table {
             width: 100%;
             border-collapse: collapse;
+            
         }
         
         .orders-table thead {
             background: #f8f9fa;
+            border-bottom: #e0c42aff  solid 2px;
         }
         
         .orders-table th {
@@ -187,13 +194,14 @@ $total_orders = count($orders);
             font-weight: 600;
             padding: 12px;
             text-align: left;
-            border-bottom: 2px solid #eee;
+           border-bottom: #e0c42aff  solid 2px;
+           background: #ffffffff ;
         }
         
         .orders-table td {
             padding: 12px;
             border-bottom: 1px solid #eee;
-            color: #666;
+            color: #000000ff;
         }
         
         .orders-table tr:hover {
@@ -211,7 +219,7 @@ $total_orders = count($orders);
         }
         
         .order-number-link {
-            color: #667eea;
+            color: #000000ff;
             text-decoration: none;
             font-weight: 600;
             cursor: pointer;
@@ -283,7 +291,7 @@ $total_orders = count($orders);
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            border-bottom: 2px solid #f0f0f0;
+            border-bottom: 2px solid  #e0c42aff ;
             padding-bottom: 15px;
         }
         
@@ -311,7 +319,7 @@ $total_orders = count($orders);
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 15px;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #e0c42aff;
         }
         
         .order-details-item-name {
@@ -362,8 +370,8 @@ $total_orders = count($orders);
         }
         
         .status-pending {
-            background: #fff3cd;
-            color: #856404;
+            background: #FFC0CB;
+            color: #851304ff;
         }
         
         .status-completed {
@@ -382,7 +390,7 @@ $total_orders = count($orders);
             color: #666;
         }
         
-                        .empty-state svg {
+        .empty-state svg {
             width: 80px;
             height: 80px;
             margin-bottom: 20px;
@@ -468,38 +476,38 @@ $total_orders = count($orders);
         <!-- Page Header -->
         <div class="header">
             <div>
-                <h1>🛍️ Customer Dashboard</h1>
+                <h1>Customer Dashboard</h1>
             </div>
             <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
         
         <!-- User Information -->
         <div class="user-info">
-            <h2>Account Information</h2>
+            <h2>ACCOUNT INFORMATION</h2>
             <div class="info-grid">
                 <div class="info-item">
-                    <label>First Name</label>
+                    <label>FIRST NAME</label>
                     <value><?php echo htmlspecialchars($_SESSION['first_name']); ?></value>
                 </div>
                 <div class="info-item">
-                    <label>Last Name</label>
+                    <label>LAST NAME</label>
                     <value><?php echo htmlspecialchars($_SESSION['last_name'] ?? 'Not specified'); ?></value>
                 </div>
                 <div class="info-item">
-                    <label>Email</label>
+                    <label>EMAIL</label>
                     <value><?php echo htmlspecialchars($_SESSION['email'] ?? '-'); ?></value>
                 </div>
                 <div class="info-item">
-                    <label>Phone</label>
+                    <label>PHONE</label>
                     <value><?php echo htmlspecialchars($_SESSION['phone'] ?? 'Not specified'); ?></value>
                 </div>
                 <div class="info-item">
-                    <label>Address</label>
+                    <label>ADDRESS</label>
                     <value><?php echo htmlspecialchars($_SESSION['address'] ?? 'Not specified'); ?></value>
                 </div>
                 <div class="info-item">
-                    <label>Account Type</label>
-                    <value>Customer</value>
+                    <label>ACCOUNT TYPE</label>
+                    <value>CUSTOMER</value>
                 </div>
             </div>
         </div>
@@ -507,38 +515,38 @@ $total_orders = count($orders);
         <!-- Statistics -->
         <div class="statistics">
             <div class="stat-card">
-                <h3>Total Orders</h3>
+                <h3>TOTAL ORDERS</h3>
                 <div class="value"><?php echo $total_orders; ?></div>
             </div>
             <div class="stat-card">
-                <h3>Total Spent</h3>
+                <h3>TOTAL SPENT</h3>
                 <div class="value">$<?php echo number_format($total_spent, 2); ?></div>
             </div>
             <div class="stat-card">
-                <h3>Average Order</h3>
+                <h3>AVERAGE ORDER</h3>
                 <div class="value">$<?php echo $total_orders > 0 ? number_format($total_spent / $total_orders, 2) : '0.00'; ?></div>
             </div>
         </div>
         
         <!-- Orders -->
         <div class="orders-section">
-            <h2>📦 Your Orders</h2>
+            <h2>📦 YOUR ORDERS</h2>
             <?php if (empty($orders)): ?>
                 <div class="empty-state">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                     </svg>
-                    <h3>No Orders Yet</h3>
-                    <p>Start shopping now!</p>
+                    <h3>NO ORDERS YET</h3>
+                    <p>START SHOPPING NOW!</p>
                 </div>
             <?php else: ?>
                 <table class="orders-table">
                     <thead>
                         <tr>
-                            <th>Order Number</th>
-                            <th>Date</th>
-                            <th>Amount</th>
-                            <th>Status</th>
+                            <th>ORDER NUMBER</th>
+                            <th>DATE</th>
+                            <th>AMOUNT</th>
+                            <th>STATUS</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -568,7 +576,7 @@ $total_orders = count($orders);
         
         <!-- Current Shopping Cart -->
         <div class="orders-section" style="margin-top: 30px;">
-            <h2>🛒 Current Shopping Cart</h2>
+            <h2>🛒 CURRENT SHOPPING CART</h2>
             <?php
             // Get current cart items
             $cart_query = "SELECT ci.*, p.p_name, p.price FROM cart_items ci
@@ -602,11 +610,11 @@ $total_orders = count($orders);
                 <table class="orders-table">
                     <thead>
                         <tr>
-                            <th>Product Name</th>
-                            <th>Volume</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                            <th>Total</th>
+                            <th>PRODUCT NAME</th>
+                            <th>VOLUME</th>
+                            <th>QUANTITY</th>
+                            <th>PRICE</th>
+                            <th>TOTAL</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -633,7 +641,7 @@ $total_orders = count($orders);
                             $cart_total += $item['custom_price'];
                         ?>
                             <tr>
-                                <td>🎨 Custom Mix - <?php echo htmlspecialchars($item['bottle_design_id'] ?? 'Custom'); ?></td>
+                                <td>🎨 CUSTOM MIX - <?php echo htmlspecialchars($item['bottle_design_id'] ?? 'Custom'); ?></td>
                                 <td>1</td>
                                 <td>$<?php echo number_format($item['custom_price'], 2); ?></td>
                                 <td>$<?php echo number_format($item['custom_price'], 2); ?></td>
@@ -656,7 +664,7 @@ $total_orders = count($orders);
     <div id="orderModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Order Details</h2>
+                <h2>ORDER DETAILS</h2>
                 <button class="modal-close" onclick="closeOrderDetails()">&times;</button>
             </div>
             <div id="modalBody"></div>
@@ -699,17 +707,17 @@ $total_orders = count($orders);
                             html += `
                                 <div class="ready-status-section">
                                     <div class="ready-status-checkmark">✅</div>
-                                    <div class="ready-status-message">Your Product is Ready!</div>
+                                    <div class="ready-status-message">YOUR PRODUCT IS READY!</div>
                                     <div class="ready-status-note">
-                                        📦 Please wait for our response within two days to arrange pickup or delivery.
+                                        📦 PLEASE WAIT FOR OUR RESPONSE WITHIN TWO DAYS TO ARRANGE PICKUP OR DELIVERY.
                                     </div>
                                 </div>
                             `;
                         } else {
                             html += `
                                 <div class="pending-status-section">
-                                    <h3>⏳ Order Processing</h3>
-                                    <p>Your order is being prepared. We'll notify you when it's ready.</p>
+                                    <h3>⏳ ORDER PROCESSING</h3>
+                                    <p>YOUR ORDER IS BEING PREPARED. WE'LL NOTIFY YOU WHEN IT'S READY.</p>
                                 </div>
                             `;
                         }

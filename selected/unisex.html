@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Select Your Perfume - Unisex</title>
     <link rel="stylesheet" href="..//selected/selection_styles.css">
+    <link rel="icon" type="image/png" href="../images/Untitled_design-removebg-preview.png">
 </head>
 <body>
     <div class="container">
@@ -16,6 +17,19 @@
         </a>
         
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+
+        <!-- Search Box -->
+        <div class="search-container">
+            <div class="search-box">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="text" id="perfume-search" placeholder="Search for perfume..." autocomplete="off">
+            </div>
+            <div id="search-results" class="search-results"></div>
+        </div>
+
         <div class="category-tabs">
             <button class="tab-btn" data-category="man" onclick="window.location.href='man.html'">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -64,26 +78,72 @@
         <div class="perfumes-grid">
             <!-- Products will be loaded dynamically from database -->
         </div>
-<div class="golden-stars"></div>
-<script>
-  const starsContainer = document.querySelector('.golden-stars');
-
-  for (let i = 0; i < 100; i++) {
-    const star = document.createElement('span');
-
-    const top = Math.random() * 100; // 0% to 100%
-    const left = Math.random() * 100;
-    const delay = Math.random() * 5; // 0s to 5s
-
-    star.style.top = `${top}%`;
-    star.style.left = `${left}%`;
-    star.style.animationDelay = `${delay}s`;
-
-    starsContainer.appendChild(star);
-  }
-</script>
 <script src="unisex-script.js"></script>
     <link rel="stylesheet" href="/pefumeppp/assets/cart-widget.css">
     <script src="/pefumeppp/assets/cart-widget.js" defer></script>
+    
+    <!-- Search functionality -->
+    <script>
+      const searchInput = document.getElementById('perfume-search');
+      const searchResults = document.getElementById('search-results');
+
+      let searchTimeout;
+      searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        const query = this.value.trim();
+        
+        if (query.length < 2) {
+          searchResults.classList.remove('active');
+          searchResults.innerHTML = '';
+          return;
+        }
+
+        searchTimeout = setTimeout(async () => {
+          try {
+            const res = await fetch('/pefumeppp/perfdb/search_perfumes.php?q=' + encodeURIComponent(query));
+            const data = await res.json();
+            
+            if (data.success && data.perfumes.length > 0) {
+              searchResults.innerHTML = data.perfumes.map(p => `
+                <div class="search-item" onclick="window.location.href='/pefumeppp/perfdb/product-details.php?id=${p.id}'">
+                  <img src="${p.image || '../images/default-perfume.png'}" alt="${p.name}">
+                  <div class="item-info">
+                    <div class="item-name">${p.name}</div>
+                    <div class="item-price">$${p.price}</div>
+                  </div>
+                </div>
+              `).join('');
+              searchResults.classList.add('active');
+            } else if (data.suggestion) {
+              const s = data.suggestion;
+              searchResults.innerHTML = `
+                <div class="did-you-mean">
+                  <span class="dym-label">Did you mean:</span>
+                  <div class="search-item suggestion-item" onclick="window.location.href='/pefumeppp/perfdb/product-details.php?id=${s.id}'">
+                    <img src="${s.image || '../images/default-perfume.png'}" alt="${s.name}">
+                    <div class="item-info">
+                      <div class="item-name">${s.name}</div>
+                      <div class="item-price">$${s.price}</div>
+                    </div>
+                  </div>
+                </div>
+              `;
+              searchResults.classList.add('active');
+            } else {
+              searchResults.innerHTML = '<div class="no-results">No perfumes found</div>';
+              searchResults.classList.add('active');
+            }
+          } catch (err) {
+            console.error('Search error:', err);
+          }
+        }, 300);
+      });
+
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.search-container')) {
+          searchResults.classList.remove('active');
+        }
+      });
+    </script>
 </body>
 </html>

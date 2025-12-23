@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfume Recommendation Chatbot</title>
+    <link rel="icon" type="image/png" href="../images/Untitled_design-removebg-preview.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .chatbot-container {
+            width: 100%;
+            max-width: 500px;
+            height: 90vh;
+            max-height: 700px;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .chatbot-header {
+            background: linear-gradient(135deg, #e0c42a 0%, #d4b41f 100%);
+            padding: 20px;
+            text-align: center;
+            color: #000;
+        }
+
+        .chatbot-header h1 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .chatbot-header p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* Chat Messages Area */
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.bot {
+            justify-content: flex-start;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .message.bot .message-avatar {
+            background: linear-gradient(135deg, #e0c42a, #d4b41f);
+        }
+
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            order: 2;
+        }
+
+        .message-content {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            line-height: 1.4;
+            font-size: 0.95rem;
+        }
+
+        .message.bot .message-content {
+            background: #fff;
+            color: #333;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            border-bottom-right-radius: 4px;
+        }
+
+        /* Options Buttons */
+        .options-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .option-btn {
+            padding: 10px 18px;
+            border: 2px solid #e0c42a;
+            background: #fff;
+            color: #333;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .option-btn:hover {
+            background: #e0c42a;
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(224, 196, 42, 0.4);
+        }
+
+        .option-btn.selected {
+            background: #e0c42a;
+            color: #000;
+        }
+
+        /* Product Cards */
+        .product-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #e0c42a;
+        }
+
+        .product-card h4 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .product-card .brand {
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+
+        .product-card .price {
+            color: #e0c42a;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .product-card .size-badge {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+
+        .product-card .match-score {
+            display: inline-block;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            margin-top: 8px;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            background: linear-gradient(135deg, #e0c42a, #d4b41f);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .add-to-cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(224, 196, 42, 0.4);
+        }
+
+        /* Custom Blend Selection */
+        .blend-selector {
+            margin-top: 15px;
+        }
+
+        .blend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .blend-item:hover {
+            border-color: #e0c42a;
+        }
+
+        .blend-item.selected {
+            border-color: #e0c42a;
+            background: #fffef0;
+        }
+
+        .blend-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #e0c42a;
+        }
+
+        .blend-item .name {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .ml-input {
+            width: 70px;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        /* Input Area */
+        .chat-input-area {
+            padding: 15px 20px;
+            background: #fff;
+            border-top: 1px solid #eee;
+            display: none;
+        }
+
+        .chat-input-area.show {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+        }
+
+        .chat-input-area input:focus {
+            outline: none;
+            border-color: #e0c42a;
+        }
+
+        .chat-input-area button {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #e0c42a, #d4b41f);
+            color: #000;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .chat-input-area button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Progress Indicator */
+        .progress-bar {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: #fff;
+            border-top: 1px solid #eee;
+        }
+
+        .progress-step {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            transition: all 0.3s;
+        }
+
+        .progress-step.active {
+            background: #e0c42a;
+            transform: scale(1.2);
+        }
+
+        .progress-step.completed {
+            background: #27ae60;
+        }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            display: flex;
+            gap: 5px;
+            padding: 10px 15px;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: #999;
+            border-radius: 50%;
+            animation: typing 1s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* Restart Button */
+        .restart-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+
+        .restart-btn:hover {
+            transform: scale(1.05);
+            background: #fff;
+        }
+
+        /* Home Button */
+        .home-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 12px 20px;
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .home-btn:hover {
+            transform: scale(1.05);
+            background: #fff;
+        }
+
+        /* Responsive */
+        @media (max-width: 520px) {
+            .chatbot-container {
+                height: 100vh;
+                max-height: none;
+                border-radius: 0;
+            }
+            
+            .home-btn, .restart-btn {
+                padding: 10px 15px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="../indexed/index.html" class="home-btn">🏠 Home</a>
+    
+    <div class="chatbot-container">
+        <div class="chatbot-header">
+            <h1>🌸 Perfume Assistant</h1>
+            <p>Let me help you find your perfect scent</p>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <!-- Messages will be added here -->
+        </div>
+        
+        <div class="progress-bar" id="progressBar">
+            <div class="progress-step" data-step="1"></div>
+            <div class="progress-step" data-step="2"></div>
+            <div class="progress-step" data-step="3"></div>
+            <div class="progress-step" data-step="4"></div>
+            <div class="progress-step" data-step="5"></div>
+        </div>
+        
+        <div class="chat-input-area" id="chatInputArea">
+            <input type="text" id="userInput" placeholder="Type your message...">
+            <button onclick="sendUserMessage()">Send</button>
+        </div>
+    </div>
+    
+    <button class="restart-btn" onclick="restartChat()">🔄 Start Over</button>
+
+    <script>
+        // ============================================
+        // CHATBOT STATE & CONFIGURATION
+        // ============================================
+        
+        const chatState = {
+            step: 0,
+            answers: {
+                gender_id: null,
+                scent_preference: null,
+                occasion: null,
+                intensity: null,
+                perfume_type: null,
+                size: null,
+                brand_id: null,
+                custom_selections: []
+            },
+            options: null,
+            recommendations: []
+        };
+
+        const steps = [
+            'welcome',
+            'gender',
+            'scent',
+            'occasion',
+            'perfume_type',
+            'size',
+            'recommendations'
+        ];
+
+        // ============================================
+        // CHATBOT MESSAGES
+        // ============================================
+
+        const botMessages = {
+            welcome: "Hello! 👋 I'm your personal perfume assistant. I'll help you find the perfect fragrance based on your preferences. Let's get started!",
+            gender: "First, who are you shopping for?",
+            scent: "What type of scent do you prefer?",
+            occasion: "What occasion will you be wearing this perfume for?",
+            intensity: "How strong would you like the scent?",
+            perfume_type: "Would you like a ready-made perfume or create your own custom blend?",
+            size_ready: "What bottle size would you prefer?",
+            size_custom: "What bottle size for your custom blend?",
+            loading: "Let me find the perfect perfumes for you...",
+            recommendations: "Here are my top recommendations for you! 🎉",
+            custom_blend: "Great choice! Let's create your custom blend. Select up to 3 perfumes and specify the amount (ml) for each:",
+            no_results: "I couldn't find exact matches, but here are some alternatives you might like:",
+            error: "Oops! Something went wrong. Please try again."
+        };
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadOptions();
+        });
+
+        async function loadOptions() {
+            try {
+                const response = await fetch('../perfdb/chatbot_recommend.php?action=get_options');
+                const data = await response.json();
+                if (data.success) {
+                    chatState.options = data.options;
+                    startChat();
+                } else {
+                    addBotMessage(botMessages.error);
+                }
+            } catch (error) {
+                console.error('Error loading options:', error);
+                addBotMessage(botMessages.error);
+            }
+        }
+
+        function startChat() {
+            clearMessages();
+            chatState.step = 0;
+            chatState.answers = {
+                gender_id: null,
+                scent_preference: null,
+                occasion: null,
+                intensity: null,
+                perfume_type: null,
+                size: null,
+                brand_id: null,
+                custom_selections: []
+            };
+            updateProgress(0);
+            
+            // Welcome message with slight delay
+            setTimeout(() => {
+                addBotMessage(botMessages.welcome);
+                setTimeout(() => askGender(), 1000);
+            }, 500);
+        }
+
+        // ============================================
+        // CHAT FLOW FUNCTIONS
+        // ============================================
+
+        function askGender() {
+            chatState.step = 1;
+            updateProgress(1);
+            
+            addBotMessage(botMessages.gender, () => {
+                const options = chatState.options.genders.map(g => ({
+                    label: getGenderEmoji(g.gender_name) + ' ' + g.gender_name,
+                    value: g.gender_id
+                }));
+                addOptions(options, selectGender);
+            });
+        }
+
+        function selectGender(value) {
+            const gender = chatState.options.genders.find(g => g.gender_id == value);
+            chatState.answers.gender_id = value;
+            addUserMessage(gender.gender_name);
+            
+            setTimeout(() => askScent(), 500);
+        }
+
+        function askScent() {
+            chatState.step = 2;
+            updateProgress(2);
+            
+            addBotMessage(botMessages.scent, () => {
+                const options = chatState.options.scent_preferences.map(s => ({
+                    label: getScentEmoji(s) + ' ' + capitalizeFirst(s),
+                    value: s
+                }));
+                addOptions(options, selectScent);
+            });
+        }
+
+        function selectScent(value) {
+            chatState.answers.scent_preference = value;
+            addUserMessage(capitalizeFirst(value));
+            
+            setTimeout(() => askOccasion(), 500);
+        }
+
+        function askOccasion() {
+            chatState.step = 3;
+            updateProgress(3);
+            
+            addBotMessage(botMessages.occasion, () => {
+                const occasionEmojis = {
+                    daily: '☀️',
+                    date: '💕',
+                    party: '🎉',
+                    work: '💼',
+                    friends: '👥'
+                };
+                const options = chatState.options.occasions.map(o => ({
+                    label: (occasionEmojis[o] || '✨') + ' ' + capitalizeFirst(o),
+                    value: o
+                }));
+                addOptions(options, selectOccasion);
+            });
+        }
+
+        function selectOccasion(value) {
+            chatState.answers.occasion = value;
+            addUserMessage(capitalizeFirst(value));
+            
+            setTimeout(() => askPerfumeType(), 500);
+        }
+
+        function askPerfumeType() {
+            chatState.step = 4;
+            updateProgress(4);
+            
+            addBotMessage(botMessages.perfume_type, () => {
+                const options = [
+                    { label: '🧴 Ready-made Perfume', value: 'ready' },
+                    { label: '🎨 Custom Blend', value: 'custom' }
+                ];
+                addOptions(options, selectPerfumeType);
+            });
+        }
+
+        function selectPerfumeType(value) {
+            chatState.answers.perfume_type = value;
+            addUserMessage(value === 'ready' ? 'Ready-made Perfume' : 'Custom Blend');
+            
+            setTimeout(() => askSize(), 500);
+        }
+
+        function askSize() {
+            chatState.step = 5;
+            updateProgress(5);
+            
+            const isCustom = chatState.answers.perfume_type === 'custom';
+            const message = isCustom ? botMessages.size_custom : botMessages.size_ready;
+            const sizes = isCustom ? chatState.options.custom_sizes : chatState.options.ready_sizes;
+            
+            addBotMessage(message, () => {
+                const options = sizes.map(s => ({
+                    label: `📦 ${s}ml`,
+                    value: s
+                }));
+                addOptions(options, selectSize);
+            });
+        }
+
+        function selectSize(value) {
+            chatState.answers.size = value;
+            addUserMessage(`${value}ml`);
+            
+            setTimeout(() => {
+                if (chatState.answers.perfume_type === 'custom') {
+                    showCustomBlendOptions();
+                } else {
+                    getRecommendations();
+                }
+            }, 500);
+        }
+
+        // ============================================
+        // RECOMMENDATIONS
+        // ============================================
+
+        async function getRecommendations() {
+            addBotMessage(botMessages.loading);
+            showTypingIndicator();
+            
+            try {
+                const response = await fetch('../perfdb/chatbot_recommend.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'get_recommendations',
+                        ...chatState.answers
+                    })
+                });
+                
+                const data = await response.json();
+                hideTypingIndicator();
+                
+                if (data.success && data.recommendations.length > 0) {
+                    chatState.recommendations = data.recommendations;
+                    addBotMessage(data.message || botMessages.recommendations, () => {
+                        showRecommendations(data.recommendations);
+                    });
+                } else {
+                    addBotMessage(botMessages.no_results);
+                }
+                
+                updateProgress(6);
+                
+            } catch (error) {
+                console.error('Error getting recommendations:', error);
+                hideTypingIndicator();
+                addBotMessage(botMessages.error);
+            }
+        }
+
+        function showRecommendations(products) {
+            const container = document.getElementById('chatMessages');
+            
+            products.forEach((product, index) => {
+                setTimeout(() => {
+                    const card = document.createElement('div');
+                    card.className = 'message bot';
+                    card.innerHTML = `
+                        <div class="message-avatar">🌸</div>
+                        <div class="message-content">
+                            <div class="product-card">
+                                <h4>${escapeHtml(product.p_name)}</h4>
+                                <div class="brand">${escapeHtml(product.brand_name || 'Premium Brand')}</div>
+                                <div class="price">
+                                    $${parseFloat(product.adjusted_price || product.price).toFixed(2)}
+                                    <span class="size-badge">${product.size_label || product.size + 'ml'}</span>
+                                </div>
+                                <div class="match-score">✨ ${product.match_score || 'Top Pick'}% Match</div>
+                                <button class="add-to-cart-btn" onclick="addToCart(${product.p_id}, ${product.size})">
+                                    🛒 Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                    scrollToBottom();
+                }, index * 300);
+            });
+        }
+
+        // ============================================
+        // CUSTOM BLEND
+        // ============================================
+
+        async function showCustomBlendOptions() {
+            addBotMessage(botMessages.custom_blend);
+            showTypingIndicator();
+            
+            try {
+                const response = await fetch('../perfdb/chatbot_recommend.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'get_custom_blend_options',
+                        gender_id: chatState.answers.gender_id,
+                        scent_preference: chatState.answers.scent_preference
+                    })
+                });
+                
+                const data = await response.json();
+                hideTypingIndicator();
+                
+                if (data.success) {
+                    const products = data.products.recommended.length > 0 
+                        ? data.products.recommended 
+                        : data.products.all.slice(0, 8);
+                    
+                    if (data.suggestion) {
+                        addBotMessage(data.suggestion);
+                    }
+                    
+                    showBlendSelector(products, data.pricing);
+                }
+                
+            } catch (error) {
+                console.error('Error loading blend options:', error);
+                hideTypingIndicator();
+                addBotMessage(botMessages.error);
+            }
+        }
+
+        function showBlendSelector(products, pricing) {
+            const container = document.getElementById('chatMessages');
+            
+            const selectorDiv = document.createElement('div');
+            selectorDiv.className = 'message bot';
+            selectorDiv.innerHTML = `
+                <div class="message-avatar">🎨</div>
+                <div class="message-content" style="width: 100%;">
+                    <div class="blend-selector" id="blendSelector">
+                        ${products.map(p => `
+                            <div class="blend-item" onclick="toggleBlendItem(this, ${p.p_id})">
+                                <input type="checkbox" data-id="${p.p_id}" data-name="${escapeHtml(p.p_name)}">
+                                <span class="name">${escapeHtml(p.p_name)}</span>
+                                <input type="number" class="ml-input" placeholder="ml" min="5" max="${chatState.answers.size}" value="10" 
+                                       onclick="event.stopPropagation()" onchange="updateBlendTotal()">
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div id="blendSummary" style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                        <div><strong>Total:</strong> <span id="blendTotal">0</span>ml / ${chatState.answers.size}ml</div>
+                        <div><strong>Estimated Price:</strong> $<span id="blendPrice">0.00</span></div>
+                    </div>
+                    <button class="add-to-cart-btn" onclick="createCustomBlend()" style="margin-top: 10px;">
+                        🎨 Create My Blend
+                    </button>
+                </div>
+            `;
+            container.appendChild(selectorDiv);
+            scrollToBottom();
+        }
+
+        function toggleBlendItem(element, productId) {
+            const checkbox = element.querySelector('input[type="checkbox"]');
+            const selectedCount = document.querySelectorAll('.blend-item input[type="checkbox"]:checked').length;
+            
+            if (!checkbox.checked && selectedCount >= 3) {
+                alert('Maximum 3 perfumes allowed in a custom blend!');
+                return;
+            }
+            
+            checkbox.checked = !checkbox.checked;
+            element.classList.toggle('selected', checkbox.checked);
+            updateBlendTotal();
+        }
+
+        function updateBlendTotal() {
+            const selectedItems = document.querySelectorAll('.blend-item input[type="checkbox"]:checked');
+            let totalMl = 0;
+            
+            selectedItems.forEach(checkbox => {
+                const mlInput = checkbox.closest('.blend-item').querySelector('.ml-input');
+                totalMl += parseInt(mlInput.value) || 0;
+            });
+            
+            document.getElementById('blendTotal').textContent = totalMl;
+            
+            // Calculate price: (total_ml / 10) * $2.5 + bottle_cost
+            const bottlePrices = { 30: 3.0, 50: 4.0, 100: 6.0 };
+            const productsCost = (totalMl / 10) * 2.5;
+            const bottleCost = bottlePrices[chatState.answers.size] || 4.0;
+            const totalPrice = productsCost + bottleCost;
+            
+            document.getElementById('blendPrice').textContent = totalPrice.toFixed(2);
+        }
+
+        async function createCustomBlend() {
+            const selectedItems = document.querySelectorAll('.blend-item input[type="checkbox"]:checked');
+            
+            if (selectedItems.length === 0) {
+                alert('Please select at least one perfume for your blend!');
+                return;
+            }
+            
+            const products = [];
+            let totalMl = 0;
+            
+            selectedItems.forEach(checkbox => {
+                const item = checkbox.closest('.blend-item');
+                const ml = parseInt(item.querySelector('.ml-input').value) || 0;
+                totalMl += ml;
+                products.push({
+                    product_id: checkbox.dataset.id,
+                    name: checkbox.dataset.name,
+                    ml: ml
+                });
+            });
+            
+            if (totalMl > chatState.answers.size) {
+                alert(`Total amount (${totalMl}ml) exceeds bottle capacity (${chatState.answers.size}ml)!`);
+                return;
+            }
+            
+            if (totalMl === 0) {
+                alert('Please specify the amount (ml) for each selected perfume!');
+                return;
+            }
+            
+            // Add to cart via API
+            try {
+                const response = await fetch('../perfdb/add_custom_mix.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        products: products,
+                        bottle_size: chatState.answers.size,
+                        bottle_design_id: 1
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    addBotMessage(`🎉 Your custom blend has been created and added to cart! Total: $${data.total_price.toFixed(2)}`);
+                    addBotMessage("Would you like to continue shopping or checkout?", () => {
+                        addOptions([
+                            { label: '🛒 View Cart', value: 'cart' },
+                            { label: '🔄 Create Another', value: 'restart' },
+                            { label: '🏠 Home', value: 'home' }
+                        ], handleFinalAction);
+                    });
+                } else {
+                    addBotMessage('❌ ' + (data.error || 'Failed to create blend. Please try again.'));
+                }
+            } catch (error) {
+                console.error('Error creating blend:', error);
+                addBotMessage('❌ Error creating blend. Please try again.');
+            }
+        }
+
+        // ============================================
+        // CART ACTIONS
+        // ============================================
+
+        async function addToCart(productId, size) {
+            try {
+                const response = await fetch('../perfdb/add_to_cart.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        product_id: productId,
+                        quantity: 1,
+                        size: size  // Using 'size' to match add_to_cart.php expected parameter
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    addBotMessage('✅ Added to cart successfully! Would you like to continue?', () => {
+                        addOptions([
+                            { label: '🛒 View Cart', value: 'cart' },
+                            { label: '🔄 Find Another', value: 'restart' },
+                            { label: '🏠 Home', value: 'home' }
+                        ], handleFinalAction);
+                    });
+                } else {
+                    addBotMessage('❌ ' + (data.error || 'Failed to add to cart'));
+                }
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+                addBotMessage('❌ Error adding to cart. Please try again.');
+            }
+        }
+
+        function handleFinalAction(action) {
+            switch(action) {
+                case 'cart':
+                    window.location.href = '../indexed/checkout-complete.html';
+                    break;
+                case 'restart':
+                    restartChat();
+                    break;
+                case 'home':
+                    window.location.href = '../indexed/index.html';
+                    break;
+            }
+        }
+
+        // ============================================
+        // UI HELPER FUNCTIONS
+        // ============================================
+
+        function addBotMessage(text, callback) {
+            const container = document.getElementById('chatMessages');
+            const message = document.createElement('div');
+            message.className = 'message bot';
+            message.innerHTML = `
+                <div class="message-avatar">🌸</div>
+                <div class="message-content">${text}</div>
+            `;
+            container.appendChild(message);
+            scrollToBottom();
+            
+            if (callback) {
+                setTimeout(callback, 300);
+            }
+        }
+
+        function addUserMessage(text) {
+            const container = document.getElementById('chatMessages');
+            const message = document.createElement('div');
+            message.className = 'message user';
+            message.innerHTML = `
+                <div class="message-content">${escapeHtml(text)}</div>
+                <div class="message-avatar">👤</div>
+            `;
+            container.appendChild(message);
+            scrollToBottom();
+        }
+
+        function addOptions(options, callback) {
+            const container = document.getElementById('chatMessages');
+            const lastMessage = container.lastElementChild;
+            
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options-container';
+            
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = opt.label;
+                btn.onclick = () => {
+                    // Remove options after selection
+                    optionsDiv.remove();
+                    callback(opt.value);
+                };
+                optionsDiv.appendChild(btn);
+            });
+            
+            if (lastMessage) {
+                lastMessage.querySelector('.message-content').appendChild(optionsDiv);
+            }
+            scrollToBottom();
+        }
+
+        function showTypingIndicator() {
+            const container = document.getElementById('chatMessages');
+            const typing = document.createElement('div');
+            typing.id = 'typingIndicator';
+            typing.className = 'message bot';
+            typing.innerHTML = `
+                <div class="message-avatar">🌸</div>
+                <div class="message-content">
+                    <div class="typing-indicator">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+            `;
+            container.appendChild(typing);
+            scrollToBottom();
+        }
+
+        function hideTypingIndicator() {
+            const typing = document.getElementById('typingIndicator');
+            if (typing) typing.remove();
+        }
+
+        function updateProgress(step) {
+            const steps = document.querySelectorAll('.progress-step');
+            steps.forEach((el, index) => {
+                el.classList.remove('active', 'completed');
+                if (index < step) {
+                    el.classList.add('completed');
+                } else if (index === step) {
+                    el.classList.add('active');
+                }
+            });
+        }
+
+        function clearMessages() {
+            document.getElementById('chatMessages').innerHTML = '';
+        }
+
+        function scrollToBottom() {
+            const container = document.getElementById('chatMessages');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function restartChat() {
+            startChat();
+        }
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function capitalizeFirst(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function getGenderEmoji(gender) {
+            const emojis = {
+                'men': '👨',
+                'man': '👨',
+                'male': '👨',
+                'women': '👩',
+                'woman': '👩',
+                'female': '👩',
+                'unisex': '🧑'
+            };
+            return emojis[gender.toLowerCase()] || '🧴';
+        }
+
+        function getScentEmoji(scent) {
+            const emojis = {
+                'floral': '🌸',
+                'woody': '🌲',
+                'fresh': '🍃',
+                'oriental': '✨',
+                'fruity': '🍎',
+                'sweet': '🍬'
+            };
+            return emojis[scent] || '🌺';
+        }
+    </script>
+</body>
+</html>

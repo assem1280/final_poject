@@ -1,0 +1,133 @@
+/* Floating Chatbot Button Styles */
+
+.chatbot-floating-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e0c42a 0%, #d4b41f 100%);
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 25px rgba(224, 196, 42, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: all 0.3s ease;
+    animation: pulse 2s infinite;
+}
+
+.chatbot-floating-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 30px rgba(224, 196, 42, 0.6);
+}
+
+.chatbot-floating-btn:active {
+    transform: scale(0.95);
+}
+
+.chatbot-floating-btn svg {
+    width: 32px;
+    height: 32px;
+    fill: #000;
+}
+
+.chatbot-floating-btn .emoji {
+    font-size: 28px;
+}
+
+/* Tooltip */
+.chatbot-floating-btn::before {
+    content: 'Get Recommendations';
+    position: absolute;
+    right: 75px;
+    background: #333;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.chatbot-floating-btn::after {
+    content: '';
+    position: absolute;
+    right: 68px;
+    border: 6px solid transparent;
+    border-left-color: #333;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.chatbot-floating-btn:hover::before,
+.chatbot-floating-btn:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 6px 25px rgba(224, 196, 42, 0.4);
+    }
+    50% {
+        box-shadow: 0 6px 25px rgba(224, 196, 42, 0.7), 0 0 0 10px rgba(224, 196, 42, 0.1);
+    }
+    100% {
+        box-shadow: 0 6px 25px rgba(224, 196, 42, 0.4);
+    }
+}
+
+/* Badge for new feature indicator */
+.chatbot-floating-btn .badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #e74c3c;
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 12px;
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .chatbot-floating-btn {
+        bottom: 20px;
+        right: 20px;
+        width: 55px;
+        height: 55px;
+    }
+    
+    .chatbot-floating-btn .emoji {
+        font-size: 24px;
+    }
+    
+    .chatbot-floating-btn::before {
+        display: none;
+    }
+    
+    .chatbot-floating-btn::after {
+        display: none;
+    }
+}
+
+/* Hide on chatbot page itself */
+body.chatbot-page .chatbot-floating-btn {
+    display: none;
+}

@@ -354,7 +354,175 @@
 
     // Initialize widget or nav-inline trigger
     function initWidget() {
+        // Check for placeholders - support both nav-cart-placeholder and topbar-cart-placeholder
         const placeholder = document.getElementById('nav-cart-placeholder');
+        const topbarPlaceholder = document.getElementById('topbar-cart-placeholder');
+        const mobileCartPlaceholder = document.getElementById('mobile-cart-placeholder');
+        
+        // Create cart button for mobile (next to search on phone screens)
+        if (mobileCartPlaceholder) {
+            const mobileBtn = document.createElement('button');
+            mobileBtn.type = 'button';
+            mobileBtn.className = 'cart-button mobile-cart-button';
+            mobileBtn.title = 'View Cart';
+            mobileBtn.innerHTML = `
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 7h18l-2 11a1 1 0 0 1-1 .8H6a1 1 0 0 1-1-.8L3 7z" stroke-linejoin="round"></path>
+                    <path d="M8 7l4-4 4 4" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                <span class="badge mobile-badge">0</span>
+            `;
+            mobileCartPlaceholder.appendChild(mobileBtn);
+            
+            // Create modal for mobile cart
+            const mobileModal = document.createElement('div');
+            mobileModal.className = 'cart-modal mobile-cart-modal';
+            mobileModal.setAttribute('inert','');
+            mobileModal.style.display = 'none';
+            mobileModal.innerHTML = `
+                <header>
+                    <strong>Shopping Cart</strong>
+                    <button class="close" aria-label="Close">✕</button>
+                </header>
+                <div class="items"></div>
+                <div class="cart-footer">
+                    <div class="total">Total: $0.00</div>
+                    <button class="checkout-btn">Complete Order</button>
+                    <a href="/pefumeppp/customer/dashboard.php" class="dashboard-link" style="display:none;">📊 Dashboard</a>
+                </div>
+            `;
+            document.body.appendChild(mobileModal);
+            
+            const mobileBadge = mobileBtn.querySelector('.badge');
+            const mobileCloseBtn = mobileModal.querySelector('.close');
+            const mobileCheckoutBtn = mobileModal.querySelector('.checkout-btn');
+            const mobileDashboardLink = mobileModal.querySelector('.dashboard-link');
+            
+            const openMobileModal = async () => {
+                mobileModal.classList.add('open');
+                mobileModal.style.display = 'flex';
+                mobileModal.removeAttribute('inert');
+                await fetchAndRender(mobileModal, mobileBadge);
+                checkDashboardAccess(mobileDashboardLink);
+            };
+            
+            mobileBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (mobileModal.classList.contains('open')) {
+                    mobileModal.classList.remove('open');
+                    mobileModal.style.display = 'none';
+                    mobileModal.setAttribute('inert','');
+                } else {
+                    openMobileModal();
+                }
+            });
+            
+            mobileCloseBtn.addEventListener('click', () => {
+                mobileModal.classList.remove('open');
+                mobileModal.style.display = 'none';
+                mobileModal.setAttribute('inert','');
+            });
+            
+            mobileCheckoutBtn.addEventListener('click', handleCheckoutClick);
+            
+            // Initial badge update
+            (async () => {
+                try {
+                    const res = await fetch(baseApi + '/get_cart.php', { credentials: 'same-origin' });
+                    const d = await res.json();
+                    const count = d.cart ? d.cart.reduce((s,i)=>s+(i.quantity||1),0) : 0;
+                    mobileBadge.textContent = count;
+                } catch(e){}
+            })();
+            
+            // Refresh badge periodically
+            setInterval(async () => {
+                try {
+                    const res = await fetch(baseApi + '/get_cart.php', { credentials: 'same-origin' });
+                    const d = await res.json();
+                    const count = d.cart ? d.cart.reduce((s,i)=>s+(i.quantity||1),0) : 0;
+                    mobileBadge.textContent = count;
+                } catch(e){}
+            }, 30000);
+        }
+        
+        // Create cart button for topbar if placeholder exists
+        if (topbarPlaceholder) {
+            const topbarBtn = document.createElement('button');
+            topbarBtn.type = 'button';
+            topbarBtn.className = 'nav-cart-btn topbar-cart-btn';
+            topbarBtn.title = 'View Cart';
+            topbarBtn.innerHTML = `
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 7h18l-2 11a1 1 0 0 1-1 .8H6a1 1 0 0 1-1-.8L3 7z" stroke-linejoin="round"></path>
+                    <path d="M8 7l4-4 4 4" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                <span class="badge topbar-badge">0</span>
+            `;
+            topbarPlaceholder.appendChild(topbarBtn);
+            
+            // Create modal for topbar cart
+            const topbarModal = document.createElement('div');
+            topbarModal.className = 'cart-modal topbar-cart-modal';
+            topbarModal.setAttribute('inert','');
+            topbarModal.style.display = 'none';
+            topbarModal.innerHTML = `
+                <header>
+                    <strong>Shopping Cart</strong>
+                    <button class="close" aria-label="Close">✕</button>
+                </header>
+                <div class="items"></div>
+                <div class="cart-footer">
+                    <div class="total">Total: $0.00</div>
+                    <button class="checkout-btn">Complete Order</button>
+                    <a href="/pefumeppp/customer/dashboard.php" class="dashboard-link" style="display:none;">📊 Dashboard</a>
+                </div>
+            `;
+            document.body.appendChild(topbarModal);
+            
+            const topbarBadge = topbarBtn.querySelector('.badge');
+            const topbarCloseBtn = topbarModal.querySelector('.close');
+            const topbarCheckoutBtn = topbarModal.querySelector('.checkout-btn');
+            const topbarDashboardLink = topbarModal.querySelector('.dashboard-link');
+            
+            const openTopbarModal = async () => {
+                topbarModal.classList.add('open');
+                topbarModal.style.display = 'flex';
+                topbarModal.removeAttribute('inert');
+                await fetchAndRender(topbarModal, topbarBadge);
+                checkDashboardAccess(topbarDashboardLink);
+            };
+            
+            topbarBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (topbarModal.classList.contains('open')) {
+                    topbarModal.classList.remove('open');
+                    topbarModal.style.display = 'none';
+                    topbarModal.setAttribute('inert','');
+                } else {
+                    openTopbarModal();
+                }
+            });
+            
+            topbarCloseBtn.addEventListener('click', () => {
+                topbarModal.classList.remove('open');
+                topbarModal.style.display = 'none';
+                topbarModal.setAttribute('inert','');
+            });
+            
+            topbarCheckoutBtn.addEventListener('click', handleCheckoutClick);
+            
+            // Initial badge update
+            (async () => {
+                try {
+                    const res = await fetch(baseApi + '/get_cart.php', { credentials: 'same-origin' });
+                    const d = await res.json();
+                    const count = d.cart ? d.cart.reduce((s,i)=>s+(i.quantity||1),0) : 0;
+                    topbarBadge.textContent = count;
+                } catch(e){}
+            })();
+        }
+        
         if (placeholder) {
             // create small trigger inside placeholder
             const smallBtn = document.createElement('button');

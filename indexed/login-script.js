@@ -66,6 +66,13 @@ if (signupForm) {
             return;
         }
         
+        // التحقق من رقم الهاتف - يجب أن يكون 8 أرقام فقط
+        const phoneRegex = /^\d{8}$/;
+        if (!phoneRegex.test(phone)) {
+            alert('The number is incorrect, please try again. Phone must be exactly 8 digits.');
+            return;
+        }
+        
         // التحقق من جميع الحقول
         if (firstName && lastName && email && password && confirmPassword && phone && address) {
             console.log('Form validation passed. Sending:');
@@ -128,58 +135,6 @@ if (signupForm) {
     });
 }
 
-// إنشاء نجوم إضافية متحركة
-function createFloatingStars() {
-    const starsContainer = document.querySelector('.stars');
-    const starCount = 30;
-    
-    for (let i = 0; i < starCount; i++) {
-        const star = document.createElement('div');
-        const size = Math.random() * 3 + 1;
-        const duration = Math.random() * 3 + 2;
-        const delay = Math.random() * 3;
-        
-        star.style.cssText = `
-            position: absolute;
-            width: ${size}px;
-            height: ${size}px;
-            background: white;
-            border-radius: 50%;
-            top: ${Math.random() * 100}%;
-            left: ${Math.random() * 100}%;
-            animation: twinkle ${duration}s infinite ${delay}s;
-            box-shadow: 0 0 ${size * 2}px rgba(255, 255, 255, 0.8);
-        `;
-        
-        starsContainer.appendChild(star);
-    }
-}
-
-// تأثير حركة النجوم مع الماوس
-let mouseX = 0;
-let mouseY = 0;
-
-document.addEventListener('mousemove', function(e) {
-    mouseX = e.clientX / window.innerWidth - 0.5;
-    mouseY = e.clientY / window.innerHeight - 0.5;
-});
-
-function animateStars() {
-    const stars = document.querySelector('.stars');
-    if (stars) {
-        const moveX = mouseX * 30;
-        const moveY = mouseY * 30;
-        stars.style.transform = `translate(${moveX}px, ${moveY}px)`;
-    }
-    requestAnimationFrame(animateStars);
-}
-
-// تشغيل التأثيرات عند تحميل الصفحة
-window.addEventListener('load', function() {
-    createFloatingStars();
-    animateStars();
-});
-
 // تأثير على الإدخالات
 const inputs = document.querySelectorAll('input');
 inputs.forEach(input => {
@@ -205,31 +160,3 @@ document.addEventListener('keypress', function(e) {
         }
     }
 });
-
-    const starsContainer = document.getElementById("stars");
-
-    // عدد النجوم: يمكنك تغييره بين 100 - 500
-    const STAR_COUNT = 200;
-
-    // Only add stars if container exists
-    if (starsContainer) {
-        for (let i = 0; i < STAR_COUNT; i++) {
-            const star = document.createElement("span");
-
-            // مكان النجمة العشوائي
-            star.style.top = Math.random() * 100 + "vh";
-            star.style.left = Math.random() * 100 + "vw";
-
-            // تأخير الوميض العشوائي
-            star.style.animationDelay = (Math.random() * 3) + "s";
-
-            // حجم النجوم مختلف شوي ليعطي واقعية
-            const size = Math.random() * 2 + 1; 
-            star.style.width = size + "px";
-            star.style.height = size + "px";
-
-            starsContainer.appendChild(star);
-        }
-    }
-
-

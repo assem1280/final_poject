@@ -107,6 +107,7 @@ function getCustomPerfumes($conn, $order_id) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <link rel="icon" type="image/png" href="../images/Untitled_design-removebg-preview.png">
     <style>
         * {
             margin: 0;
@@ -116,7 +117,8 @@ function getCustomPerfumes($conn, $order_id) {
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
+            background: #ffffff;
+            min-height: 100vh;
             padding: 20px;
             direction: ltr;
         }
@@ -131,15 +133,16 @@ function getCustomPerfumes($conn, $order_id) {
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 25px 30px;
+            background: #ffffffff;
+            padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 1);
+            border: #e0c42aff solid 2px;
         }
         
         .header h1 {
-            font-size: 32px;
+            color: #000000ff;
+            font-size: 28px;
         }
         
         .header-info {
@@ -167,6 +170,132 @@ function getCustomPerfumes($conn, $order_id) {
             background: #c0392b;
         }
         
+        /* Date Range Filter Styles */
+        .date-filter-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: #e0c42aff solid 2px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .date-filter-container label {
+            font-weight: 600;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .date-filter-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .date-filter-btn {
+            padding: 8px 16px;
+            border: 2px solid #e0c42aff;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s;
+            color: #333;
+        }
+        
+        .date-filter-btn:hover {
+            background: #fff8dc;
+        }
+        
+        .date-filter-btn.active {
+            background: #e0c42aff;
+            color: #000;
+        }
+        
+        .custom-date-inputs {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            margin-left: 10px;
+        }
+        
+        .custom-date-inputs.show {
+            display: flex;
+        }
+        
+        .custom-date-inputs input[type="date"] {
+            padding: 8px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 13px;
+            transition: border-color 0.3s;
+        }
+        
+        .custom-date-inputs input[type="date"]:focus {
+            outline: none;
+            border-color: #e0c42aff;
+        }
+        
+        .apply-date-btn {
+            padding: 8px 16px;
+            background: #e0c42aff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        .apply-date-btn:hover {
+            background: #c9ad26;
+        }
+        
+        .date-range-display {
+            margin-left: auto;
+            font-size: 13px;
+            color: #666;
+            background: #f8f9fa;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .loading-overlay.show {
+            display: flex;
+        }
+        
+        .loading-spinner-large {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e0e0e0;
+            border-top-color: #e0c42aff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
         .statistics {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -176,56 +305,56 @@ function getCustomPerfumes($conn, $order_id) {
         
         .stat-card {
             background: white;
-            padding: 12px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            border-top: 3px solid #3498db;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: #e0c42aff solid 2px;
         }
         
         .stat-card h3 {
-            color: #666;
-            font-size: 10px;
+            color: #000000ff;
+            font-size: 14px;
             text-transform: uppercase;
-            margin-bottom: 6px;
-            font-weight: 600;
+            margin-bottom: 10px;
         }
         
         .stat-card .value {
-            color: #333;
-            font-size: 20px;
+            color: #000000ff;
+            font-size: 32px;
             font-weight: bold;
         }
         
         .stat-card.purple {
-            border-top-color: #9b59b6;
+            border-top-color: #e0c42aff;
         }
         
         .stat-card.purple .value {
-            color: #9b59b6;
+            color: #000000ff;
         }
         
         .stat-card.orange {
-            border-top-color: #f39c12;
+            border-top-color: #e0c42aff;
         }
         
         .stat-card.orange .value {
-            color: #f39c12;
+            color: #000000ff;
         }
         
         .stat-card.green {
-            border-top-color: #27ae60;
+            border-top-color: #e0c42aff;
         }
         
         .stat-card.green .value {
-            color: #27ae60;
+            color: #000000ff;
         }
         
         .stat-card.red {
-            border-top-color: #e74c3c;
+            border-top-color: #e0c42aff;
         }
         
         .stat-card.red .value {
-            color: #e74c3c;
+            color: #000000ff;
         }
         
         .content-grid {
@@ -237,17 +366,18 @@ function getCustomPerfumes($conn, $order_id) {
         
         .section {
             background: white;
-            padding: 25px;
+            padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: #e0c42aff solid 2px;
         }
         
         .section h2 {
             color: #333;
             margin-bottom: 20px;
-            font-size: 18px;
+            font-size: 20px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
+            border-bottom: 2px solid #e0c42aff;
         }
         
         .table-responsive {
@@ -262,6 +392,7 @@ function getCustomPerfumes($conn, $order_id) {
         
         .data-table thead {
             background: #f8f9fa;
+            border-bottom: #e0c42aff solid 2px;
         }
         
         .data-table th {
@@ -269,13 +400,14 @@ function getCustomPerfumes($conn, $order_id) {
             font-weight: 600;
             padding: 12px;
             text-align: right;
-            border-bottom: 2px solid #e0e0e0;
+            border-bottom: #e0c42aff solid 2px;
+            background: #ffffffff;
         }
         
         .data-table td {
             padding: 12px;
-            border-bottom: 1px solid #e0e0e0;
-            color: #666;
+            border-bottom: 1px solid #eee;
+            color: #000000ff;
         }
         
         .data-table tr:hover {
@@ -344,14 +476,14 @@ function getCustomPerfumes($conn, $order_id) {
         .user-count .number {
             font-size: 28px;
             font-weight: bold;
-            color: #667eea;
+            color: #e0c42aff;
         }
         
         .tabs {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
-            border-bottom: 2px solid #f0f0f0;
+            border-bottom: 2px solid #e0c42aff;
         }
         
         .tab {
@@ -366,8 +498,8 @@ function getCustomPerfumes($conn, $order_id) {
         }
         
         .tab.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
+            color: #000000ff;
+            border-bottom-color: #e0c42aff;
         }
         
         /* Additional styles for expandable rows */
@@ -407,7 +539,7 @@ function getCustomPerfumes($conn, $order_id) {
             background: white;
             border-radius: 8px;
             padding: 15px;
-            border-left: 4px solid #3498db;
+            border-left: 4px solid #e0c42aff;
         }
         
         .detail-section {
@@ -536,7 +668,7 @@ function getCustomPerfumes($conn, $order_id) {
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            border-bottom: 2px solid #f0f0f0;
+            border-bottom: 2px solid #e0c42aff;
             padding-bottom: 15px;
         }
         
@@ -576,12 +708,12 @@ function getCustomPerfumes($conn, $order_id) {
         
         .modal-search input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #e0c42aff;
         }
         
         .modal-search button {
-            background: #667eea;
-            color: white;
+            background: #e0c42aff;
+            color: #000000;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
@@ -591,7 +723,7 @@ function getCustomPerfumes($conn, $order_id) {
         }
         
         .modal-search button:hover {
-            background: #5568d3;
+            background: #c9ad26;
         }
         
         .products-grid {
@@ -704,12 +836,12 @@ function getCustomPerfumes($conn, $order_id) {
         }
         
         .btn-edit {
-            background: #667eea;
-            color: white;
+            background: #e0c42aff;
+            color: #000000;
         }
         
         .btn-edit:hover {
-            background: #5568d3;
+            background: #c9ad26;
         }
         
         .btn-delete {
@@ -746,20 +878,20 @@ function getCustomPerfumes($conn, $order_id) {
         .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #e0c42aff;
+            box-shadow: 0 0 0 3px rgba(224, 196, 42, 0.1);
         }
         
         .image-preview {
             width: 100%;
             max-width: 200px;
             height: 200px;
-            border: 2px dashed #667eea;
+            border: 2px dashed #e0c42aff;
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #f0f7ff;
+            background: #fffef0;
             margin-bottom: 15px;
             overflow: hidden;
         }
@@ -779,8 +911,8 @@ function getCustomPerfumes($conn, $order_id) {
         .file-input-label {
             display: inline-block;
             padding: 8px 16px;
-            background: #667eea;
-            color: white;
+            background: #e0c42aff;
+            color: #000000;
             border-radius: 5px;
             cursor: pointer;
             font-weight: 600;
@@ -789,7 +921,7 @@ function getCustomPerfumes($conn, $order_id) {
         }
         
         .file-input-label:hover {
-            background: #5568d3;
+            background: #c9ad26;
         }
         
         .form-group input[type="file"] {
@@ -808,7 +940,7 @@ function getCustomPerfumes($conn, $order_id) {
         .edit-form {
             display: none;
             background: white;
-            border: 2px solid #667eea;
+            border: 2px solid #e0c42aff;
             border-radius: 8px;
             padding: 20px;
             margin-top: 15px;
@@ -862,7 +994,7 @@ function getCustomPerfumes($conn, $order_id) {
         
         .spinner {
             border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
+            border-top: 3px solid #e0c42aff;
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -919,6 +1051,33 @@ function getCustomPerfumes($conn, $order_id) {
                 grid-template-columns: repeat(2, 1fr);
             }
             
+            .date-filter-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .date-filter-buttons {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            
+            .date-filter-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            
+            .custom-date-inputs {
+                flex-wrap: wrap;
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .date-range-display {
+                margin-left: 0;
+                width: 100%;
+                text-align: center;
+            }
+            
             .data-table {
                 font-size: 12px;
             }
@@ -927,6 +1086,204 @@ function getCustomPerfumes($conn, $order_id) {
             .data-table td {
                 padding: 8px;
             }
+        }
+        
+        /* Development Tools Section */
+        .dev-tools-section {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border: 2px solid #e74c3c;
+        }
+        
+        .dev-tools-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            color: white;
+        }
+        
+        .dev-tools-header h2 {
+            color: #e74c3c;
+            margin: 0;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .dev-tools-header .toggle-icon {
+            color: white;
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .dev-tools-header .toggle-icon.expanded {
+            transform: rotate(180deg);
+        }
+        
+        .dev-tools-content {
+            display: none;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .dev-tools-content.show {
+            display: block;
+        }
+        
+        .dev-warning {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid #e74c3c;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        
+        .dev-warning h4 {
+            color: #e74c3c;
+            margin: 0 0 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .dev-warning p {
+            margin: 0;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .dev-tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .dev-tool-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .dev-tool-card h4 {
+            color: white;
+            margin: 0 0 10px 0;
+            font-size: 16px;
+        }
+        
+        .dev-tool-card p {
+            color: rgba(255,255,255,0.7);
+            font-size: 13px;
+            margin: 0 0 15px 0;
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+        }
+        
+        .btn-danger:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Reset confirmation modal */
+        .reset-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .reset-modal.show {
+            display: flex;
+        }
+        
+        .reset-modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .reset-modal-content h3 {
+            color: #e74c3c;
+            margin: 0 0 20px 0;
+            font-size: 24px;
+        }
+        
+        .reset-modal-content p {
+            color: #333;
+            margin: 0 0 20px 0;
+            line-height: 1.6;
+        }
+        
+        .reset-modal-content .confirmation-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .reset-modal-content .confirmation-input:focus {
+            outline: none;
+            border-color: #e74c3c;
+        }
+        
+        .reset-modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .btn-cancel {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .btn-cancel:hover {
+            background: #7f8c8d;
         }
     </style>
 </head>
@@ -943,27 +1300,50 @@ function getCustomPerfumes($conn, $order_id) {
             </div>
         </div>
         
+        <!-- Date Range Filter -->
+        <div class="date-filter-container">
+            <label>📅 Date Range:</label>
+            <div class="date-filter-buttons">
+                <button class="date-filter-btn" data-range="today" onclick="setDateRange('today')">Today</button>
+                <button class="date-filter-btn active" data-range="7days" onclick="setDateRange('7days')">Last 7 Days</button>
+                <button class="date-filter-btn" data-range="30days" onclick="setDateRange('30days')">Last 30 Days</button>
+                <button class="date-filter-btn" data-range="this-month" onclick="setDateRange('this-month')">This Month</button>
+                <button class="date-filter-btn" data-range="prev-month" onclick="setDateRange('prev-month')">Previous Month</button>
+                <button class="date-filter-btn" data-range="custom" onclick="setDateRange('custom')">Custom</button>
+            </div>
+            <div class="custom-date-inputs" id="customDateInputs">
+                <input type="date" id="dateFrom" />
+                <span>to</span>
+                <input type="date" id="dateTo" />
+                <button class="apply-date-btn" onclick="applyCustomDateRange()">Apply</button>
+            </div>
+            <div class="date-range-display" id="dateRangeDisplay">
+                Showing: Last 7 Days
+            </div>
+        </div>
+        
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner-large"></div>
+        </div>
+        
         <!-- Main Statistics -->
         <div class="statistics">
             <div class="stat-card" style="cursor: pointer;" onclick="showAllOrders()">
-                <h3>Total Orders</h3>
-                <div class="value"><?php echo $total_orders; ?></div>
+                <h3>🛒 Total Orders</h3>
+                <div class="value" id="statTotalOrders"><?php echo $total_orders; ?></div>
             </div>
-            <div class="stat-card" style="border-right-color: #e74c3c; cursor: pointer;" onclick="filterByStatus('pending')">
-                <h3>Pending Orders</h3>
-                <div class="value" style="color: #e74c3c;"><?php echo $pending_orders; ?></div>
+            <div class="stat-card" style="border-right-color:  #e0c42aff; cursor: pointer;" onclick="filterByStatus('pending')">
+                <h3>⏳ Pending Orders</h3>
+                <div class="value" id="statPendingOrders" style="color: #e74c3c;"><?php echo $pending_orders; ?></div>
             </div>
-            <div class="stat-card" style="border-right-color: #27ae60; cursor: pointer;" onclick="filterByStatus('completed')">
-                <h3>Completed Orders</h3>
-                <div class="value" style="color: #27ae60;"><?php echo $completed_orders; ?></div>
+            <div class="stat-card" style="border-right-color:  #e0c42aff; cursor: pointer;" onclick="filterByStatus('completed')">
+                <h3>✅ Completed Orders</h3>
+                <div class="value" id="statCompletedOrders" style="color: #27ae60;"><?php echo $completed_orders; ?></div>
             </div>
             <div class="stat-card orange">
                 <h3>Total Revenue</h3>
-                <div class="value">$<?php echo number_format($total_revenue, 2); ?></div>
-            </div>
-            <div class="stat-card green">
-                <h3>Total Customers</h3>
-                <div class="value"><?php echo $total_customers; ?></div>
+                <div class="value" id="statTotalRevenue">$<?php echo number_format($total_revenue, 2); ?></div>
             </div>
             <div class="stat-card purple" onclick="openProductsModal()" style="cursor: pointer;">
                 <h3>Total Products</h3>
@@ -1037,7 +1417,7 @@ function getCustomPerfumes($conn, $order_id) {
                                                 <div class="detail-section">
                                                     <h4>🛍️ Ordered Products</h4>
                                                     <div class="items-list" id="items-<?php echo $order['order_id']; ?>">
-                                                        <div style="padding: 10px; color: #999; text-align: center;">
+                                                        <div style="padding: 10px; color: #000000ff; text-align: center;">
                                                             Loading...
                                                         </div>
                                                     </div>
@@ -1070,17 +1450,17 @@ function getCustomPerfumes($conn, $order_id) {
                     $employees = count(array_filter($all_users, fn($u) => $u['role'] === 'employee'));
                     $customers = count(array_filter($all_users, fn($u) => $u['role'] === 'customer'));
                 ?>
-                <div class="user-count">
-                    <h4>Admins</h4>
-                    <div class="number" style="color: #1565c0;"><?php echo $admins; ?></div>
+                <div class="user-count" style="cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;" onclick="showUsersByRole('customer')" onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
+                    <h4>👤 Customers</h4>
+                    <div class="number" style="color: #2e7d32;"><?php echo $customers; ?></div>
                 </div>
-                <div class="user-count">
-                    <h4>Employees</h4>
+                <div class="user-count" style="cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;" onclick="showUsersByRole('employee')" onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
+                    <h4>👷 Employees</h4>
                     <div class="number" style="color: #6a1b9a;"><?php echo $employees; ?></div>
                 </div>
-                <div class="user-count">
-                    <h4>Customers</h4>
-                    <div class="number" style="color: #2e7d32;"><?php echo $customers; ?></div>
+                <div class="user-count" style="cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;" onclick="showUsersByRole('admin')" onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
+                    <h4>👑 Admins</h4>
+                    <div class="number" style="color: #1565c0;"><?php echo $admins; ?></div>
                 </div>
             </div>
         </div>
@@ -1146,7 +1526,293 @@ function getCustomPerfumes($conn, $order_id) {
         </div>
     </div>
     
+    <!-- Users by Role Modal -->
+    <div id="usersModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="usersModalTitle">👥 Users</h2>
+                <button class="modal-close" onclick="closeUsersModal()">×</button>
+            </div>
+            <div class="modal-search">
+                <input type="text" id="userSearch" placeholder="Search users by name, email..." onkeyup="filterUsers()">
+                <button onclick="clearUserSearch()">Clear</button>
+            </div>
+            <div class="table-responsive">
+                <table class="data-table" id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Created Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Development Tools Section -->
+    <div class="dev-tools-section">
+        <div class="dev-tools-header" onclick="toggleDevTools()">
+            <h2>🛠️ Development Tools</h2>
+            <span class="toggle-icon" id="devToolsToggle">▼</span>
+        </div>
+        <div class="dev-tools-content" id="devToolsContent">
+            <div class="dev-warning">
+                <h4>⚠️ Warning: Development Use Only</h4>
+                <p>These tools are for development and testing purposes only. They perform destructive operations that cannot be undone. Do NOT use in production environments!</p>
+            </div>
+            <div class="dev-tools-grid">
+                <div class="dev-tool-card">
+                    <h4>🗑️ Reset All Orders</h4>
+                    <p>Deletes all orders, order items, and custom perfumes. Resets auto-increment IDs for clean testing.</p>
+                    <button class="btn-danger" onclick="showResetModal()">
+                        🗑️ Reset All Orders
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Reset Confirmation Modal -->
+    <div class="reset-modal" id="resetModal">
+        <div class="reset-modal-content">
+            <h3>⚠️ Confirm Reset All Orders</h3>
+            <p>
+                This will permanently delete:<br>
+                • All orders<br>
+                • All order items<br>
+                • All custom perfumes and their components<br><br>
+                <strong>This action cannot be undone!</strong>
+            </p>
+            <p>Type <strong>DELETE ALL ORDERS</strong> to confirm:</p>
+            <input type="text" class="confirmation-input" id="resetConfirmInput" placeholder="Type confirmation here...">
+            <div class="reset-modal-buttons">
+                <button class="btn-cancel" onclick="closeResetModal()">Cancel</button>
+                <button class="btn-danger" id="resetOrdersBtn" onclick="confirmResetOrders()">
+                    🗑️ Reset All Orders
+                </button>
+            </div>
+        </div>
+    </div>
+    </div>
+    
     <script>
+        // Date Range Filter Variables
+        let currentDateRange = '7days';
+        let currentDateFrom = null;
+        let currentDateTo = null;
+        
+        // Initialize date filter on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            setDateRange('7days');
+        });
+        
+        function setDateRange(range) {
+            currentDateRange = range;
+            const today = new Date();
+            let dateFrom, dateTo;
+            
+            // Update active button
+            document.querySelectorAll('.date-filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.range === range) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Show/hide custom date inputs
+            const customInputs = document.getElementById('customDateInputs');
+            if (range === 'custom') {
+                customInputs.classList.add('show');
+                return; // Don't fetch yet, wait for Apply button
+            } else {
+                customInputs.classList.remove('show');
+            }
+            
+            // Calculate date range
+            switch(range) {
+                case 'today':
+                    dateFrom = formatDate(today);
+                    dateTo = formatDate(today);
+                    updateDateRangeDisplay('Today');
+                    break;
+                case '7days':
+                    dateFrom = formatDate(new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000));
+                    dateTo = formatDate(today);
+                    updateDateRangeDisplay('Last 7 Days');
+                    break;
+                case '30days':
+                    dateFrom = formatDate(new Date(today.getTime() - 29 * 24 * 60 * 60 * 1000));
+                    dateTo = formatDate(today);
+                    updateDateRangeDisplay('Last 30 Days');
+                    break;
+                case 'this-month':
+                    dateFrom = formatDate(new Date(today.getFullYear(), today.getMonth(), 1));
+                    dateTo = formatDate(today);
+                    updateDateRangeDisplay('This Month');
+                    break;
+                case 'prev-month':
+                    const prevMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+                    const lastDayPrevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+                    dateFrom = formatDate(prevMonth);
+                    dateTo = formatDate(lastDayPrevMonth);
+                    updateDateRangeDisplay('Previous Month');
+                    break;
+            }
+            
+            currentDateFrom = dateFrom;
+            currentDateTo = dateTo;
+            fetchFilteredStats(dateFrom, dateTo);
+        }
+        
+        function applyCustomDateRange() {
+            const dateFrom = document.getElementById('dateFrom').value;
+            const dateTo = document.getElementById('dateTo').value;
+            
+            if (!dateFrom || !dateTo) {
+                alert('Please select both From and To dates');
+                return;
+            }
+            
+            if (new Date(dateFrom) > new Date(dateTo)) {
+                alert('From date cannot be after To date');
+                return;
+            }
+            
+            currentDateFrom = dateFrom;
+            currentDateTo = dateTo;
+            updateDateRangeDisplay(`${dateFrom} to ${dateTo}`);
+            fetchFilteredStats(dateFrom, dateTo);
+        }
+        
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+        
+        function updateDateRangeDisplay(text) {
+            document.getElementById('dateRangeDisplay').textContent = `Showing: ${text}`;
+        }
+        
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.add('show');
+        }
+        
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('show');
+        }
+        
+        function fetchFilteredStats(dateFrom, dateTo) {
+            showLoading();
+            
+            fetch(`../perfdb/get_dashboard_stats.php?date_from=${dateFrom}&date_to=${dateTo}`)
+                .then(response => {
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        updateStatCards(data.stats);
+                        updateOrdersTable(data.orders);
+                    } else {
+                        console.error('Error fetching stats:', data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                })
+                .finally(() => {
+                    hideLoading();
+                });
+        }
+        
+        function updateStatCards(stats) {
+            document.getElementById('statTotalOrders').textContent = stats.total_orders;
+            document.getElementById('statPendingOrders').textContent = stats.pending_orders;
+            document.getElementById('statCompletedOrders').textContent = stats.completed_orders;
+            document.getElementById('statTotalRevenue').textContent = '$' + parseFloat(stats.total_revenue).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }
+        
+        function updateOrdersTable(orders) {
+            const tbody = document.querySelector('.section .data-table tbody');
+            if (!tbody) return;
+            
+            if (!orders || orders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px; color: #999;">No orders found in this date range</td></tr>';
+                return;
+            }
+            
+            let html = '';
+            orders.forEach(order => {
+                const statusClass = order.status === 'pending' ? 'status-pending' : 
+                                   order.status === 'completed' ? 'status-completed' : 'status-cancelled';
+                const statusText = order.status.charAt(0).toUpperCase() + order.status.slice(1);
+                const orderDate = new Date(order.created_at).toLocaleDateString();
+                
+                html += `
+                    <tr class="order-row" onclick="toggleOrderDetails(${order.order_id})">
+                        <td>
+                            <span class="expand-icon" id="icon-${order.order_id}">▼</span>
+                            #${order.order_id}
+                        </td>
+                        <td>${escapeHtml(order.first_name + ' ' + order.last_name)}</td>
+                        <td>${orderDate}</td>
+                        <td>$${parseFloat(order.total_amount).toFixed(2)}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    </tr>
+                    <tr class="details-row" id="details-${order.order_id}">
+                        <td colspan="5">
+                            <div class="details-content">
+                                <div class="order-details-box">
+                                    <div class="detail-section">
+                                        <h4>📋 Customer Information</h4>
+                                        <div class="customer-info">
+                                            <div class="customer-info-item">
+                                                <span class="customer-info-label">Name:</span>
+                                                <span class="customer-info-value">${escapeHtml(order.first_name + ' ' + order.last_name)}</span>
+                                            </div>
+                                            <div class="customer-info-item">
+                                                <span class="customer-info-label">Email:</span>
+                                                <span class="customer-info-value">${escapeHtml(order.email || '-')}</span>
+                                            </div>
+                                            <div class="customer-info-item">
+                                                <span class="customer-info-label">Phone:</span>
+                                                <span class="customer-info-value">${escapeHtml(order.phone || '-')}</span>
+                                            </div>
+                                            <div class="customer-info-item">
+                                                <span class="customer-info-label">Address:</span>
+                                                <span class="customer-info-value">${escapeHtml(order.address || '-')}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="detail-section">
+                                        <h4>📦 Order Items</h4>
+                                        <div class="items-list" id="items-${order.order_id}">
+                                            <div class="loading">Loading items...</div>
+                                        </div>
+                                    </div>
+                                    <div class="detail-section" id="custom-section-${order.order_id}" style="display: none;">
+                                        <h4>🎨 Custom Mix</h4>
+                                        <div class="items-list" id="custom-${order.order_id}">
+                                            <div style="padding: 10px; color: #999; text-align: center;">Loading...</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = html;
+        }
+        
         // Track which orders are expanded
         const expandedOrders = {};
 
@@ -1213,6 +1879,12 @@ function getCustomPerfumes($conn, $order_id) {
         function displayOrderItems(orderId, items) {
             const container = document.getElementById(`items-${orderId}`);
             
+            // Safety check - if container doesn't exist, log error and return
+            if (!container) {
+                console.error(`Container not found: items-${orderId}`);
+                return;
+            }
+            
             if (!items || items.length === 0) {
                 container.innerHTML = '<div style="padding: 10px; color: #999;">No products</div>';
                 return;
@@ -1222,11 +1894,13 @@ function getCustomPerfumes($conn, $order_id) {
             items.forEach(item => {
                 const lineTotal = (item.quantity * item.price).toFixed(2);
                 const volume = item.volume_ml ? `${item.volume_ml}ml` : '50ml';
+                const gender = item.gender_name ? ` | ${item.gender_name}` : '';
+                const brand = item.brand_name ? ` (${item.brand_name})` : '';
                 html += `
                     <div class="item">
                         <div style="flex: 1;">
-                            <div class="item-name">${htmlEscape(item.p_name || 'Unknown Product')}</div>
-                            <div class="item-qty">Size: ${volume} | Qty: ${item.quantity} | Price: $${parseFloat(item.price).toFixed(2)}</div>
+                            <div class="item-name">${htmlEscape(item.p_name || 'Unknown Product')}${brand}</div>
+                            <div class="item-qty">Size: ${volume} | Qty: ${item.quantity} | Price: $${parseFloat(item.price).toFixed(2)}${gender}</div>
                         </div>
                         <div class="item-price">$${lineTotal}</div>
                     </div>
@@ -1240,6 +1914,12 @@ function getCustomPerfumes($conn, $order_id) {
             const section = document.getElementById(`custom-section-${orderId}`);
             const container = document.getElementById(`custom-${orderId}`);
             
+            // Safety check - if elements don't exist, log error and return
+            if (!section || !container) {
+                console.error(`Custom section not found: custom-section-${orderId} or custom-${orderId}`);
+                return;
+            }
+            
             if (!customItems || customItems.length === 0) {
                 section.style.display = 'none';
                 return;
@@ -1251,14 +1931,14 @@ function getCustomPerfumes($conn, $order_id) {
             customItems.forEach(item => {
                 const totalMl = parseFloat(item.oil_amount_grams) || 0;
                 
-                // Parse types_detail: "type_name|percent,type_name|percent,..."
+                // Parse types_detail: "product_name - gender (percent%), ..."
                 let ingredientsHtml = '';
                 if (item.types_detail && item.types_detail.trim()) {
                     const typesList = item.types_detail.split(',').filter(t => t.trim()).map(t => {
-                        const [typeName, percent] = t.split('|');
-                        const ml = Math.round((parseFloat(percent) / 100) * totalMl * 100) / 100;
+                        // Format: "Product Name - Gender (XX%)"
+                        const parts = t.trim();
                         return `<span style="background: #e8f4f8; padding: 4px 8px; border-radius: 4px; font-size: 12px; margin: 3px; display: inline-block; border-left: 3px solid #3498db;">
-                            <strong>${htmlEscape(typeName || 'Unknown')}</strong>: ${percent}% (${ml}ml)
+                            <strong>${htmlEscape(parts)}</strong>
                         </span>`;
                     }).join('');
                     ingredientsHtml = `<div style="margin-top: 8px; padding: 8px; background: white; border-radius: 4px;">
@@ -1303,6 +1983,86 @@ function getCustomPerfumes($conn, $order_id) {
         function closeProductsModal() {
             const modal = document.getElementById('productsModal');
             modal.classList.remove('show');
+        }
+        
+        // Users Modal Functions
+        const allUsersData = <?php echo json_encode($all_users); ?>;
+        
+        function showUsersByRole(role) {
+            const modal = document.getElementById('usersModal');
+            const titleEl = document.getElementById('usersModalTitle');
+            const tbody = document.getElementById('usersTableBody');
+            
+            // Set title with appropriate icon
+            const roleIcons = {
+                'customer': '👤 Customers',
+                'employee': '👷 Employees',
+                'admin': '👑 Admins'
+            };
+            titleEl.textContent = roleIcons[role] || '👥 Users';
+            
+            // Filter users by role
+            const filteredUsers = allUsersData.filter(u => u.role === role);
+            
+            // Display users
+            displayUsersInModal(filteredUsers);
+            
+            // Show modal
+            modal.classList.add('show');
+        }
+        
+        function displayUsersInModal(users) {
+            const tbody = document.getElementById('usersTableBody');
+            
+            if (!users || users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px; color: #999;">No users found</td></tr>';
+                return;
+            }
+            
+            let html = '';
+            users.forEach(user => {
+                const name = (user.first_name || '') + ' ' + (user.last_name || '');
+                const email = user.email || '-';
+                const phone = user.phone || '-';
+                const createdDate = user.created_at ? new Date(user.created_at).toLocaleDateString() : '-';
+                
+                html += `
+                    <tr>
+                        <td>${escapeHtml(name.trim())}</td>
+                        <td>${escapeHtml(email)}</td>
+                        <td>${escapeHtml(phone)}</td>
+                        <td>${createdDate}</td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = html;
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function closeUsersModal() {
+            const modal = document.getElementById('usersModal');
+            modal.classList.remove('show');
+        }
+        
+        function filterUsers() {
+            const searchTerm = document.getElementById('userSearch').value.toLowerCase();
+            const rows = document.querySelectorAll('#usersTableBody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        }
+        
+        function clearUserSearch() {
+            document.getElementById('userSearch').value = '';
+            filterUsers();
         }
         
         function loadProducts() {
@@ -1584,9 +2344,13 @@ function getCustomPerfumes($conn, $order_id) {
         
         // Close modal when clicking outside
         window.onclick = function(event) {
-            const modal = document.getElementById('productsModal');
-            if (event.target == modal) {
+            const productsModal = document.getElementById('productsModal');
+            const usersModal = document.getElementById('usersModal');
+            if (event.target == productsModal) {
                 closeProductsModal();
+            }
+            if (event.target == usersModal) {
+                closeUsersModal();
             }
         }
 
@@ -1642,6 +2406,83 @@ function getCustomPerfumes($conn, $order_id) {
             });
             console.log(`Showing all ${rows.length} orders`);
         }
+        
+        // ============================================
+        // DEVELOPMENT TOOLS - Reset Orders Feature
+        // ============================================
+        
+        function toggleDevTools() {
+            const content = document.getElementById('devToolsContent');
+            const icon = document.getElementById('devToolsToggle');
+            content.classList.toggle('show');
+            icon.classList.toggle('expanded');
+        }
+        
+        function showResetModal() {
+            document.getElementById('resetModal').classList.add('show');
+            document.getElementById('resetConfirmInput').value = '';
+            document.getElementById('resetConfirmInput').focus();
+        }
+        
+        function closeResetModal() {
+            document.getElementById('resetModal').classList.remove('show');
+        }
+        
+        function confirmResetOrders() {
+            const input = document.getElementById('resetConfirmInput').value;
+            
+            if (input !== 'DELETE ALL ORDERS') {
+                alert('❌ Please type "DELETE ALL ORDERS" exactly to confirm.');
+                return;
+            }
+            
+            const btn = document.getElementById('resetOrdersBtn');
+            btn.disabled = true;
+            btn.innerHTML = '⏳ Resetting...';
+            
+            fetch('../perfdb/reset_orders_dev.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ confirm: 'RESET_ALL_ORDERS' })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    closeResetModal();
+                    
+                    let message = '✅ All orders have been reset successfully!\n\n';
+                    message += 'Deleted records:\n';
+                    for (const [table, count] of Object.entries(data.deleted_records)) {
+                        message += `  • ${table}: ${count} records\n`;
+                    }
+                    message += `\nTimestamp: ${data.timestamp}`;
+                    
+                    alert(message);
+                    
+                    // Reload page to show updated stats
+                    window.location.reload();
+                } else {
+                    alert('❌ Error: ' + (data.error || 'Reset failed'));
+                    btn.disabled = false;
+                    btn.innerHTML = '🗑️ Reset All Orders';
+                }
+            })
+            .catch(err => {
+                console.error('Reset error:', err);
+                alert('❌ Error: ' + err.message);
+                btn.disabled = false;
+                btn.innerHTML = '🗑️ Reset All Orders';
+            });
+        }
+        
+        // Close reset modal when clicking outside
+        document.getElementById('resetModal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeResetModal();
+            }
+        });
     </script>
     <script src="/pefumeppp/assets/keep-session-alive.js"></script>
 </body>

@@ -6,7 +6,8 @@
 
 body {
     font-family: 'Georgia', serif;
-    background-color: #ffffff;
+    background: url('../images/loginbackground.jpg') no-repeat center center fixed;
+    background-size: cover;
     color: #333;
     min-height: 100vh;
     display: flex;
@@ -56,44 +57,6 @@ body {
 .home-btn:hover svg {
     transform: scale(1.1);
 }
-
-/* الخلفية المليانة بالنجوم */
-.stars {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    pointer-events: none; /* ما تعيق الضغط */
-    z-index: -1; /* وراء المحتوى */
-}
-
-.stars span {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background: #000; /* لون النجوم (أسود) */
-    border-radius: 50%;
-    animation: twinkle 2s infinite alternate ease-in-out;
-    opacity: 0.8;
-}
-
-@keyframes twinkle {
-    0% { 
-        opacity: 0.3; 
-        transform: scale(0.7); 
-    }
-    50% { 
-        opacity: 1; 
-        transform: scale(1.3); 
-    }
-    100% { 
-        opacity: 0.3; 
-        transform: scale(0.7); 
-    }
-}
-
 /* صفحة تسجيل الدخول */
 .login-container {
     z-index: 10;

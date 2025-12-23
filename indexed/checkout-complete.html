@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>إتمام الطلب - السجل الذهبي</title>
+    <link rel="icon" type="image/png" href="../images/Untitled_design-removebg-preview.png">
     <style>
         * {
             margin: 0;
@@ -13,7 +14,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #000;
+            background:linear-gradient(1 35deg, #ffa73c 0%, #ffffff 100%);
             color: #f5f5f5;
             min-height: 100vh;
             display: flex;
@@ -24,7 +25,7 @@
 
         .container {
             max-width: 500px;
-            background: #111;
+            background:linear-gradient(1 35deg, #fcca00 0%, #ffffff 100%);
             border: 2px solid #D4AF37;
             border-radius: 12px;
             padding: 40px 30px;
@@ -52,7 +53,7 @@
         }
 
         .order-info {
-            background: #0a0a0a;
+            background: #000000;
             border: 1px solid #D4AF37;
             border-radius: 8px;
             padding: 20px;
@@ -155,59 +156,48 @@
         .processing-section.hidden {
             display: none;
         }
-
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
     </style>
 </head>
 <body>
-    <div class="stars"></div>
 
     <div class="container">
         <!-- Processing State -->
         <div class="processing-section" id="processingSection">
             <div class="loading-spinner"></div>
-            <h1>جاري معالجة طلبك...</h1>
-            <p class="status-text">يتم إتمام طلبك الآن. يرجى الانتظار قليلاً.</p>
+            <h1>Your request is being processed...</h1>
+            <p class="status-text">Please wait a moment while we complete your order.</p>
         </div>
 
         <!-- Success State -->
         <div class="success-section" id="successSection">
             <div class="status-icon">✅</div>
-            <h1>تم إنشاء الطلب بنجاح!</h1>
-            <p class="status-text">شكراً لك على شرائك. سيتم التواصل معك قريباً بخصوص طلبك.</p>
+            <h1>Order Created Successfully!</h1>
+            <p class="status-text">Thank you for your purchase. We will contact you soon regarding your order.</p>
             
             <div class="order-info" id="orderInfo">
                 <div class="info-row">
-                    <span class="info-label">رقم الطلب:</span>
+                    <span class="info-label">Order Number:</span>
                     <span class="info-value" id="orderId">-</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">الإجمالي:</span>
+                    <span class="info-label">Total:</span>
                     <span class="info-value" id="totalAmount">-</span>
                 </div>
             </div>
 
             <div class="button-group">
-                <button class="btn" onclick="goHome()">العودة للرئيسية</button>
-                <button class="btn btn-secondary" onclick="viewDashboard()">عرض الطلب</button>
+                <button class="btn" onclick="goHome()">Go Home</button>
+                <button class="btn btn-secondary" onclick="viewDashboard()">View Order</button>
             </div>
         </div>
 
         <!-- Error State -->
         <div class="error-section" id="errorSection">
-            <h3>حدث خطأ</h3>
+            <h3>An error occurred</h3>
             <p id="errorMessage"></p>
             <div class="button-group" style="margin-top: 15px;">
-                <button class="btn" onclick="retryCheckout()">إعادة محاولة</button>
-                <button class="btn btn-secondary" onclick="goHome()">الرجوع للرئيسية</button>
+                <button class="btn" onclick="retryCheckout()">Retry</button>
+                <button class="btn btn-secondary" onclick="goHome()">Go Home</button>
             </div>
         </div>
     </div>
@@ -234,11 +224,11 @@
                     // Clear signup flag
                     sessionStorage.removeItem('justSignedUp');
                 } else {
-                    showError(data.error || 'فشل إنشاء الطلب');
+                    showError(data.error || 'Order creation failed. Please try again.');
                 }
             } catch (error) {
                 console.error('Checkout error:', error);
-                showError('حدث خطأ في المعالجة: ' + error.message);
+                showError('An error occurred during processing: ' + error.message);
             }
         }
 
@@ -266,46 +256,6 @@
         window.addEventListener('load', function() {
             performCheckout();
         });
-
-        // Create floating stars
-        function createFloatingStars() {
-            const starsContainer = document.querySelector('.stars');
-            const starCount = 20;
-            
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                const size = Math.random() * 2 + 1;
-                const duration = Math.random() * 3 + 2;
-                const delay = Math.random() * 3;
-                
-                star.style.cssText = `
-                    position: absolute;
-                    width: ${size}px;
-                    height: ${size}px;
-                    background: #D4AF37;
-                    border-radius: 50%;
-                    top: ${Math.random() * 100}%;
-                    left: ${Math.random() * 100}%;
-                    animation: twinkle ${duration}s infinite ${delay}s;
-                    box-shadow: 0 0 ${size * 2}px rgba(212, 175, 55, 0.8);
-                    opacity: 0.5;
-                `;
-                
-                starsContainer.appendChild(star);
-            }
-        }
-
-        // Add twinkle animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes twinkle {
-                0%, 100% { opacity: 0.3; }
-                50% { opacity: 1; }
-            }
-        `;
-        document.head.appendChild(style);
-
-        createFloatingStars();
     </script>
 </body>
 </html>

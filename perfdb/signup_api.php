@@ -1,13 +1,15 @@
 <?php
 // Customer/User Registration API
-// يسمح بتسجيل عملاء جدد أو موظفين حسب دورهم
+// Allows registration of new customers or employees based on their role
 header('Content-Type: application/json');
 session_start();
 require_once 'connect.php';
+require_once __DIR__ . '/../email/EmailNotification.php';
+require_once __DIR__ . '/../email/EmailTemplates.php';
 
-// التحقق من طريقة الطلب
+// Check request method
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['success' => false, 'error' => 'طريقة الطلب غير صحيحة']);
+    echo json_encode(['success' => false, 'error' => 'Invalid request method']);
     exit;
 }
 
@@ -39,12 +41,12 @@ if (empty($first_name) || empty($last_name) || empty($email) || empty($password)
 
 // التحقق من صيغة البريد الإلكتروني
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    throw new Exception('البريد الإلكتروني غير صحيح');
+    throw new Exception('The email is incorrect');
 }
 
 // التحقق من طول كلمة المرور
 if (strlen($password) < 6) {
-    throw new Exception('كلمة المرور يجب أن تكون 6 أحرف على الأقل');
+    throw new Exception('The password must be at least 6 characters long');
 }
 
 // السماح فقط بأدوار معينة
@@ -59,7 +61,21 @@ $check_stmt = $conn->prepare($check_query);
 $check_stmt->execute([':email' => $email]);
 
 if ($check_stmt->rowCount() > 0) {
-    throw new Exception('البريد الإلكتروني مسجل بالفعل');
+    throw new Exception('The email is already registered');
+}
+
+// التحقق من رقم الهاتف - يجب أن يكون 8 أرقام فقط
+if (!preg_match('/^\d{8}$/', $phone)) {
+    throw new Exception('The number is incorrect, please try again.');
+}
+
+// التحقق من عدم وجود رقم هاتف مكرر
+$check_phone_query = "SELECT profile_id FROM profiles WHERE phone = :phone";
+$check_phone_stmt = $conn->prepare($check_phone_query);
+$check_phone_stmt->execute([':phone' => $phone]);
+
+if ($check_phone_stmt->rowCount() > 0) {
+    throw new Exception('The number is incorrect, please try again.');
 }
     
     // تشفير كلمة المرور
@@ -198,20 +214,47 @@ if ($check_stmt->rowCount() > 0) {
         }
     }
     
+    // Send welcome email to new user
+    $emailSent = false;
+    try {
+        error_log("[Signup] Attempting to send welcome email to: {$email}");
+        $customerName = trim($first_name . ' ' . $last_name);
+        $emailTemplate = EmailTemplates::welcomeEmail($customerName, $email);
+        
+        $emailer = new EmailNotification();
+        $emailSent = $emailer->send(
+            $email,
+            $customerName,
+            $emailTemplate['subject'],
+            $emailTemplate['html'],
+            $emailTemplate['text']
+        );
+        
+        if ($emailSent) {
+            error_log("[Signup] Welcome email sent successfully to: {$email}");
+        } else {
+            error_log("[Signup] Failed to send welcome email: " . $emailer->getLastError());
+        }
+    } catch (Exception $emailError) {
+        error_log("[Signup] Email error: " . $emailError->getMessage());
+        // Don't fail signup if email fails
+    }
+    
     echo json_encode([
         'success' => true,
-        'message' => 'تم إنشاء الحساب بنجاح',
+        'message' => 'Account created successfully',
         'profile_id' => $profile_id,
         'auto_login' => true,
         'role' => $role,
-        'redirect' => 'login.html'
+        'redirect' => 'login.html',
+        'email_sent' => $emailSent
     ]);
     
 } catch (PDOException $e) {
     error_log("Signup Error: " . $e->getMessage());
-    echo json_encode(['success' => false, 'error' => 'حدث خطأ في قاعدة البيانات: ' . $e->getMessage()]);
+    echo json_encode(['success' => false, 'error' => 'Database error: ' . $e->getMessage()]);
 } catch (Exception $e) {
     error_log("Unexpected Signup Error: " . $e->getMessage());
-    echo json_encode(['success' => false, 'error' => 'حدث خطأ غير متوقع: ' . $e->getMessage()]);
+    echo json_encode(['success' => false, 'error' => 'Unexpected error: ' . $e->getMessage()]);
 }
 ?>

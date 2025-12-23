@@ -6,7 +6,7 @@ session_start();
 require_once 'connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['success' => false, 'error' => 'طريقة الطلب غير صحيحة']);
+    echo json_encode(['success' => false, 'error' => 'The request method is incorrect']);
     exit;
 }
 
@@ -15,7 +15,7 @@ $email = isset($input['email']) ? trim($input['email']) : '';
 $password = isset($input['password']) ? $input['password'] : '';
 
 if (empty($email) || empty($password)) {
-    echo json_encode(['success' => false, 'error' => 'البريد والرمز مطلوبان']);
+    echo json_encode(['success' => false, 'error' => 'Email and password are required']);
     exit;
 }
 
@@ -27,13 +27,13 @@ try {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
     if (!$user) {
-        echo json_encode(['success' => false, 'error' => 'البريد الإلكتروني أو الرمز غير صحيح']);
+        echo json_encode(['success' => false, 'error' => 'The email or code is incorrect']);
         exit;
     }
     
     // التحقق من صحة كلمة المرور
     if (!password_verify($password, $user['password'])) {
-        echo json_encode(['success' => false, 'error' => 'البريد الإلكتروني أو الرمز غير صحيح']);
+        echo json_encode(['success' => false, 'error' => 'The email or code is incorrect']);
         exit;
     }
     
@@ -200,6 +200,6 @@ try {
     
 } catch (PDOException $e) {
     error_log("Login Error: " . $e->getMessage());
-    echo json_encode(['success' => false, 'error' => 'حدث خطأ في الخادم: ' . $e->getMessage()]);
+    echo json_encode(['success' => false, 'error' => 'Server error: ' . $e->getMessage()]);
 }
 ?>

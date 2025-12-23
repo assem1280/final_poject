@@ -4,13 +4,19 @@
     box-sizing: border-box;
 }
 
+html {
+    overflow-x: hidden;
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: #ffffff;
+    background: url('../images/ChooseBakground.jpg') no-repeat center center fixed;
+    background-size: cover;
     color: #333333;
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
+    max-width: 100vw;
 }
 
 .home-btn {
@@ -91,9 +97,10 @@ body::after {
 
 .container {
     position: relative;
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 20px;
+    overflow-x: hidden;
 }
 .logo {
   position: fixed;         /* يثبت العنصر بالمكان المحدد */
@@ -266,18 +273,18 @@ body::after {
     overflow: hidden;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 15px rgb(0, 0, 0);
 }
 
 .perfume-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 10px 30px rgb(255, 255, 255);
 }
 
 .perfume-image-container {
     width: 100%;
     aspect-ratio: 1;
-    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -293,7 +300,7 @@ body::after {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, transparent 0%, rgba(212, 175, 55, 0.1) 100%);
+    background: rgb(255, 255, 255);
     opacity: 0;
     transition: opacity 0.3s ease;
 }
@@ -306,7 +313,7 @@ body::after {
     width: 70%;
     height: 70%;
     object-fit: contain;
-    filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
+    filter: drop-shadow(0 5px 15px rgba(255, 255, 255, 0.2));
 }
 
 .perfume-name {
@@ -337,7 +344,7 @@ body::after {
     width: 40px;
     height: 40px;
     margin: 0 auto 15px;
-    background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);
+    background:  #f39c12;
     border: none;
     border-radius: 50%;
     color: #000;
@@ -379,26 +386,6 @@ body::after {
     padding: 0 15px 15px;
 }
 
-.sparkle {
-    position: fixed;
-    bottom: 100px;
-    right: 40px;
-    opacity: 0.6;
-    animation: sparkle 2s ease-in-out infinite;
-    z-index: 5;
-}
-
-@keyframes sparkle {
-    0%, 100% {
-        opacity: 0.6;
-        transform: scale(1) rotate(0deg);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1.2) rotate(180deg);
-    }
-}
-
 @media (max-width: 768px) {
     .perfumes-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -436,16 +423,6 @@ body::after {
         width: 40px;
         height: 40px;
     }
-    
-    .sparkle {
-        bottom: 80px;
-        right: 20px;
-    }
-    
-    .sparkle svg {
-        width: 25px;
-        height: 25px;
-    }
 }
 
 @media (min-width: 1024px) {
@@ -466,36 +443,273 @@ body::after {
     }
 }
 
-.golden-stars {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  overflow: hidden;
-  z-index: -1;
-  pointer-events: none;
-}
+/* Extra mobile overrides to prevent horizontal overflow on small phones */
+@media (max-width: 480px) {
+  html, body { max-width: 100vw; overflow-x: hidden; }
 
-.golden-stars span {
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  background: #000000; /* لون النجوم */
-  border-radius: 50%;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3); /* توهج أصغر */
-  animation: twinkle 3s infinite ease-in-out;
-  opacity: 0.5; /* أخف */
-}
-
-@keyframes twinkle {
-  0%, 100% {
-    opacity: 0.3;        /* كان 0.2 → خفيف */
-    transform: scale(1); 
+  .logo {
+    top: 8px !important;
+    left: 8px !important;
+    height: auto !important;
   }
-  50% {
-    opacity: 0.9;        /* كان 1 → أخف */
-    transform: scale(1.25); /* كان 1.6 → أصغر */
+
+  .logo img {
+    width: 100px !important;
+    height: auto !important;
+    max-width: 36vw;
+  }
+
+  .home-btn {
+    position: fixed !important;
+    top: 12px !important;
+    left: 12px !important;
+    width: 44px !important;
+    height: 44px !important;
+    padding: 8px !important;
+    border-radius: 50% !important;
+    z-index: 1200 !important;
+  }
+
+  /* Compact category tabs and cards */
+  .category-tabs { margin: 60px 8px 20px 8px !important; gap: 8px !important; }
+  .tab-btn { padding: 8px 12px !important; font-size: 11px !important; }
+
+  .companies-grid, .perfumes-grid, .products-grid { padding: 6px !important; gap: 8px !important; }
+
+  .container { padding: 8px !important; }
+}
+
+/* Search Box Styles */
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 100;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 30px;
+  padding: 12px 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 400px;
+}
+
+.search-box .search-icon {
+  color: #333333;
+  stroke: #333333;
+  flex-shrink: 0;
+}
+
+.search-box input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #333333;
+  font-size: 16px;
+  font-family: 'Playfair Display', serif;
+  width: 100%;
+}
+
+.search-box input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 400px;
+  margin-top: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+  display: none;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+.search-results.active {
+  display: block;
+}
+
+.search-results .search-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.search-results .search-item:last-child {
+  border-bottom: none;
+}
+
+.search-results .search-item:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.search-results .search-item img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.search-results .search-item .item-info {
+  flex: 1;
+}
+
+.search-results .search-item .item-name {
+  color: #333333;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.search-results .search-item .item-price {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+}
+
+.search-results .no-results {
+  padding: 15px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+/* Did you mean suggestion styles */
+.search-results .did-you-mean {
+  padding: 10px;
+}
+
+.search-results .dym-label {
+  display: block;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 13px;
+  font-style: italic;
+  padding: 5px 10px;
+  margin-bottom: 5px;
+}
+
+.search-results .suggestion-item {
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 10px;
+  border: 1px dashed rgba(0, 0, 0, 0.2);
+}
+
+.search-results .suggestion-item:hover {
+  background: rgba(0, 0, 0, 0.08);
+  border-style: solid;
+}
+
+/* Responsive fixes for search */
+@media (max-width: 480px) {
+  .search-container {
+    padding: 0 10px;
+    margin-top: 60px;
+    margin-bottom: 10px;
+  }
+
+  .search-box {
+    padding: 8px 14px;
+    max-width: 100%;
+  }
+
+  .search-box input {
+    font-size: 14px;
+  }
+  
+  .search-results {
+    max-width: calc(100vw - 40px);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .container {
+    padding: 10px;
+  }
+
+  .category-tabs {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .companies-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    padding: 0 10px;
+  }
+
+  .company-btn {
+    padding: 15px 10px;
+    min-height: 80px;
+  }
+
+  .company-name {
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  .home-btn {
+    position: fixed !important;
+    top: 12px !important;
+    left: 12px !important;
+    width: 40px !important;
+    height: 40px !important;
+    padding: 8px !important;
+    border-radius: 50% !important;
+    z-index: 1200 !important;
+  }
+
+  .tab-btn {
+    padding: 8px 15px;
+    font-size: 11px;
+    gap: 5px;
+  }
+
+  .tab-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .perfumes-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    padding: 0 5px;
+  }
+
+  .perfume-card {
+    border-radius: 10px;
+  }
+
+  .perfume-image-container {
+    height: 120px;
+  }
+
+  .perfume-name {
+    font-size: 11px;
+    padding: 8px;
+  }
+
+  .add-to-cart-btn {
+    padding: 6px 10px;
+    font-size: 10px;
   }
 }
 

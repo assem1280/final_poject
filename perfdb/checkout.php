@@ -3,6 +3,7 @@
 header('Content-Type: application/json');
 session_start();
 require_once 'connect.php';
+require_once __DIR__ . '/../email/OrderNotificationService.php';
 
 $input = json_decode(file_get_contents('php://input'), true);
 
@@ -200,6 +201,15 @@ try {
     
     // Commit transaction
     $conn->commit();
+    
+    // Send order confirmation email (PENDING status)
+    try {
+        $emailSent = sendOrderNotification($order_id, 'pending', $conn);
+        error_log("[checkout] Order email notification sent: " . ($emailSent ? 'YES' : 'NO'));
+    } catch (Exception $emailError) {
+        // Don't fail the order if email fails, just log it
+        error_log("[checkout] Email notification error: " . $emailError->getMessage());
+    }
     
     echo json_encode([
         'success' => true,

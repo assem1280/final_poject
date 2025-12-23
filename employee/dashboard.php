@@ -19,50 +19,54 @@ require_once '../perfdb/connect.php';
 
 $profile_id = $_SESSION['profile_id'];
 
-// System Statistics
-// Total Orders
-$total_orders_query = "SELECT COUNT(*) as total FROM orders";
+// Default to today's date for employee dashboard
+$today = date('Y-m-d');
+
+// System Statistics - filtered by today's date
+// Total Orders (today)
+$total_orders_query = "SELECT COUNT(*) as total FROM orders WHERE DATE(created_at) = :today";
 $total_orders_stmt = $conn->prepare($total_orders_query);
-$total_orders_stmt->execute();
+$total_orders_stmt->execute([':today' => $today]);
 $total_orders_result = $total_orders_stmt->fetch(PDO::FETCH_ASSOC);
 $total_orders = $total_orders_result['total'];
 
-// Total Revenue
-$total_revenue_query = "SELECT SUM(total_amount) as revenue FROM orders";
+// Total Revenue (today)
+$total_revenue_query = "SELECT SUM(total_amount) as revenue FROM orders WHERE DATE(created_at) = :today";
 $total_revenue_stmt = $conn->prepare($total_revenue_query);
-$total_revenue_stmt->execute();
+$total_revenue_stmt->execute([':today' => $today]);
 $total_revenue_result = $total_revenue_stmt->fetch(PDO::FETCH_ASSOC);
 $total_revenue = $total_revenue_result['revenue'] ?? 0;
 
-// Total Customers
-$total_customers_query = "SELECT COUNT(*) as total FROM profiles WHERE role = 'customer'";
+// Total Customers (today - new signups)
+$total_customers_query = "SELECT COUNT(*) as total FROM profiles WHERE role = 'customer' AND DATE(created_at) = :today";
 $total_customers_stmt = $conn->prepare($total_customers_query);
-$total_customers_stmt->execute();
+$total_customers_stmt->execute([':today' => $today]);
 $total_customers_result = $total_customers_stmt->fetch(PDO::FETCH_ASSOC);
 $total_customers = $total_customers_result['total'];
 
-// Pending Orders
-$pending_orders_query = "SELECT COUNT(*) as total FROM orders WHERE status = 'pending'";
+// Pending Orders (today)
+$pending_orders_query = "SELECT COUNT(*) as total FROM orders WHERE status = 'pending' AND DATE(created_at) = :today";
 $pending_orders_stmt = $conn->prepare($pending_orders_query);
-$pending_orders_stmt->execute();
+$pending_orders_stmt->execute([':today' => $today]);
 $pending_orders_result = $pending_orders_stmt->fetch(PDO::FETCH_ASSOC);
 $pending_orders = $pending_orders_result['total'];
 
-// Completed Orders
-$completed_orders_query = "SELECT COUNT(*) as total FROM orders WHERE status = 'completed'";
+// Completed Orders (today)
+$completed_orders_query = "SELECT COUNT(*) as total FROM orders WHERE status = 'completed' AND DATE(created_at) = :today";
 $completed_orders_stmt = $conn->prepare($completed_orders_query);
-$completed_orders_stmt->execute();
+$completed_orders_stmt->execute([':today' => $today]);
 $completed_orders_result = $completed_orders_stmt->fetch(PDO::FETCH_ASSOC);
 $completed_orders = $completed_orders_result['total'];
 
-// Last 20 orders with details
+// Today's orders with details
 $orders_query = "SELECT o.order_id, o.customer_profile_id, o.total_amount, o.status, o.created_at, 
                  p.first_name, p.last_name, p.email, p.phone, p.address
                  FROM orders o 
                  JOIN profiles p ON o.customer_profile_id = p.profile_id 
+                 WHERE DATE(o.created_at) = :today
                  ORDER BY o.created_at DESC";
 $orders_stmt = $conn->prepare($orders_query);
-$orders_stmt->execute();
+$orders_stmt->execute([':today' => $today]);
 $recent_orders = $orders_stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Function to get order items
@@ -94,6 +98,7 @@ function getCustomPerfumes($conn, $order_id) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Dashboard</title>
+    <link rel="icon" type="image/png" href="../images/Untitled_design-removebg-preview.png">
     <style>
         * {
             margin: 0;
@@ -103,7 +108,8 @@ function getCustomPerfumes($conn, $order_id) {
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f5f5;
+            background: #ffffffff;
+            min-height: 100vh;
             padding: 20px;
             direction: ltr;
         }
@@ -118,14 +124,15 @@ function getCustomPerfumes($conn, $order_id) {
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
-            background: white;
-            padding: 20px 30px;
+            background: #ffffffff;
+            padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 1);
+            border: #e0c42aff solid 2px;
         }
         
         .header h1 {
-            color: #333;
+            color: #000000ff;
             font-size: 28px;
         }
         
@@ -158,6 +165,96 @@ function getCustomPerfumes($conn, $order_id) {
             background: #c0392b;
         }
         
+        /* Date Range Filter Styles - Employee Limited */
+        .date-filter-container {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: #e0c42aff solid 2px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .date-filter-container label {
+            font-weight: 600;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .date-filter-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .date-filter-btn {
+            padding: 10px 20px;
+            border: 2px solid #e0c42aff;
+            background: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: #333;
+        }
+        
+        .date-filter-btn:hover {
+            background: #fff8dc;
+            transform: translateY(-1px);
+        }
+        
+        .date-filter-btn.active {
+            background: #e0c42aff;
+            color: #000;
+            box-shadow: 0 2px 8px rgba(224, 196, 42, 0.4);
+        }
+        
+        .date-range-display {
+            margin-left: auto;
+            font-size: 13px;
+            color: #666;
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+        
+        .date-range-display strong {
+            color: #333;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .loading-overlay.show {
+            display: flex;
+        }
+        
+        .loading-spinner-large {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e0e0e0;
+            border-top-color: #e0c42aff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
         .statistics {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -167,40 +264,40 @@ function getCustomPerfumes($conn, $order_id) {
         
         .stat-card {
             background: white;
-            padding: 12px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            border-right: 3px solid #3498db;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: #e0c42aff solid 2px;
         }
         
         .stat-card h3 {
             color: #666;
-            font-size: 10px;
+            font-size: 14px;
             text-transform: uppercase;
-            margin-bottom: 6px;
-            font-weight: 600;
+            margin-bottom: 10px;
         }
         
         .stat-card .value {
-            color: #333;
-            font-size: 20px;
+            color: #000000ff;
+            font-size: 32px;
             font-weight: bold;
         }
         
         .stat-card.orange {
-            border-right-color: #f39c12;
+            border-right-color: #e0c42aff;
         }
         
         .stat-card.orange .value {
-            color: #f39c12;
+            color: #000000ff;
         }
         
         .stat-card.green {
-            border-right-color: #27ae60;
+            border-right-color: #e0c42aff;
         }
         
         .stat-card.green .value {
-            color: #27ae60;
+            color: #050505ff;
         }
         
         .stat-card:hover {
@@ -210,9 +307,10 @@ function getCustomPerfumes($conn, $order_id) {
         
         .orders-section {
             background: white;
-            padding: 25px;
+            padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: #e0c42aff solid 2px;
         }
         
         .orders-section h2 {
@@ -228,20 +326,22 @@ function getCustomPerfumes($conn, $order_id) {
         
         .orders-table thead {
             background: #f8f9fa;
+            border-bottom: #e0c42aff solid 2px;
         }
         
         .orders-table th {
             color: #333;
             font-weight: 600;
-            padding: 15px;
+            padding: 12px;
             text-align: left;
-            border-bottom: 2px solid #e0e0e0;
+            border-bottom: #e0c42aff solid 2px;
+            background: #ffffffff;
         }
         
         .orders-table td {
-            padding: 15px;
-            border-bottom: 1px solid #e0e0e0;
-            color: #666;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            color: #000000ff;
         }
         
         .orders-table tr:hover {
@@ -313,7 +413,7 @@ function getCustomPerfumes($conn, $order_id) {
             background: white;
             border-radius: 8px;
             padding: 15px;
-            border-left: 4px solid #3498db;
+            border-left: 4px solid #e0c42aff;
         }
         
         .detail-section {
@@ -392,15 +492,15 @@ function getCustomPerfumes($conn, $order_id) {
         
         /* Status Update Section */
         .status-update-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #e0c42aff;
             padding: 20px;
             border-radius: 8px;
-            color: white;
+            color: #000000;
             margin-top: 20px;
         }
         
         .status-update-section h4 {
-            color: white;
+            color: #000000;
             margin-bottom: 15px;
             font-size: 16px;
             text-transform: uppercase;
@@ -434,7 +534,7 @@ function getCustomPerfumes($conn, $order_id) {
         
         .update-status-btn {
             background: white;
-            color: #667eea;
+            color: #000000;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
@@ -444,8 +544,8 @@ function getCustomPerfumes($conn, $order_id) {
         }
         
         .update-status-btn:hover {
-            background: #FFD700;
-            color: #333;
+            background: #000000;
+            color: #ffffff;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
@@ -477,6 +577,26 @@ function getCustomPerfumes($conn, $order_id) {
                 text-align: center;
             }
             
+            .date-filter-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .date-filter-buttons {
+                width: 100%;
+            }
+            
+            .date-filter-btn {
+                flex: 1;
+                text-align: center;
+            }
+            
+            .date-range-display {
+                margin-left: 0;
+                width: 100%;
+                text-align: center;
+            }
+            
             .statistics {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -505,33 +625,50 @@ function getCustomPerfumes($conn, $order_id) {
             </div>
         </div>
         
+        <!-- Date Range Filter - Employee Limited to Today/Yesterday -->
+        <div class="date-filter-container">
+            <label>📅 View Data:</label>
+            <div class="date-filter-buttons">
+                <button class="date-filter-btn active" data-range="today" onclick="setDateRange('today')">📆 Today</button>
+                <button class="date-filter-btn" data-range="yesterday" onclick="setDateRange('yesterday')">⏮️ Yesterday</button>
+            </div>
+            <div class="date-range-display" id="dateRangeDisplay">
+                Showing: <strong>Today</strong> (<?php echo date('M d, Y'); ?>)
+            </div>
+        </div>
+        
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner-large"></div>
+        </div>
+        
         <!-- Statistics -->
         <div class="statistics">
             <div class="stat-card" style="cursor: pointer;" onclick="showAllOrders()">
-                <h3>Total Orders</h3>
-                <div class="value"><?php echo $total_orders; ?></div>
+                <h3>🛒 Total Orders</h3>
+                <div class="value" id="statTotalOrders"><?php echo $total_orders; ?></div>
             </div>
-            <div class="stat-card" style="border-right-color: #e74c3c; cursor: pointer;" onclick="filterByStatus('pending')">
-                <h3>Pending Orders</h3>
-                <div class="value" style="color: #e74c3c;"><?php echo $pending_orders; ?></div>
+            <div class="stat-card" style="border-right-color: #e0c42aff; cursor: pointer;" onclick="filterByStatus('pending')">
+                <h3>⏳ Pending Orders</h3>
+                <div class="value" id="statPendingOrders" style="color: #e74c3c;"><?php echo $pending_orders; ?></div>
             </div>
-            <div class="stat-card" style="border-right-color: #27ae60; cursor: pointer;" onclick="filterByStatus('completed')">
-                <h3>Completed Orders</h3>
-                <div class="value" style="color: #27ae60;"><?php echo $completed_orders; ?></div>
+            <div class="stat-card" style="border-right-color: #e0c42aff; cursor: pointer;" onclick="filterByStatus('completed')">
+                <h3>✅ Completed Orders</h3>
+                <div class="value" id="statCompletedOrders" style="color: #27ae60;"><?php echo $completed_orders; ?></div>
             </div>
             <div class="stat-card orange">
-                <h3>Total Revenue</h3>
-                <div class="value">$<?php echo number_format($total_revenue, 2); ?></div>
+                <h3>💰 Revenue</h3>
+                <div class="value" id="statTotalRevenue">$<?php echo number_format($total_revenue, 2); ?></div>
             </div>
             <div class="stat-card green">
-                <h3>Total Customers</h3>
-                <div class="value"><?php echo $total_customers; ?></div>
+                <h3>👥 New Customers</h3>
+                <div class="value" id="statNewCustomers"><?php echo $total_customers; ?></div>
             </div>
         </div>
         
         <!-- Recent Orders -->
         <div class="orders-section">
-            <h2>📦 Recent Orders</h2>
+            <h2 id="ordersTitle">📦 Today's Orders</h2>
             <table class="orders-table">
                 <thead>
                     <tr>
@@ -596,7 +733,7 @@ function getCustomPerfumes($conn, $order_id) {
                                         <div class="detail-section">
                                             <h4>🛍️ Ordered Products</h4>
                                             <div class="items-list" id="items-<?php echo $order['order_id']; ?>">
-                                                <div style="padding: 10px; color: #999; text-align: center;">
+                                                <div style="padding: 10px; color: #000000ff; text-align: center;">
                                                     Loading...
                                                 </div>
                                             </div>
@@ -637,6 +774,172 @@ function getCustomPerfumes($conn, $order_id) {
     </div>
     
     <script>
+        // Date Range Filter - Employee Limited to Today/Yesterday
+        let currentDateRange = 'today';
+        
+        function setDateRange(range) {
+            // Validate - employees can only access today or yesterday
+            if (range !== 'today' && range !== 'yesterday') {
+                range = 'today';
+            }
+            
+            currentDateRange = range;
+            
+            // Update active button
+            document.querySelectorAll('.date-filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.range === range) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Update display text
+            const today = new Date();
+            const yesterday = new Date(today);
+            yesterday.setDate(yesterday.getDate() - 1);
+            
+            const formatDate = (date) => {
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            };
+            
+            const displayDate = range === 'today' ? formatDate(today) : formatDate(yesterday);
+            const displayLabel = range === 'today' ? 'Today' : 'Yesterday';
+            document.getElementById('dateRangeDisplay').innerHTML = `Showing: <strong>${displayLabel}</strong> (${displayDate})`;
+            
+            // Update orders title
+            document.getElementById('ordersTitle').textContent = `📦 ${displayLabel}'s Orders`;
+            
+            // Fetch filtered data
+            fetchFilteredStats(range);
+        }
+        
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.add('show');
+        }
+        
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('show');
+        }
+        
+        function fetchFilteredStats(dateRange) {
+            showLoading();
+            
+            fetch(`../perfdb/get_employee_stats.php?date_range=${dateRange}`)
+                .then(response => {
+                    if (!response.ok) {
+                        if (response.status === 401) {
+                            throw new Error('Session expired - please login again');
+                        }
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        updateStatCards(data.stats);
+                        updateOrdersTable(data.orders);
+                    } else {
+                        console.error('Error fetching stats:', data.error);
+                        alert('Error loading data: ' + (data.error || 'Unknown error'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    alert('Error: ' + error.message);
+                })
+                .finally(() => {
+                    hideLoading();
+                });
+        }
+        
+        function updateStatCards(stats) {
+            document.getElementById('statTotalOrders').textContent = stats.total_orders;
+            document.getElementById('statPendingOrders').textContent = stats.pending_orders;
+            document.getElementById('statCompletedOrders').textContent = stats.completed_orders;
+            document.getElementById('statTotalRevenue').textContent = '$' + parseFloat(stats.total_revenue).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            document.getElementById('statNewCustomers').textContent = stats.new_customers;
+        }
+        
+        function updateOrdersTable(orders) {
+            const tbody = document.querySelector('.orders-table tbody');
+            if (!tbody) return;
+            
+            if (!orders || orders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 30px; color: #999;">📭 No orders found for this date</td></tr>';
+                return;
+            }
+            
+            let html = '';
+            orders.forEach(order => {
+                const statusClass = order.status === 'pending' ? 'status-pending' : 
+                                   order.status === 'completed' ? 'status-completed' : 'status-cancelled';
+                const statusText = order.status.charAt(0).toUpperCase() + order.status.slice(1);
+                const orderDate = new Date(order.created_at).toLocaleString();
+                
+                html += `
+                    <tr class="order-row" onclick="toggleOrderDetails(${order.order_id})">
+                        <td>
+                            <span class="expand-icon" id="icon-${order.order_id}">▼</span>
+                            #${order.order_id}
+                        </td>
+                        <td><span class="customer-link">${htmlEscape(order.first_name + ' ' + order.last_name)}</span></td>
+                        <td>${orderDate}</td>
+                        <td>$${parseFloat(order.total_amount).toFixed(2)}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    </tr>
+                    <tr class="details-row" id="details-${order.order_id}">
+                        <td colspan="5">
+                            <div class="details-content">
+                                <div class="order-details-box">
+                                    <div class="detail-section">
+                                        <h4>📞 Contact Information</h4>
+                                        <div class="customer-info">
+                                            <div class="customer-info-item">
+                                                <div class="customer-info-label">Email:</div>
+                                                <div class="customer-info-value">${htmlEscape(order.email || 'N/A')}</div>
+                                            </div>
+                                            <div class="customer-info-item">
+                                                <div class="customer-info-label">Phone:</div>
+                                                <div class="customer-info-value">${htmlEscape(order.phone || 'N/A')}</div>
+                                            </div>
+                                            <div class="customer-info-item">
+                                                <div class="customer-info-label">Address:</div>
+                                                <div class="customer-info-value" style="grid-column: 1/-1;">${htmlEscape(order.address || 'N/A')}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="detail-section">
+                                        <h4>🛍️ Ordered Products</h4>
+                                        <div class="items-list" id="items-${order.order_id}">
+                                            <div style="padding: 10px; color: #000000ff; text-align: center;">Loading...</div>
+                                        </div>
+                                    </div>
+                                    <div class="detail-section" id="custom-section-${order.order_id}" style="display: none;">
+                                        <h4>🎨 Custom Mix</h4>
+                                        <div class="items-list" id="custom-${order.order_id}">
+                                            <div style="padding: 10px; color: #999; text-align: center;">Loading...</div>
+                                        </div>
+                                    </div>
+                                    <div class="status-update-section">
+                                        <h4>✅ Mark as Ready</h4>
+                                        <div class="status-control">
+                                            <div class="checkbox-wrapper">
+                                                <input type="checkbox" id="complete-${order.order_id}" ${order.status === 'completed' ? 'checked' : ''}>
+                                                <label for="complete-${order.order_id}">Mark product as ready for pickup</label>
+                                            </div>
+                                            <button class="update-status-btn" onclick="updateOrderStatus(${order.order_id})">Update Status</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = html;
+        }
+        
         // Track which orders are expanded
         const expandedOrders = {};
 
@@ -712,11 +1015,13 @@ function getCustomPerfumes($conn, $order_id) {
             items.forEach(item => {
                 const lineTotal = (item.quantity * item.price).toFixed(2);
                 const volume = item.volume_ml ? `${item.volume_ml}ml` : '50ml';
+                const gender = item.gender_name ? ` | ${item.gender_name}` : '';
+                const brand = item.brand_name ? ` (${item.brand_name})` : '';
                 html += `
                     <div class="item">
                         <div style="flex: 1;">
-                            <div class="item-name">${htmlEscape(item.p_name || 'Unknown Product')}</div>
-                            <div class="item-qty">Size: ${volume} | Qty: ${item.quantity} | Price: $${parseFloat(item.price).toFixed(2)}</div>
+                            <div class="item-name">${htmlEscape(item.p_name || 'Unknown Product')}${brand}</div>
+                            <div class="item-qty">Size: ${volume} | Qty: ${item.quantity} | Price: $${parseFloat(item.price).toFixed(2)}${gender}</div>
                         </div>
                         <div class="item-price">$${lineTotal}</div>
                     </div>
@@ -741,14 +1046,15 @@ function getCustomPerfumes($conn, $order_id) {
             customItems.forEach(item => {
                 const totalMl = parseFloat(item.oil_amount_grams) || 0;
                 
-                // Parse types_detail: "type_name|percent,type_name|percent,..."
+                // Parse types_detail: "product_name - gender (percent%), ..."
                 let ingredientsHtml = '';
                 if (item.types_detail && item.types_detail.trim()) {
                     const typesList = item.types_detail.split(',').filter(t => t.trim()).map(t => {
-                        const [typeName, percent] = t.split('|');
-                        const ml = Math.round((parseFloat(percent) / 100) * totalMl * 100) / 100;
+                        // Format: "Product Name - Gender (XX%)"
+                        const parts = t.trim();
+                        const ml = totalMl; // Each product contributes based on percentage
                         return `<span style="background: #e8f4f8; padding: 4px 8px; border-radius: 4px; font-size: 12px; margin: 3px; display: inline-block; border-left: 3px solid #3498db;">
-                            <strong>${htmlEscape(typeName || 'Unknown')}</strong>: ${percent}% (${ml}ml)
+                            <strong>${htmlEscape(parts)}</strong>
                         </span>`;
                     }).join('');
                     ingredientsHtml = `<div style="margin-top: 8px; padding: 8px; background: white; border-radius: 4px;">
