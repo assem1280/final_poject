@@ -6,7 +6,7 @@ session_start();
 
 // Verify login - check if session exists and is valid
 if (!isset($_SESSION['profile_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'customer') {
-    header('Location: ../indexed/login.html');
+    header('Location: ../docs/login.html');
     exit;
 }
 
@@ -604,7 +604,7 @@ $total_orders = count($orders);
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                     </svg>
                     <h3>Shopping Cart is Empty</h3>
-                    <p><a href="../indexed/index.html" style="color: #667eea;">Start shopping now</a></p>
+                    <p><a href="../docs/index.html" style="color: #667eea;">Start shopping now</a></p>
                 </div>
             <?php else: ?>
                 <table class="orders-table">
@@ -653,8 +653,8 @@ $total_orders = count($orders);
                     Total: $<?php echo number_format($cart_total, 2); ?>
                 </div>
                 <div style="margin-top: 20px; text-align: center; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                    <a href="../indexed/index.html" style="display: inline-block; background: #667eea; color: white; padding: 10px 30px; border-radius: 5px; text-decoration: none; font-weight: bold; transition: background 0.3s;">Continue Shopping</a>
-                    <a href="../indexed/checkout-complete.html" style="display: inline-block; background: #27ae60; color: white; padding: 10px 30px; border-radius: 5px; text-decoration: none; font-weight: bold; transition: background 0.3s;">Order Now</a>
+                    <a href="../docs/index.html" style="display: inline-block; background: #667eea; color: white; padding: 10px 30px; border-radius: 5px; text-decoration: none; font-weight: bold; transition: background 0.3s;">Continue Shopping</a>
+                    <a href="../docs/checkout-complete.html" style="display: inline-block; background: #27ae60; color: white; padding: 10px 30px; border-radius: 5px; text-decoration: none; font-weight: bold; transition: background 0.3s;">Order Now</a>
                 </div>
             <?php endif; ?>
         </div>
@@ -807,7 +807,7 @@ $total_orders = count($orders);
                 })
                 .then(data => {
                     if (data && data.success) {
-                        window.location.href = data.redirect || '../indexed/index.html';
+                        window.location.href = data.redirect || '../docs/index.html';
                     } else {
                         alert('Logout failed: ' + (data.message || data.error || 'Unknown error'));
                     }
@@ -815,7 +815,7 @@ $total_orders = count($orders);
                 .catch(err => {
                     console.error('Logout error:', err);
                     // fallback: redirect to home (this will effectively log out for many flows)
-                    window.location.href = '../indexed/index.html';
+                    window.location.href = '../docs/index.html';
                 });
         }
             </script>

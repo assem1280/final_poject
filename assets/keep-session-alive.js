@@ -24,7 +24,7 @@
             if (!data.session_active) {
                 // Session expired
                 console.warn('[Session Keeper] Session expired - redirecting to login');
-                window.location.href = '/pefumeppp/indexed/login.html';
+                window.location.href = '/pefumeppp/docs/login.html';
             }
         })
         .catch(err => {

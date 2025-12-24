@@ -6,7 +6,7 @@ session_start();
 
 // Verify login - check if session exists and is valid
 if (!isset($_SESSION['profile_id']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'employee') {
-    header('Location: ../indexed/login.html');
+    header('Location: ../docs/login.html');
     exit;
 }
 
@@ -1158,7 +1158,7 @@ function getCustomPerfumes($conn, $order_id) {
                 .catch(err => {
                     console.error('Logout error:', err);
                     alert('Error logging out. Redirecting...');
-                    window.location.href = '../indexed/index.html';
+                    window.location.href = '../docs/index.html';
                 });
         }
 

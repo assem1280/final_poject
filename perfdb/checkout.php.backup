@@ -24,7 +24,7 @@ $payment_method = isset($input['payment_method']) ? trim($input['payment_method'
 $profile_id = isset($_SESSION['profile_id']) ? $_SESSION['profile_id'] : null;
 
 if (!$profile_id) {
-    echo json_encode(['success' => false, 'error' => 'User not logged in', 'redirect' => '/pefumeppp/indexed/login.html']);
+    echo json_encode(['success' => false, 'error' => 'User not logged in', 'redirect' => '/pefumeppp/docs/login.html']);
     exit;
 }
 

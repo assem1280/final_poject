@@ -71,7 +71,7 @@
             // Redirect to login directly (no alert)
             // Store current page in session so we can return after login
             sessionStorage.setItem('returnAfterLogin', window.location.href);
-            window.location.href = '/pefumeppp/indexed/login.html';
+            window.location.href = '/pefumeppp/docs/login.html';
             return;
         }
         

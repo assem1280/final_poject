@@ -21,6 +21,6 @@ session_destroy();
 echo json_encode([
     'success' => true,
     'message' => 'Logged out successfully',
-    'redirect' => '../indexed/index.html'
+    'redirect' => '../docs/index.html'
 ]);
 ?>

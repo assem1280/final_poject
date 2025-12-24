@@ -26,8 +26,8 @@ define('MAIL_FROM_NAME', 'ROSE Perfume Store');
 
 // Store Information (used in email templates)
 define('STORE_NAME', 'ROSE Perfume Store');
-define('STORE_URL', 'http://localhost/pefumeppp/indexed/');
-define('STORE_LOGO', 'http://localhost/pefumeppp/indexed/images/logo.png');
+define('STORE_URL', 'http://localhost/pefumeppp/docs/');
+define('STORE_LOGO', 'http://localhost/pefumeppp/docs/images/logo.png');
 
 // ============================================================
 // Email Settings

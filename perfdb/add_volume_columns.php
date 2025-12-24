@@ -40,7 +40,7 @@ try {
     echo "<br><div style='background: #d4edda; padding: 15px; border-radius: 5px; color: #155724;'>";
     echo "<strong>✓ Database schema migration complete!</strong>";
     echo "<p>The volume_ml columns have been added to both cart_items and order_items tables.</p>";
-    echo "<p>You can now <a href='../employee/dashboard.php'>return to the employee dashboard</a> or <a href='../indexed/index.html'>back to home</a></p>";
+    echo "<p>You can now <a href='../employee/dashboard.php'>return to the employee dashboard</a> or <a href='../docs/index.html'>back to home</a></p>";
     echo "</div>";
 } catch (PDOException $e) {
     echo "<div style='background: #f8d7da; padding: 15px; border-radius: 5px; color: #721c24;'>";
