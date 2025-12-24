@@ -85,7 +85,7 @@ body {
 }
 
 .login-form {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.192), rgba(255, 255, 255, 0.208));
     border: 3px solid #000000;
     border-radius: 30px;
     padding: 60px 45px;
