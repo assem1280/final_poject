@@ -337,20 +337,57 @@ body::after {
     letter-spacing: 0.5px;
 }
 
+.card-actions {
+    display: flex;
+    gap: 10px;
+    padding: 0 15px 15px;
+    align-items: center;
+    justify-content: center;
+}
+
+.view-details-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+    border: 2px solid #000000;
+    border-radius: 8px;
+    color: #000000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 13px;
+    font-weight: 600;
+    flex: 1;
+}
+
+.view-details-btn:hover {
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.view-details-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
 .add-to-cart-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    margin: 0 auto 15px;
-    background:  #f39c12;
+    width: 45px;
+    height: 45px;
+    background: #f39c12;
     border: none;
     border-radius: 50%;
     color: #000;
     cursor: pointer;
     transition: all 0.3s ease;
     padding: 0;
+    flex-shrink: 0;
 }
 
 .add-to-cart-btn:hover {
