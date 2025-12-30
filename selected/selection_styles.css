@@ -442,6 +442,27 @@ body::after {
         font-size: 12px;
         padding: 12px;
     }
+    
+    .view-details-btn {
+        font-size: 11px;
+        padding: 8px 12px;
+        gap: 4px;
+    }
+    
+    .view-details-btn svg {
+        width: 14px;
+        height: 14px;
+    }
+    
+    .add-to-cart-btn {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .card-actions {
+        gap: 8px;
+        padding: 0 10px 10px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -459,6 +480,27 @@ body::after {
         position: fixed;
         width: 40px;
         height: 40px;
+    }
+    
+    .view-details-btn {
+        font-size: 10px;
+        padding: 6px 10px;
+        gap: 3px;
+    }
+    
+    .view-details-btn svg {
+        width: 12px;
+        height: 12px;
+    }
+    
+    .add-to-cart-btn {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .card-actions {
+        gap: 6px;
+        padding: 0 8px 8px;
     }
 }
 
