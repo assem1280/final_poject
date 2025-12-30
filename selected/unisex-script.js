@@ -61,8 +61,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (viewDetailsBtn) {
             viewDetailsBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
-                const perfumeName = perfume.name;
-                console.log('Navigating to perfume:', perfumeName);
                 window.location.href = `../perfdb/product-details.php?id=${perfume.id}`;
             });
         }
